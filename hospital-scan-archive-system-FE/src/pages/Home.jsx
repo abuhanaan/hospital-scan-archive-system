@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaExclamationCircle } from "react-icons/fa";
+import Header from '../components/Header';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Home = () => {
 
     return (
         <section className=''>
+            <Header />
             <div className='flex flex-col items-center mt-16 w-full'>
                 <div className='flex flex-col  text-primary py-5 xs:py-10 px-5 xs:px-10 w-full sm:w-[70%] max-w-lg'>
                     <h1 className='text-2xl sm:text-3xl font-extrabold'>Login</h1>
