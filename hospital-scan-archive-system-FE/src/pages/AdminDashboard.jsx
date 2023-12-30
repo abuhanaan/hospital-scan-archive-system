@@ -47,13 +47,13 @@ const AdminDashboard = () => {
                         {
                             doctors.map(doctor => (
                                 <li key={doctor.id} className="py-3 px-6">
-                                    <Link to='#' className="flex items-center gap-4">
+                                    <Link to={`doctors/${doctor.id}`} className="flex items-center gap-4">
                                         <div className="flex items-center justify-center h-14 w-14 rounded-full bg-blue-100">
                                             {doctor.img}
                                         </div>
                                         <div className="flex flex-col">
-                                            <h1 className="text-lg font-medium text-primary">{`Dr. ${doctor.name}`}</h1>
-                                            <p className="text-base text-gray-800">{doctor.specialty}</p>
+                                            <h1 className="text-base font-medium text-primary">{`Dr. ${doctor.name}`}</h1>
+                                            <p className="text-sm text-gray-800">{doctor.specialty}</p>
                                         </div>
                                     </Link>
                                 </li>

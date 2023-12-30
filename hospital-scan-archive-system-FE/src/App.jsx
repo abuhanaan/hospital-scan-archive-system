@@ -10,6 +10,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import DoctorsList from './pages/DoctorsList';
 import DoctorView from './pages/DoctorView';
 import DoctorForm from './pages/DoctorForm';
+import ScanView from './components/ScanView';
 import { createBrowserRouter, createRoutesFromChildren, RouterProvider, Route } from 'react-router-dom';
 
 const router = createBrowserRouter(createRoutesFromChildren(
@@ -21,6 +22,8 @@ const router = createBrowserRouter(createRoutesFromChildren(
                 <Route path='doctors' element={<DoctorsList />} />
                 <Route path='doctors/:id' element={<DoctorView />} />
                 <Route path='doctors/create' element={<DoctorForm />} />
+                
+                <Route path='scans/:id' element={<ScanView />} />
 
                 {/* <Route path='patients' element={<PatientsList />} />
                 <Route path='patients/:id' element={<PatientView />} />
