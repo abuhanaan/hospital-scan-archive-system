@@ -47,7 +47,7 @@ const AdminLayout = () => {
                 </div>
 
                 <div className='flex-1 overflow-y-auto p-6 md:pb-8 md:pt-4 bg-[#EDF2FF]'>
-                    {Outlet}
+                    {<Outlet />}
                 </div>
             </div>
         </div>
