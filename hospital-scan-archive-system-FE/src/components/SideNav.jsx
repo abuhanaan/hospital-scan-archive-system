@@ -16,7 +16,7 @@ const SideNav = () => {
             >
                 <div className="navbar p-6">
                     <Link className="flex items-center justify-start"
-                        href="/dashboard">
+                        to="/admin">
                         HSAS
                     </Link>
                 </div>
@@ -24,7 +24,7 @@ const SideNav = () => {
 
             <div className="flex grow flex-row justify-between items-center space-x-2 md:flex-col md:items-start md:justify-start px-6  md:space-y-2 mt-6 md:mt-[51px]">
                 <Link
-                    href='/admin'
+                    to='/admin'
                     className={clsx(
                         `flex h-[48px] grow items-center justify-center gap-2 p-3 text-xl rounded-lg md:text-base text-[#9A99A0] hover:bg-[#21212B] md:hover:border-t-2 md:hover:border-blue-600 hover:text-white md:w-full md:ml-2 md:flex-none md:justify-start md:p-2 md:px-3`,
                         {
@@ -37,42 +37,42 @@ const SideNav = () => {
                 </Link>
 
                 <Link
-                    href='/admin/doctors'
+                    to='/admin/doctors'
                     className={clsx(
                         `flex h-[48px] grow items-center justify-center gap-2 rounded-lg p-3 bg-[#21212B] md:bg-transparent text-xl md:text-base text-[#9A99A0] hover:bg-[#21212B] md:hover:rounded-lg md:hover:border-t-2 md:hover:border-blue-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3`,
                         {
-                            'bg-sky-100 text-blue-600': pathname === '/admin/doctors'
+                            'bg-sky-100 text-blue-600': pathname.includes('/admin/doctors')
                         }
                     )}
                 >
                     <FaUserDoctor size={18} />
-                    <p className={clsx(`hidden md:block`, { 'text-white': pathname === '/admin/doctors' })}>Doctors</p>
+                    <p className={clsx(`hidden md:block`, { 'text-white': pathname.includes('/admin/doctors') })}>Doctors</p>
                 </Link>
 
                 <Link
-                    href='/admin/patients'
+                    to='/admin/patients'
                     className={clsx(
                         `flex h-[48px] grow items-center justify-center gap-2 rounded-lg p-3 bg-[#21212B] md:bg-transparent md:text-base text-[#9A99A0] hover:bg-[#21212B] md:hover:border-t-2 md:hover:border-blue-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3`,
                         {
-                            'bg-sky-100 text-blue-600': pathname === '/admin/patients'
+                            'bg-sky-100 text-blue-600': pathname.includes('/admin/patients')
                         }
                     )}
                 >
                     <FaUserInjured size={18} />
-                    <p className={clsx(`hidden md:block`, { 'text-white': pathname === '/admin/patients' })}>Patients</p>
+                    <p className={clsx(`hidden md:block`, { 'text-white': pathname.includes('/admin/patients') })}>Patients</p>
                 </Link>
 
                 <Link
-                    href='/admin/scans'
+                    to='/admin/scans'
                     className={clsx(
                         `flex h-[48px] grow items-center justify-center gap-2 rounded-lg p-3 bg-[#21212B] md:bg-transparent md:text-base text-[#9A99A0] hover:bg-[#21212B] md:hover:border-t-2 md:hover:border-blue-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3`,
                         {
-                            'bg-sky-100 text-blue-600': pathname === '/admin/scans'
+                            'bg-sky-100 text-blue-600': pathname.includes('/admin/scans')
                         }
                     )}
                 >
                     <FaFileMedical size={18} />
-                    <p className={clsx(`hidden md:block`, { 'text-white': pathname === '/admin/scans' })}>Scans</p>
+                    <p className={clsx(`hidden md:block`, { 'text-white': pathname.includes('/admin/scans') })}>Scans</p>
                 </Link>
 
                 <button onClick={() => signOut()} className="flex h-[48px] grow items-center justify-center gap-2 rounded-lg bg-red-600 md:bg-transparent md:text-base text-[#9A99A0] hover:bg-[#21212B] md:hover:rounded-lg md:hover:border-t-2 md:hover:border-red-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3 mt-auto">
