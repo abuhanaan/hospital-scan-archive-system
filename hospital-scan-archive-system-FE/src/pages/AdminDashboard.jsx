@@ -17,7 +17,7 @@ const AdminDashboard = () => {
         { id: 2, name: 'Hamzat Turawa', specialty: 'Neurologist', img: <FaUserDoctor size={32} /> },
         { id: 3, name: 'Halimah Salis', specialty: 'Opthalmologist', img: <FaUserDoctor size={32} /> },
         { id: 4, name: 'Zainab Musa', specialty: 'Dermatologist', img: <FaUserDoctor size={32} /> },
-    ]
+    ];
 
     return (
         <section className="overflow-x-auto font-poppins">
