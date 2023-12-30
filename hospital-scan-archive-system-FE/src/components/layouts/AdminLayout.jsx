@@ -2,6 +2,7 @@ import { Outlet, Link } from 'react-router-dom';
 import { HiUser } from 'react-icons/hi';
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BiSolidEdit } from "react-icons/bi";
+import { MdKeyboardArrowDown } from "react-icons/md";
 import { useState } from 'react';
 import SideNav from '../SideNav';
 
@@ -24,8 +25,12 @@ const AdminLayout = () => {
                 <div className="hidden md:flex md:justify-end items-center h-[64px]">
                     <div className="flex justify-end gap-6 w-full pr-5">
                         <div className='relative'>
-                            <button onClick={toggleMenu} className="border border-blue-300 p-[2px] text-blue-500 rounded-full">
-                                <HiUser size={24} />
+                            <button onClick={toggleMenu} className="flex items-center gap-1">
+                                <div className="border border-blue-300 p-[2px]  rounded-full mr-1">
+                                    <HiUser color='rgb(59, 130, 246)' size={20} />
+                                </div>
+                                <span>Admin</span>
+                                <MdKeyboardArrowDown size={24} />
                             </button>
                             <ul className={`${showMenu ? 'block' : 'hidden'} absolute right-0 top-10 mt-3 z-[1] shadow w-52 rounded-sm`}>
                                 <li className='flex items-center gap-2 hover:bg-slate-400 hover:text-white px-2 py-1.5'>
