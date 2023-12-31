@@ -12,7 +12,7 @@ const AdminDashboard = () => {
         { id: 'diagnosis', title: 'Total Diagnosis', count: 289, icon: <FaStethoscope size={20} /> },
     ];
 
-    const doctors = [
+    const users = [
         { id: 1, name: 'Sodiq Ishola', specialty: 'Gynaecologist', img: <FaUserDoctor size={32} /> },
         { id: 2, name: 'Hamzat Turawa', specialty: 'Neurologist', img: <FaUserDoctor size={32} /> },
         { id: 3, name: 'Halimah Salis', specialty: 'Opthalmologist', img: <FaUserDoctor size={32} /> },
@@ -41,19 +41,19 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className="flex flex-col flex-1 bg-white pb-4 shadow-xl rounded-md max-w-[440px]">
-                    <h1 className="text-primary text-xl py-4 font-medium px-6 border-b-2 border-gray-200">New Doctors</h1>
+                    <h1 className="text-primary text-xl py-4 font-medium px-6 border-b-2 border-gray-200">Recent Specialists</h1>
 
                     <ul className="list-none">
                         {
-                            doctors.map(doctor => (
-                                <li key={doctor.id} className="py-3 px-6">
-                                    <Link to={`doctors/${doctor.id}`} className="flex items-center gap-4">
+                            users.map(user => (
+                                <li key={user.id} className="py-3 px-6">
+                                    <Link to={`doctors/${user.id}`} className="flex items-center gap-4">
                                         <div className="flex items-center justify-center h-14 w-14 rounded-full bg-blue-100">
-                                            {doctor.img}
+                                            {user.img}
                                         </div>
                                         <div className="flex flex-col">
-                                            <h1 className="text-base font-medium text-primary">{`Dr. ${doctor.name}`}</h1>
-                                            <p className="text-sm text-gray-800">{doctor.specialty}</p>
+                                            <h1 className="text-base font-medium text-primary">{`Dr. ${user.name}`}</h1>
+                                            <p className="text-sm text-gray-800">{user.specialty}</p>
                                         </div>
                                     </Link>
                                 </li>
@@ -66,4 +66,4 @@ const AdminDashboard = () => {
     )
 }
 
-export default AdminDashboard
+export default AdminDashboard;

@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 const DashboardTable = () => {
     const navigate = useNavigate();
     const scans = [
-        { id: 1, patientName: 'Zainab Salihu', doctorName: 'Halima Musa', diagnosis: 'Pregnancy', date: '12/12/2023', downloadUrl: 'zainab-salihu-pregnancy.zip' },
-        { id: 2, patientName: 'Ibrahim Salis', doctorName: 'Ishola Sodiq', diagnosis: 'Chest Pain', date: '12/12/2023', downloadUrl: 'ibrahim-salis-chest.zip' },
-        { id: 3, patientName: 'Ibrahim Salis', doctorName: 'Ishola Sodiq', diagnosis: 'Chest Pain', date: '12/12/2023', downloadUrl: 'ibrahim-salis-chest.zip' },
-        { id: 4, patientName: 'Ibrahim Salis', doctorName: 'Ishola Sodiq', diagnosis: 'Chest Pain', date: '12/12/2023', downloadUrl: 'ibrahim-salis-chest.zip' },
+        { id: 1, patientName: 'Zainab Salihu', specialistName: 'Halima Musa', diagnosis: 'Pregnancy', date: '12/12/2023', downloadUrl: 'zainab-salihu-pregnancy.zip' },
+        { id: 2, patientName: 'Ibrahim Salis', specialistName: 'Ishola Sodiq', diagnosis: 'Chest Pain', date: '12/12/2023', downloadUrl: 'ibrahim-salis-chest.zip' },
+        { id: 3, patientName: 'Ibrahim Salis', specialistName: 'Ishola Sodiq', diagnosis: 'Chest Pain', date: '12/12/2023', downloadUrl: 'ibrahim-salis-chest.zip' },
+        { id: 4, patientName: 'Ibrahim Salis', specialistName: 'Ishola Sodiq', diagnosis: 'Chest Pain', date: '12/12/2023', downloadUrl: 'ibrahim-salis-chest.zip' },
     ];
 
     function viewScan(scanId) {
@@ -22,7 +22,7 @@ const DashboardTable = () => {
                             Patient Name
                         </th>
                         <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
-                            Doctor Name
+                            Specialist Name
                         </th>
                         <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
                             Diagnosis
@@ -40,7 +40,7 @@ const DashboardTable = () => {
                         scans.map(scan => (
                             <tr key={scan.id} onClick={() => viewScan(scan.id)} className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                                 <td className="table-data">{scan.patientName}</td>
-                                <td className="table-data">{`Dr. ${scan.doctorName}`}</td>
+                                <td className="table-data">{`Dr. ${scan.specialistName}`}</td>
                                 <td className="table-data">{scan.diagnosis}</td>
                                 <td className="table-data">{scan.date}</td>
                                 <td className="py-4 px-6 text-sm font-medium whitespace-nowrap">
