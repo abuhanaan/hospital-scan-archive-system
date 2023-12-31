@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaUserDoctor } from "react-icons/fa6";
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
