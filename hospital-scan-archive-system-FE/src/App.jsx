@@ -2,17 +2,8 @@ import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-import Layout from './components/layouts/Layout';
-import Home from './pages/Home';
-import AuthLayout from './components/layouts/AuthLayout';
-import AdminLayout from './components/layouts/AdminLayout';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import UsersList from './pages/admin/UsersList';
-import UserForm from './pages/admin/UserForm';
-import PatientView from './pages/admin/PatientView';
-import PatientsList from './pages/admin/PatientsList';
-import PatientForm from './pages/admin/PatientForm';
-import ScanView from './components/ScanView';
+import { AdminLayout, AuthLayout, Layout } from './components';
+import { Home, AdminDashboard, UsersList, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView } from './pages';
 import { createBrowserRouter, createRoutesFromChildren, RouterProvider, Route } from 'react-router-dom';
 
 const router = createBrowserRouter(createRoutesFromChildren(
@@ -28,12 +19,10 @@ const router = createBrowserRouter(createRoutesFromChildren(
                 <Route path='patients' element={<PatientsList />} />
                 <Route path='patients/:id' element={<PatientView />} />
                 <Route path='patients/create' element={<PatientForm />} />
-                
-                <Route path='scans/:id' element={<ScanView />} />
 
-                {/* <Route path='patients' element={<PatientsList />} />
-                <Route path='patients/:id' element={<PatientView />} />
-                <Route path='patients/create' element={<PatientForm />} /> */}
+                <Route path='scans' element={<ScansList />} />
+                <Route path='scans/:id' element={<ScanView />} />
+                <Route path='scans/create' element={<ScanForm />} />
             </Route>
 
             {/* <Route path='doctor' element={<DoctorDashboard />} /> */}

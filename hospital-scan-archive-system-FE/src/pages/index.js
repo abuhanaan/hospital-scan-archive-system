@@ -1,0 +1,10 @@
+export {default as Home} from './Home';
+export {default as AdminDashboard} from './admin/AdminDashboard';
+export {default as UsersList} from './admin/UsersList';
+export {default as UserForm} from './admin/UserForm';
+export {default as PatientsList} from './admin/PatientsList';
+export {default as PatientView} from './admin/PatientView';
+export {default as PatientForm} from './admin/PatientForm';
+export {default as ScansList} from './admin/ScansList';
+export {default as ScanView} from './admin/ScanView';
+export {default as ScanForm} from './admin/ScanForm';
