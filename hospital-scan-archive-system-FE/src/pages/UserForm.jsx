@@ -2,8 +2,20 @@ import React from 'react';
 
 const UserForm = () => {
     return (
-        <div className="flex items-center justify-center p-12">
-            <div className="mx-auto w-full max-w-[550px]">
+        <div className="flex flex-col pt-6 font-poppins">
+            <div class="pb-6">
+                <nav aria-label="breadcrumb">
+                    <ol class="flex space-x-2">
+                        <li><a href="#" class="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Dashboard</a></li>
+                        <li><a href="#" class="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Users</a></li>
+                        <li class="text-purple-700 font-medium" aria-current="page">User Form</li>
+                    </ol>
+                </nav>
+
+                <h1 class="font-bold text-primary text-2xl leading-tight mt-6">Create User</h1>
+            </div>
+
+            <div className="mx-auto w-full max-w-[850px]">
                 <form>
                     <div className="-mx-3 flex flex-wrap">
                         <div className="w-full px-3 sm:w-1/2">
@@ -41,24 +53,104 @@ const UserForm = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="mb-5">
-                        <label
-                            htmlFor="guest"
-                            className="mb-3 block text-base font-medium text-[#07074D]"
-                        >
-                            How many guest are you bringing?
-                        </label>
-                        <input
-                            type="number"
-                            name="guest"
-                            id="guest"
-                            placeholder="5"
-                            min="0"
-                            className="w-full appearance-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                        />
+                    <div className="-mx-3 flex flex-wrap">
+                        <div className="w-full px-3 sm:w-1/2">
+                            <div className="mb-5">
+                                <label
+                                    htmlFor='specialty'
+                                    className="mb-3 block text-base font-medium text-[#07074D]"
+                                >
+                                    Specialty
+                                </label>
+                                <input
+                                    type="text"
+                                    name="specialty"
+                                    id="specialty"
+                                    placeholder="Specialty"
+                                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                />
+                            </div>
+                        </div>
+                        <div className="w-full px-3 sm:w-1/2">
+                            <div className="mb-5">
+                                <label
+                                    htmlFor="role"
+                                    className="mb-3 block text-base font-medium text-[#07074D]"
+                                >
+                                    Role
+                                </label>
+                                <input
+                                    type="text"
+                                    name="role"
+                                    id="role"
+                                    placeholder="Role"
+                                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="-mx-3 flex flex-wrap">
+                        <div className="w-full px-3 sm:w-1/2">
+                            <div className="mb-5">
+                                <label
+                                    htmlFor='email'
+                                    className="mb-3 block text-base font-medium text-[#07074D]"
+                                >
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    placeholder="Email"
+                                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                />
+
+                            </div>
+                        </div>
+                        <div className="w-full px-3 sm:w-1/2">
+                            <div className="mb-5">
+                                <label
+                                    htmlFor="password"
+                                    className="mb-3 block text-base font-medium text-[#07074D]"
+                                >
+                                    Password
+                                </label>
+                                <div className="flex items-center">
+                                    <input
+                                        type="text"
+                                        name="password"
+                                        id="password"
+                                        placeholder="Password"
+                                        className="w-full rounded-s-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                    />
+                                    <button
+                                        className="hover:shadow-form rounded-e-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
+                                    >
+                                        Generate
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="-mx-3 flex flex-wrap">
+                        <div className="w-full px-3 sm:w-1/2">
+                            <div className="mb-5">
+                                <label
+                                    htmlFor="profileImage"
+                                    className="mb-3 block text-base font-medium text-[#07074D]"
+                                >
+                                    Profile Image
+                                </label>
+                                <input
+                                    type="file"
+                                    name="profileImage"
+                                    id="profileImage"
+                                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                />
+                            </div>
+                        </div>
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
                                 <label
@@ -75,65 +167,13 @@ const UserForm = () => {
                                 />
                             </div>
                         </div>
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <label
-                                    htmlFor="time"
-                                    className="mb-3 block text-base font-medium text-[#07074D]"
-                                >
-                                    Time
-                                </label>
-                                <input
-                                    type="time"
-                                    name="time"
-                                    id="time"
-                                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                                />
-                            </div>
-                        </div>
                     </div>
 
-                    <div className="mb-5">
-                        <label className="mb-3 block text-base font-medium text-[#07074D]">
-                            Are you coming to the event?
-                        </label>
-                        <div className="flex items-center space-x-6">
-                            <div className="flex items-center">
-                                <input
-                                    type="radio"
-                                    name="radio1"
-                                    id="radioButton1"
-                                    className="h-5 w-5"
-                                />
-                                <label
-                                    htmlFor="radioButton1"
-                                    className="pl-3 text-base font-medium text-[#07074D]"
-                                >
-                                    Yes
-                                </label>
-                            </div>
-                            <div className="flex items-center">
-                                <input
-                                    type="radio"
-                                    name="radio1"
-                                    id="radioButton2"
-                                    className="h-5 w-5"
-                                />
-                                <label
-                                    htmlFor="radioButton2"
-                                    className="pl-3 text-base font-medium text-[#07074D]"
-                                >
-                                    No
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
+                    <div className='flex justify-end'>
                         <button
                             className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
                         >
-                            Submit
+                            Create
                         </button>
                     </div>
                 </form>

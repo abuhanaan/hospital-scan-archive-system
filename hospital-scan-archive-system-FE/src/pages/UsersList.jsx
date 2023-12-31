@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaUserDoctor } from "react-icons/fa6";
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
@@ -9,6 +9,7 @@ import { IoSearch } from "react-icons/io5";
 import AddButton from '../components/AddButton';
 
 const UsersList = () => {
+    const ref = useRef(null);
     const navigate = useNavigate();
     const users = [
         { id: 1, firstName: 'Sodiq', lastName: 'Ishola', email: 'example123@gmail.com', specialty: 'Gynaecologist', role: 'doctor', img: 'https://p7.hiclipart.com/preview/14/65/239/ico-avatar-scalable-vector-graphics-icon-doctor-with-stethoscope.jpg' },
@@ -21,11 +22,18 @@ const UsersList = () => {
         navigate(`users/${userId}`);
     }
 
+    function deleteUser(e) {
+        e.preventDefault();
+
+        const userId = e.currentTarget.getAttribute('data-user-id');
+        console.log('UserId:', userId);
+    }
+
     return (
         <div className="mt-6 min-h-screen w-full font-poppins">
             <div className="flex justify-between items-center mb-6 w-full">
                 <h1 className="text-[#15254C] text-2xl font-bold">Specialists</h1>
-                <AddButton>Add New</AddButton>
+                <AddButton navigateTo={`create`}>Add New</AddButton>
             </div>
 
             <div className="h-full overflow-auto w-full">
@@ -74,7 +82,7 @@ const UsersList = () => {
                                     <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                         {
                                             users.map(user => (
-                                                <tr key={user.id} onClick={() => viewUser(user.id)} className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                                                <tr key={user.id} className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                                                     <td className="table-data">
                                                         <img src={user.img} className='w-10 h-10 rounded-full' alt={`${user.firstName} ${user.lastName}`} />
                                                     </td>
@@ -84,8 +92,9 @@ const UsersList = () => {
                                                     <td className="table-data">{user.specialty}</td>
                                                     <td className="table-data">{user.role}</td>
                                                     <td className="py-4 px-6 whitespace-nowrap flex items-center justify-center gap-1">
-                                                        <a href="#" className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></a>
-                                                        <a href="#" className="text-grey-lighter py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></a>
+                                                        <Link to={`create`} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
+
+                                                        <button onClick={deleteUser} ref={ref} data-user-id={user.id} className="text-grey-lighter py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></button>
                                                     </td>
                                                 </tr>
 
