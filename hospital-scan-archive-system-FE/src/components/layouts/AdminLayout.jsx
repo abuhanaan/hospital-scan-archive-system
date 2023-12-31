@@ -22,22 +22,22 @@ const AdminLayout = () => {
             </div>
 
             <div className='flex-grow flex flex-col min-h-screen'>
-                <div className="hidden md:flex md:justify-end items-center h-[64px]">
+                <div className="hidden md:flex md:justify-end items-center h-[64px] bg-gray-200">
                     <div className="flex justify-end gap-6 w-full pr-5">
                         <div className='relative'>
                             <button onClick={toggleMenu} className="flex items-center gap-1">
                                 <div className="border border-blue-300 p-[2px]  rounded-full mr-1">
                                     <HiUser color='rgb(59, 130, 246)' size={20} />
                                 </div>
-                                <span>Admin</span>
-                                <MdKeyboardArrowDown size={24} />
+                                <span className='text-primary font-medium'>Admin</span>
+                                <MdKeyboardArrowDown size={24} color='#102255' />
                             </button>
-                            <ul className={`${showMenu ? 'block' : 'hidden'} absolute right-0 top-10 mt-3 z-[1] shadow w-52 rounded-sm`}>
-                                <li className='flex items-center gap-2 hover:bg-slate-400 hover:text-white px-2 py-1.5'>
+                            <ul className={`${showMenu ? 'block' : 'hidden'} absolute right-0 top-10 mt-3 z-[1] shadow w-52 rounded-sm bg-dimWhite`}>
+                                <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
                                     <BiSolidEdit size={20} />
                                     <Link href='#'>Change Password</Link>
                                 </li>
-                                <li className='flex items-center gap-2 hover:bg-slate-400 hover:text-white px-2 py-1.5'>
+                                <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
                                     <RiLogoutCircleRLine color='red' size={20} />
                                     <Link onClick={() => signOut()} href='#'>Logout</Link>
                                 </li>

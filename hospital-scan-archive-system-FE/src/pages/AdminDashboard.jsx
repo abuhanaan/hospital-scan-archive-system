@@ -36,12 +36,12 @@ const AdminDashboard = () => {
 
             <div className="flex flex-col xl:flex-row gap-8 mt-10">
                 <div className="overflow-y-auto flex-1 bg-white rounded-lg shadow-sm">
-                    <h1 className="text-primary text-2xl py-4 font-medium px-6 border-b-2 border-gray-200">Recent Scans</h1>
+                    <h1 className="text-primary text-xl py-4 font-medium px-6 border-b-2 border-gray-200">Recent Scans</h1>
                     <DashboardTable />
                 </div>
 
                 <div className="flex flex-col flex-1 bg-white pb-4 shadow-xl rounded-md max-w-[440px]">
-                    <h1 className="text-primary text-2xl py-4 font-medium px-6 border-b-2 border-gray-200">New Doctors</h1>
+                    <h1 className="text-primary text-xl py-4 font-medium px-6 border-b-2 border-gray-200">New Doctors</h1>
 
                     <ul className="list-none">
                         {
