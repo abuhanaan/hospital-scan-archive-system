@@ -1,21 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const UserForm = () => {
     return (
         <div className="flex flex-col pt-6 font-poppins">
-            <div class="pb-6">
+            <div className="pb-6">
                 <nav aria-label="breadcrumb">
-                    <ol class="flex space-x-2">
-                        <li><a href="#" class="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Dashboard</a></li>
-                        <li><a href="#" class="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Users</a></li>
-                        <li class="text-purple-700 font-medium" aria-current="page">User Form</li>
+                    <ol className="flex space-x-2">
+                        <li><Link to="/admin" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Dashboard</Link></li>
+                        <li><Link to="/admin/users" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Users</Link></li>
+                        <li className="text-purple-700 font-medium text-lg" aria-current="page">User Form</li>
                     </ol>
                 </nav>
 
-                <h1 class="font-bold text-primary text-2xl leading-tight mt-6">Create User</h1>
+                <h1 className="font-bold text-primary text-2xl leading-tight mt-6">Create User</h1>
             </div>
 
-            <div className="mx-auto w-full max-w-[850px]">
+            <div className="mx-auto w-full">
                 <form>
                     <div className="-mx-3 flex flex-wrap">
                         <div className="w-full px-3 sm:w-1/2">

@@ -31,9 +31,18 @@ const UsersList = () => {
 
     return (
         <div className="mt-6 min-h-screen w-full font-poppins">
-            <div className="flex justify-between items-center mb-6 w-full">
-                <h1 className="text-[#15254C] text-2xl font-bold">Specialists</h1>
-                <AddButton navigateTo={`create`}>Add New</AddButton>
+            <div className="pb-6">
+                <nav aria-label="breadcrumb">
+                    <ol className="flex space-x-2">
+                        <li><Link to="/admin" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Dashboard</Link></li>
+                        <li className="text-purple-700 font-medium text-lg" aria-current="page">User</li>
+                    </ol>
+                </nav>
+
+                <div className="flex justify-between items-center mb-6 w-full">
+                    <h1 className="font-bold text-primary text-2xl leading-tight mt-6">Specialists</h1>
+                    <AddButton navigateTo={`create`}>Add New</AddButton>
+                </div>
             </div>
 
             <div className="h-full overflow-auto w-full">
