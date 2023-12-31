@@ -58,6 +58,37 @@ const PatientForm = () => {
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
                                 <label
+                                    htmlFor="nextOfKin"
+                                    className="mb-3 block text-base font-medium text-[#07074D]"
+                                >
+                                    Next of Kin Name
+                                </label>
+                                <input
+                                    type="text"
+                                    name="nextOfKin"
+                                    id="nextOfKin"
+                                    placeholder="Next of Kin"
+                                    className="w-full rounded-s-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="w-full px-3 sm:w-1/2">
+                            <div className="mb-5">
+                                <label
+                                    htmlFor="address"
+                                    className="mb-3 block text-base font-medium text-[#07074D]"
+                                >
+                                    Address
+                                </label>
+                                <textarea name="address" id="address" placeholder='Address' className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md h-[56px]"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="-mx-3 flex flex-wrap">
+                        <div className="w-full px-3 sm:w-1/3">
+                            <div className="mb-5">
+                                <label
                                     htmlFor='phoneNumber'
                                     className="mb-3 block text-base font-medium text-[#07074D]"
                                 >
@@ -72,26 +103,7 @@ const PatientForm = () => {
                                 />
                             </div>
                         </div>
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <label
-                                    htmlFor="gender"
-                                    className="mb-3 block text-base font-medium text-[#07074D]"
-                                >
-                                    Gender
-                                </label>
-                                <select name="gender" id="gender" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
-                                    <option value="">--Select an option--</option>
-                                    <option value="male">Male</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="others">Others</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="-mx-3 flex flex-wrap">
-                        <div className="w-full px-3 sm:w-1/2">
+                        <div className="w-full px-3 sm:w-1/3">
                             <div className="mb-5">
                                 <label
                                     htmlFor='age'
@@ -109,51 +121,20 @@ const PatientForm = () => {
 
                             </div>
                         </div>
-                        <div className="w-full px-3 sm:w-1/2">
+                        <div className="w-full px-3 sm:w-1/3">
                             <div className="mb-5">
                                 <label
-                                    htmlFor="nextOfKin"
+                                    htmlFor="gender"
                                     className="mb-3 block text-base font-medium text-[#07074D]"
                                 >
-                                    Next of Kin Name
+                                    Gender
                                 </label>
-                                <input
-                                    type="text"
-                                    name="nextOfKin"
-                                    id="nextOfKin"
-                                    placeholder="Next of Kin"
-                                    className="w-full rounded-s-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="-mx-3 flex flex-wrap">
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <label
-                                    htmlFor="address"
-                                    className="mb-3 block text-base font-medium text-[#07074D]"
-                                >
-                                    Address
-                                </label>
-                                <textarea name="address" id="address" placeholder='Address' className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md h-[56px]"></textarea>
-                            </div>
-                        </div>
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <label
-                                    htmlFor="scans"
-                                    className="mb-3 block text-base font-medium text-[#07074D]"
-                                >
-                                    Scan <small>compressed files only(.zip)</small>
-                                </label>
-                                <input
-                                    type="file"
-                                    name="scans"
-                                    id="scans"
-                                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                                />
+                                <select name="gender" id="gender" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
+                                    <option value="">--Select an option--</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="others">Others</option>
+                                </select>
                             </div>
                         </div>
                     </div>

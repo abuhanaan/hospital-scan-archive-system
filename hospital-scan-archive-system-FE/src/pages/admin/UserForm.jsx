@@ -174,7 +174,7 @@ const UserForm = () => {
                         <button
                             className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
                         >
-                            Create
+                            Create User
                         </button>
                     </div>
                 </form>
