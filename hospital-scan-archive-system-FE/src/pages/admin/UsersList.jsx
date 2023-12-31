@@ -6,7 +6,7 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
 import { IoSearch } from "react-icons/io5";
 
-import AddButton from '../components/AddButton';
+import AddButton from '../../components/AddButton';
 
 const UsersList = () => {
     const ref = useRef(null);

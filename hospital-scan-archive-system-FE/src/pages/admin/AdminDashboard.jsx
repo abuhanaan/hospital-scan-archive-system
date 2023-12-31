@@ -1,6 +1,6 @@
-import Welcome from "../components/Welcome";
-import OverviewCard from "../components/OverviewCard";
-import DashboardTable from "../components/DashboardTable";
+import Welcome from '../../components/Welcome';
+import OverviewCard from "../../components/OverviewCard";
+import DashboardTable from "../../components/DashboardTable";
 import { FaUserDoctor, FaUserInjured, FaFileMedical, FaStethoscope } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
