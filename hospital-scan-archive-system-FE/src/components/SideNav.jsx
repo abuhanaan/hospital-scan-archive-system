@@ -2,6 +2,7 @@ import React from 'react';
 import { RxDashboard } from "react-icons/rx";
 import { FaUserDoctor, FaUserInjured, FaFileMedical } from "react-icons/fa6";
 import { RiLogoutCircleRLine } from "react-icons/ri";
+import { FaRegHospital } from "react-icons/fa6";
 import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -15,9 +16,10 @@ const SideNav = () => {
                 className='flex flex-row justify-start items-center leading-none text-white'
             >
                 <div className="navbar p-6">
-                    <Link className="flex items-center justify-start"
+                    <Link className="flex items-center justify-start gap-1"
                         to="/admin">
-                        HSAS
+                        <FaRegHospital size={30} color='white' />
+                        <span className="text-white font-poppins text-xl font-bold">HSAS</span>
                     </Link>
                 </div>
             </div>
