@@ -3,13 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaUserDoctor } from "react-icons/fa6";
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-
 import { IoSearch } from "react-icons/io5";
 
 import AddButton from '../../components/AddButton';
 
 const UsersList = () => {
-    const ref = useRef(null);
     const navigate = useNavigate();
     const users = [
         { id: 1, firstName: 'Sodiq', lastName: 'Ishola', email: 'example123@gmail.com', specialty: 'Gynaecologist', role: 'doctor', img: 'https://p7.hiclipart.com/preview/14/65/239/ico-avatar-scalable-vector-graphics-icon-doctor-with-stethoscope.jpg' },
@@ -35,20 +33,20 @@ const UsersList = () => {
                 <nav aria-label="breadcrumb">
                     <ol className="flex space-x-2">
                         <li><Link to="/admin" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Dashboard</Link></li>
-                        <li className="text-purple-700 font-medium text-lg" aria-current="page">User</li>
+                        <li className="text-purple-700 font-medium text-lg" aria-current="page">Users</li>
                     </ol>
                 </nav>
 
                 <div className="flex justify-between items-center mb-6 w-full">
                     <h1 className="font-bold text-primary text-2xl leading-tight mt-6">Specialists</h1>
-                    <AddButton navigateTo={`create`}>Add New</AddButton>
+                    <AddButton navigateTo={`create-user`}>Add New</AddButton>
                 </div>
             </div>
 
             <div className="h-full overflow-auto w-full">
                 {
                     users?.length === 0 ?
-                        <EmptySearch headers={['Posts', 'Published']} />
+                        <EmptySearch headers={['Profile Image', 'First Name', 'Last Name', 'Email', 'Specialty', 'Role']} />
                         :
                         <div className="flex flex-col">
                             <div className="mt-6 mb-4 md:flex md:items-center md:justify-between">
@@ -101,9 +99,9 @@ const UsersList = () => {
                                                     <td className="table-data">{user.specialty}</td>
                                                     <td className="table-data">{user.role}</td>
                                                     <td className="py-4 px-6 whitespace-nowrap flex items-center justify-center gap-1">
-                                                        <Link to={`create`} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
+                                                        <Link to={`create-user`} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
 
-                                                        <button onClick={deleteUser} ref={ref} data-user-id={user.id} className="text-grey-lighter py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></button>
+                                                        <button onClick={deleteUser} data-user-id={user.id} className="text-grey-lighter py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></button>
                                                     </td>
                                                 </tr>
 

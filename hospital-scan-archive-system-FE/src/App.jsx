@@ -14,15 +14,15 @@ const router = createBrowserRouter(createRoutesFromChildren(
                 <Route index element={<AdminDashboard />} />
 
                 <Route path='users' element={<UsersList />} />
-                <Route path='users/create' element={<UserForm />} />
+                <Route path='users/create-user' element={<UserForm />} />
 
                 <Route path='patients' element={<PatientsList />} />
                 <Route path='patients/:id' element={<PatientView />} />
-                <Route path='patients/create' element={<PatientForm />} />
+                <Route path='patients/create-patient' element={<PatientForm />} />
 
                 <Route path='scans' element={<ScansList />} />
                 <Route path='scans/:id' element={<ScanView />} />
-                <Route path='scans/create' element={<ScanForm />} />
+                <Route path='scans/create-scan' element={<ScanForm />} />
             </Route>
 
             {/* <Route path='doctor' element={<DoctorDashboard />} /> */}
