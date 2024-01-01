@@ -2,6 +2,7 @@ import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
+import { loader as userViewLoader } from './pages/admin/UserView';
 import { AdminLayout, AuthLayout, Layout } from './components';
 import { Home, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView } from './pages';
 import { createBrowserRouter, createRoutesFromChildren, RouterProvider, Route } from 'react-router-dom';
@@ -14,7 +15,7 @@ const router = createBrowserRouter(createRoutesFromChildren(
                 <Route index element={<AdminDashboard />} />
 
                 <Route path='users' element={<UsersList />} />
-                <Route path='users/:id' element={<UserView />} />
+                <Route path='users/:id' loader={userViewLoader} element={<UserView />} />
                 <Route path='users/create-user' element={<UserForm />} />
 
                 <Route path='patients' element={<PatientsList />} />

@@ -1,20 +1,14 @@
 import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaUserDoctor } from "react-icons/fa6";
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { IoSearch, IoEyeOutline } from "react-icons/io5";
+import { users } from '../../constants';
 
 import AddButton from '../../components/AddButton';
 
 const UsersList = () => {
     const navigate = useNavigate();
-    const users = [
-        { id: 1, firstName: 'Sodiq', lastName: 'Ishola', email: 'example123@gmail.com', specialty: 'Gynaecologist', role: 'doctor', img: 'https://p7.hiclipart.com/preview/14/65/239/ico-avatar-scalable-vector-graphics-icon-doctor-with-stethoscope.jpg' },
-        { id: 2, firstName: 'Hamzat', lastName: 'Turawa', email: 'example123@gmail.com', specialty: 'Neurologist', role: 'doctor', img: 'https://cdn.imgbin.com/2/21/3/imgbin-computer-icons-doctor-of-medicine-health-care-physician-health-f0nPVnd5XSZmZra6C8BRi8kU4.jpg' },
-        { id: 3, firstName: 'Halimah', lastName: 'Salis', email: 'example123@gmail.com', specialty: 'Opthalmologist', role: 'doctor', img: 'https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/7525866/hijab-doctor-clipart-md.png' },
-        { id: 4, firstName: 'Zainab', lastName: 'Musa', email: 'example123@gmail.com', specialty: 'Dermatologist', role: 'nurse', img: 'https://www.clipartmax.com/png/middle/244-2445799_doctor-female-doctor-icon.png' },
-    ];
 
     function viewUser(e) {
         e.preventDefault();
@@ -85,7 +79,7 @@ const UsersList = () => {
                                                 Role
                                             </th>
                                             <th scope="col" className="th">
-                                                
+
                                             </th>
                                         </tr>
                                     </thead>
@@ -94,7 +88,9 @@ const UsersList = () => {
                                             users.map(user => (
                                                 <tr key={user.id} className="hover:bg-gray-100 dark:hover:bg-gray-700">
                                                     <td className="table-data">
-                                                        <img src={user.img} className='w-10 h-10 rounded-full' alt={`${user.firstName} ${user.lastName}`} />
+                                                        <div className="w-10 h-10 rounded-full">
+                                                            <img src={user.img} className='rounded-full' alt={`${user.firstName} ${user.lastName}`} />
+                                                        </div>
                                                     </td>
                                                     <td className="table-data">{user.firstName}</td>
                                                     <td className="table-data">{user.lastName}</td>

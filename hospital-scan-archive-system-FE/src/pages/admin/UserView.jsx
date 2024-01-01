@@ -1,26 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline, MdOutlineFileDownload } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
+import { users, scans } from '../../constants';
+import { EmptySearch } from '../../components/EmptySearch';
+
+export async function loader({ params }) {
+    const user = users.filter(user => user.id === Number(params.id));
+    const userScans = scans.filter(scan => scan.userId === Number(params.id));
+
+    const data = {
+        ...user[0],
+        scans: userScans
+    };
+
+    return data;
+}
 
 import { IoSearch } from 'react-icons/io5';
 
 const UserView = () => {
-    const user = {
-        id: 1,
-        firstName: 'Sodiq',
-        lastName: 'Ishola',
-        email: 'example123@gmail.com',
-        specialty: 'Gynaecologist',
-        role: 'doctor',
-        img: 'https://p7.hiclipart.com/preview/14/65/239/ico-avatar-scalable-vector-graphics-icon-doctor-with-stethoscope.jpg',
-        scanCount: 3,
-        scans: [
-            { scanId: '1', patientName: 'Luqman Salis', symptoms: 'Chest pains', diagnosis: 'Chest', date: '8/10/2023', scanUrl: 'chest-pain-sandra.zip' },
-            { scanId: '2', patientName: 'Sandra Grace', symptoms: 'Morning sickness', diagnosis: 'Pregnancy', date: '8/10/2023', scanUrl: 'pregnancy-sandra.zip' },
-            { scanId: '3', patientName: 'Yusuf Sherif', symptoms: 'Leg Fracture', diagnosis: 'Leg fracture', date: '8/10/2023', scanUrl: 'fracture-sandra.zip' },
-        ]
-    };
+    const user = useLoaderData();
 
     function deleteUser(e) {
         e.preventDefault();
@@ -54,7 +54,7 @@ const UserView = () => {
                 <div className="order-2">
                     {
                         user.scans?.length === 0 ?
-                            <EmptySearch headers={['Patient', 'Symptoms', 'Diagnosis', 'Date', 'Scan Link']} />
+                            <EmptySearch headers={['Patient', 'Symptoms', 'Diagnosis', 'Date', 'Scan Link']} type='scans' />
                             :
                             <div className="flex flex-col">
                                 <div className="mb-2 md:flex md:items-center md:justify-between">

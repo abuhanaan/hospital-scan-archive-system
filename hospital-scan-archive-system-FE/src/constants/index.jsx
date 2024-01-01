@@ -89,7 +89,28 @@ export const scans = [
         patientAddress: '18, Ajanlekoko street, Lagos.',
         patientAge: '32'
     },
-
+    {
+        scanId: '5',
+        scanSymptoms: 'Chest pains',
+        scanDiagnosis: 'Pregnancy',
+        scanType: 'Ultrasound',
+        scanDate: '8/10/2023',
+        scanUrl: 'https://chest-pain-sandra.zip',
+        userId: 1,
+        userName: 'Sodiq Ishola',
+        userEmail: 'example123@gmail.com',
+        userSpecialty: 'Gynaecologist',
+        userRole: 'doctor',
+        userImg: 'https://p7.hiclipart.com/preview/14/65/239/ico-avatar-scalable-vector-graphics-icon-doctor-with-stethoscope.jpg',
+        patientId: 1,
+        patientName: 'Sandra Grace',
+        patientPhoneNumber: '08078903425',
+        patientNextOfKinName: 'Aliyu Rasheed',
+        patientNextOfKinPhone: '08054321490',
+        patientNextOfKinRelationship: 'husband',
+        patientAddress: '18, Ajanlekoko street, Lagos.',
+        patientAge: '32'
+    },
 ];
 
 export const users = [
