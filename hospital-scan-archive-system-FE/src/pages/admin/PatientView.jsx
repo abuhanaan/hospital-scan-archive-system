@@ -32,7 +32,7 @@ const PatientView = () => {
 
     return (
         <div className="mt-6 min-h-screen w-full font-poppins">
-            <div className="pb-6">
+            <div className="mb-6">
                 <nav aria-label="breadcrumb">
                     <ol className="flex space-x-2">
                         <li><Link to="/admin" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Dashboard</Link></li>
@@ -41,7 +41,7 @@ const PatientView = () => {
                     </ol>
                 </nav>
 
-                <div className="flex justify-between items-center mb-6 w-full mt-6">
+                <div className="flex justify-between items-center w-full mt-6">
                     <h1 className="font-bold text-primary text-2xl leading-tight">Patient</h1>
                     <div className="flex items-center gap-2">
                         <Link to={`create-patient`} className="text-grey-lighter py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={22} color='white' /></Link>
@@ -52,13 +52,14 @@ const PatientView = () => {
             </div>
 
             <div className="flex flex-col xl:flex-row">
-                <div className="">
+                <div className="order-2">
                     {
                         patient.scans?.length === 0 ?
-                            <EmptySearch headers={['ScanId', 'Doctor', 'Symptoms', 'Diagnosis', 'Date', 'Scan Link']} />
+                            <EmptySearch headers={['Doctor', 'Symptoms', 'Diagnosis', 'Date', 'Scan Link']} />
                             :
                             <div className="flex flex-col">
-                                <div className="mt-6 mb-4 md:flex md:items-center md:justify-between">
+                                <div className="mb-2 md:flex md:items-center md:justify-between">
+                                    <h3 className="text-xl text-primary font-semibold">Scans</h3>
                                     <div className="relative flex items-center mt-4 md:mt-0">
                                         <span className="absolute w-5 h-5 mx-3 text-gray-400 dark:text-gray-600">
                                             <IoSearch size={18} />
@@ -140,7 +141,7 @@ const PatientView = () => {
                     <div className="-mx-3 flex flex-wrap">
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-medium text-[#07074D]">
+                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
                                     First Name
                                 </h4>
                                 <p className="w-full text-base font-medium text-[#6B7280]">
@@ -150,7 +151,7 @@ const PatientView = () => {
                         </div>
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-medium text-[#07074D]">
+                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
                                     Last Name
                                 </h4>
                                 <p className="w-full text-base font-medium text-[#6B7280]">
@@ -162,7 +163,7 @@ const PatientView = () => {
                     <div className="-mx-3 flex flex-wrap">
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-medium text-[#07074D]">
+                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
                                     Next of Kin Name
                                 </h4>
                                 <p className="w-full text-base font-medium text-[#6B7280]">
@@ -173,7 +174,7 @@ const PatientView = () => {
 
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-medium text-[#07074D]">
+                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
                                     Address
                                 </h4>
                                 <p className="w-full text-base font-medium text-[#6B7280]">
@@ -184,7 +185,7 @@ const PatientView = () => {
                     </div>
                     <div className="-mx-3 flex flex-wrap">
                         <div className="w-full px-3 sm:w-1/2">
-                            <h4 className="mb-3 block text-base font-medium text-[#07074D]">
+                            <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
                                 Age
                             </h4>
                             <p className="w-full text-base font-medium text-[#6B7280]">
@@ -193,7 +194,7 @@ const PatientView = () => {
                         </div>
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-medium text-[#07074D]">
+                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
                                     Gender
                                 </h4>
                                 <p className="w-full text-base font-medium text-[#6B7280]">
@@ -205,7 +206,7 @@ const PatientView = () => {
                     <div className="-mx-3 flex flex-wrap">
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-medium text-[#07074D]">
+                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
                                     Phone Number
                                 </h4>
                                 <p className="w-full text-base font-medium text-[#6B7280]">
@@ -215,7 +216,7 @@ const PatientView = () => {
                         </div>
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-medium text-[#07074D]">
+                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
                                     Total Scans
                                 </h4>
                                 <p className="w-full text-base font-medium text-[#6B7280]">
