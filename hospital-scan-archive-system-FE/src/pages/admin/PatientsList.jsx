@@ -1,19 +1,26 @@
 import { useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLoaderData } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
+import { patients } from '../../constants';
 
 import AddButton from '../../components/AddButton';
 
+export async function loader() {
+    return patients;
+}
+
 const PatientsList = () => {
     const navigate = useNavigate();
-    const patients = [
-        { id: 1, firstName: 'Sandra', lastName: 'Grace', phoneNumber: '08078903425', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '32' },
-        { id: 2, firstName: 'Yusuf', lastName: 'Tajudeen', phoneNumber: '07054908745', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '54' },
-        { id: 3, firstName: 'Hikmah', lastName: 'Boladale', phoneNumber: '07012308745', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '41' },
-        { id: 4, firstName: 'Sandra', lastName: 'Ali', phoneNumber: '07054901235', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '22' }
-    ];
+    const patients = useLoaderData();
+
+    // const patients = [
+    //     { id: 1, firstName: 'Sandra', lastName: 'Grace', phoneNumber: '08078903425', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '32' },
+    //     { id: 2, firstName: 'Yusuf', lastName: 'Tajudeen', phoneNumber: '07054908745', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '54' },
+    //     { id: 3, firstName: 'Hikmah', lastName: 'Boladale', phoneNumber: '07012308745', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '41' },
+    //     { id: 4, firstName: 'Sandra', lastName: 'Ali', phoneNumber: '07054901235', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '22' }
+    // ];
 
     function viewPatient(patientId) {
         navigate(`./${patientId}`);
@@ -44,8 +51,8 @@ const PatientsList = () => {
 
             <div className="h-full overflow-auto w-full">
                 {
-                    patients?.length === 0 ?
-                        <EmptySearch headers={['First Name', 'Last Name', 'Age', 'Phone NUmber', 'Next of Kin', 'Address']} />
+                    patients.length === 0 ?
+                        <EmptySearch headers={['First Name', 'Last Name', 'Age', 'Phone NUmber', 'Next of Kin', 'Address']} type='patients' />
                         :
                         <div className="flex flex-col">
                             <div className="mt-6 mb-4 md:flex md:items-center md:justify-between">
@@ -69,10 +76,10 @@ const PatientsList = () => {
                                                 Phone Number
                                             </th>
                                             <th scope="col" className="th">
-                                                Age
+                                                Birth Date
                                             </th>
                                             <th scope="col" className="th">
-                                                Next of Kin
+                                                Next of Kin Name
                                             </th>
                                             <th scope="col" className="th">
                                                 Address
@@ -89,8 +96,8 @@ const PatientsList = () => {
                                                         </div>
                                                     </td>
                                                     <td className="table-data">{patient.phoneNumber}</td>
-                                                    <td className="table-data">{patient.age}</td>
-                                                    <td className="table-data">{patient.nextOfKin}</td>
+                                                    <td className="table-data">{patient.dob}</td>
+                                                    <td className="table-data">{patient.nextOfKinName}</td>
                                                     <td className="table-data">{patient.address}</td>
                                                     <td className="py-4 px-6 whitespace-nowrap flex items-center justify-center gap-1">
                                                         <Link to={`create-patient`} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>

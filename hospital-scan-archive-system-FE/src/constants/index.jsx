@@ -158,7 +158,8 @@ export const patients = [
         lastName: 'Grace',
         phoneNumber: '08078903425',
         address: '18, Ajanlekoko street, Lagos.',
-        age: '32',
+        dob: '14/11/1998',
+        gender: 'female',
         nextOfKinName: 'Aliyu Rasheed',
         nextOfKinRelationship: 'husband',
         nextOfKinPhone: '08054125690',
@@ -168,27 +169,36 @@ export const patients = [
         firstName: 'Yusuf',
         lastName: 'Tajudeen',
         phoneNumber: '07054908745',
-        nextOfKin: 'Aliyu Rasheed',
         address: '18, Ajanlekoko street, Lagos.',
-        age: '54'
+        dob: '14/11/1998',
+        gender: 'male',
+        nextOfKinName: 'zainab Tiamiyu',
+        nextOfKinRelationship: 'wife',
+        nextOfKinPhone: '08054125690',
     },
     {
         id: 3,
         firstName: 'Hikmah',
         lastName: 'Boladale',
         phoneNumber: '07012308745',
-        nextOfKin: 'Aliyu Rasheed',
         address: '18, Ajanlekoko street, Lagos.',
-        age: '41'
+        dob: '14/11/1998',
+        gender: 'female',
+        nextOfKinName: 'Aliyu Rasheed',
+        nextOfKinRelationship: 'brother',
+        nextOfKinPhone: '08054125690',
     },
     {
         id: 4,
         firstName: 'Sandra',
         lastName: 'Ali',
         phoneNumber: '07054901235',
-        nextOfKin: 'Aliyu Rasheed',
         address: '18, Ajanlekoko street, Lagos.',
-        age: '22'
+        dob: '14/11/1998',
+        gender: 'female',
+        nextOfKinName: 'Aliyu Rasheed',
+        nextOfKinRelationship: 'husband',
+        nextOfKinPhone: '08054125690',
     }
 ];
 

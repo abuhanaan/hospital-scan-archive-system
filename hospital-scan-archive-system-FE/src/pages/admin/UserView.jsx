@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline, MdOutlineFileDownload } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
+import { IoEyeOutline } from "react-icons/io5";
 import { users, scans } from '../../constants';
 import { EmptySearch } from '../../components/EmptySearch';
 
@@ -21,6 +22,14 @@ import { IoSearch } from 'react-icons/io5';
 
 const UserView = () => {
     const user = useLoaderData();
+    const navigate = useNavigate();
+
+    function viewScan(e) {
+        e.preventDefault();
+
+        const scanId = e.currentTarget.getAttribute('data-scan-id');
+        navigate(`/admin/scans/${scanId}`);
+    }
 
     function deleteUser(e) {
         e.preventDefault();
@@ -76,6 +85,9 @@ const UserView = () => {
                                                     Patient
                                                 </th>
                                                 <th scope="col" className="th">
+                                                    Type
+                                                </th>
+                                                <th scope="col" className="th">
                                                     Symptoms
                                                 </th>
                                                 <th scope="col" className="th">
@@ -85,7 +97,7 @@ const UserView = () => {
                                                     Date
                                                 </th>
                                                 <th scope="col" className="th">
-                                                    Scan Link
+                                                    Download
                                                 </th>
                                             </tr>
                                         </thead>
@@ -94,10 +106,15 @@ const UserView = () => {
                                                 user.scans.map(scan => (
                                                     <tr key={scan.scanId} className="hover:bg-gray-100 dark:hover:bg-gray-700">
                                                         <td className="table-data">{scan.patientName}</td>
-                                                        <td className="table-data">{scan.symptoms}</td>
-                                                        <td className="table-data">{scan.diagnosis}</td>
-                                                        <td className="table-data">{scan.date}</td>
-                                                        <td className='table-data flex items-center justify-center'>
+                                                        <td className="table-data">{scan.scanType}</td>
+                                                        <td className="table-data">{scan.scanSymptoms}</td>
+                                                        <td className="table-data">{scan.scanDiagnosis}</td>
+                                                        <td className="table-data">{scan.scanDate}</td>
+                                                        <td className='table-data flex items-center justify-center gap-1'>
+                                                            <button onClick={viewScan} data-scan-id={scan.scanId} className='bg-purple-500 hover:bg-purple-600 p-1 rounded-md'>
+                                                                <IoEyeOutline size={20} color='white' />
+                                                            </button>
+
                                                             <Link to={scan.scanUrl} className='bg-blue-500 hover:bg-blue-600 p-1 rounded-md'>
                                                                 <MdOutlineFileDownload size={20} color='white' />
                                                             </Link>
@@ -131,77 +148,62 @@ const UserView = () => {
                     }
                 </div>
 
-                <div className="w-full mx-auto">
-                    <div className="flex justify-between mb-6">
-                        <img src={user.img} className='w-32 rounded-full' alt={`${user.firstName} ${user.lastName}`} />
-                    </div>
-                    <div className="-mx-3 flex flex-wrap">
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    First Name
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {user.firstName}
-                                </p>
-                            </div>
-                        </div>
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Last Name
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {user.lastName}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="-mx-3 flex flex-wrap">
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Email
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {user.email}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Specialty
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280] capitalize">
-                                    {user.specialty}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="-mx-3 flex flex-wrap">
-                        <div className="w-full px-3 sm:w-1/2">
-                            <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                Role
-                            </h4>
-                            <p className="w-full text-base font-medium text-[#6B7280] capitalize">
-                                {user.role}
-                            </p>
-                        </div>
-
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Total Scans
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {user.scanCount}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div className="mb-4 flex justify-center sm:justify-start">
+                    <img src={user.img} className='w-32 rounded-full' alt={`${user.firstName} ${user.lastName}`} />
                 </div>
+
+                <fieldset className="w-full border-2 border-gray-300 rounded-md px-6 py-4 mb-4 grid grid-cols-1 ss:grid-cols-2 sm:grid-cols-3 gap-3">
+                    <legend className='font-semibold text-primary px-1'>User Details</legend>
+
+                    <div className="">
+                        <h4 className="block text-base font-semibold text-[#07074D]">
+                            First Name
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {user.firstName}
+                        </p>
+                    </div>
+                    <div className="">
+                        <h4 className="block text-base font-semibold text-[#07074D]">
+                            Last Name
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {user.lastName}
+                        </p>
+                    </div>
+                    <div className="">
+                        <h4 className="block text-base font-semibold text-[#07074D]">
+                            Email
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {user.email}
+                        </p>
+                    </div>
+                    <div className="">
+                        <h4 className=" block text-base font-semibold text-[#07074D]">
+                            Specialty
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {user.specialty}
+                        </p>
+                    </div>
+                    <div className="">
+                        <h4 className=" block text-base font-semibold text-[#07074D]">
+                            Role
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {user.role}
+                        </p>
+                    </div>
+                    <div className="">
+                        <h4 className=" block text-base font-semibold text-[#07074D]">
+                            Total Scans
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {user.scans.length}
+                        </p>
+                    </div>
+                </fieldset>
             </div>
         </div>
     )

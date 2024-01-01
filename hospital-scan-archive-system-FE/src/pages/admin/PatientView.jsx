@@ -1,27 +1,35 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline, MdOutlineFileDownload } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
+import { IoEyeOutline } from "react-icons/io5";
+import { scans, patients } from '../../constants';
+import { EmptySearch } from '../../components/EmptySearch';
 
 import { IoSearch } from 'react-icons/io5';
 
-const PatientView = () => {
-    const patient = {
-        id: 1,
-        firstName: 'Sandra',
-        lastName: 'Grace',
-        phoneNumber: '08078903425',
-        nextOfKin: 'Aliyu Rasheed',
-        address: '18, Ajanlekoko street, Lagos.',
-        age: '32',
-        gender: 'female',
-        scanCount: 3,
-        scans: [
-            { scanId: '1', doctorName: 'Sodiq Ishola', symptoms: 'Chest pains', diagnosis: 'Chest', date: '8/10/2023', scanUrl: 'chest-pain-sandra.zip' },
-            { scanId: '2', doctorName: 'Sodiq Ishola', symptoms: 'Morning sickness', diagnosis: 'Pregnancy', date: '8/10/2023', scanUrl: 'pregnancy-sandra.zip' },
-            { scanId: '3', doctorName: 'Halimah Salis', symptoms: 'Leg Fracture', diagnosis: 'Leg fracture', date: '8/10/2023', scanUrl: 'fracture-sandra.zip' },
-        ]
+export async function loader({ params }) {
+    const patient = patients.filter(patient => patient.id === Number(params.id));
+    const patientScans = scans.filter(scan => scan.patientId === Number(params.id));
+
+    const data = {
+        ...patient[0],
+        scans: patientScans
     };
+
+    return data;
+}
+
+const PatientView = () => {
+    const navigate = useNavigate();
+    const patient = useLoaderData();
+
+    function viewScan(e) {
+        e.preventDefault();
+
+        const scanId = e.currentTarget.getAttribute('data-scan-id');
+        navigate(`/admin/scans/${scanId}`);
+    }
 
     function deletePatient(e) {
         e.preventDefault();
@@ -55,7 +63,7 @@ const PatientView = () => {
                 <div className="order-2">
                     {
                         patient.scans?.length === 0 ?
-                            <EmptySearch headers={['Doctor', 'Symptoms', 'Diagnosis', 'Date', 'Scan Link']} />
+                            <EmptySearch headers={['Doctor', 'Symptoms', 'Diagnosis', 'Date', 'Scan Link']} type='scans' />
                             :
                             <div className="flex flex-col">
                                 <div className="mb-2 md:flex md:items-center md:justify-between">
@@ -86,7 +94,7 @@ const PatientView = () => {
                                                     Date
                                                 </th>
                                                 <th scope="col" className="th">
-                                                    Scan Link
+                                                    Download
                                                 </th>
                                             </tr>
                                         </thead>
@@ -94,11 +102,15 @@ const PatientView = () => {
                                             {
                                                 patient.scans.map(scan => (
                                                     <tr key={scan.scanId} className="hover:bg-gray-100 dark:hover:bg-gray-700">
-                                                        <td className="table-data">{scan.doctorName}</td>
-                                                        <td className="table-data">{scan.symptoms}</td>
-                                                        <td className="table-data">{scan.diagnosis}</td>
-                                                        <td className="table-data">{scan.date}</td>
-                                                        <td className='table-data flex items-center justify-center'>
+                                                        <td className="table-data">{scan.userName}</td>
+                                                        <td className="table-data">{scan.scanSymptoms}</td>
+                                                        <td className="table-data">{scan.scanDiagnosis}</td>
+                                                        <td className="table-data">{scan.scanDate}</td>
+                                                        <td className='table-data flex items-center justify-center gap-1'>
+                                                            <button onClick={viewScan} data-scan-id={scan.scanId} className='bg-purple-500 hover:bg-purple-600 p-1 rounded-md'>
+                                                                <IoEyeOutline size={20} color='white' />
+                                                            </button>
+
                                                             <Link to={scan.scanUrl} className='bg-blue-500 hover:bg-blue-600 p-1 rounded-md'>
                                                                 <MdOutlineFileDownload size={20} color='white' />
                                                             </Link>
@@ -136,95 +148,92 @@ const PatientView = () => {
                     }
                 </div>
 
-                <div className="w-full mx-auto">
-                    <div className="-mx-3 flex flex-wrap">
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    First Name
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.firstName}
-                                </p>
-                            </div>
-                        </div>
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Last Name
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.lastName}
-                                </p>
-                            </div>
-                        </div>
+                <fieldset className="w-full border-2 border-gray-300 rounded-md px-6 py-4 mb-4 grid grid-cols-1 ss:grid-cols-2 sm:grid-cols-3 gap-3">
+                    <legend className='font-semibold text-primary px-1'>Patient Details</legend>
+                    <div className="">
+                        <h4 className="block text-base font-semibold text-[#07074D]">
+                            First Name
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {patient.firstName}
+                        </p>
                     </div>
-                    <div className="-mx-3 flex flex-wrap">
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Next of Kin Name
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.nextOfKin}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Address
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.address}
-                                </p>
-                            </div>
-                        </div>
+                    <div className="">
+                        <h4 className="block text-base font-semibold text-[#07074D]">
+                            Last Name
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {patient.lastName}
+                        </p>
                     </div>
-                    <div className="-mx-3 flex flex-wrap">
-                        <div className="w-full px-3 sm:w-1/2">
-                            <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                Age
-                            </h4>
-                            <p className="w-full text-base font-medium text-[#6B7280]">
-                                {patient.age}
-                            </p>
-                        </div>
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Gender
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.gender}
-                                </p>
-                            </div>
-                        </div>
+                    <div className="">
+                        <h4 className="block text-base font-semibold text-[#07074D]">
+                            Phone Number
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {patient.phoneNumber}
+                        </p>
                     </div>
-                    <div className="-mx-3 flex flex-wrap">
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Phone Number
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.phoneNumber}
-                                </p>
-                            </div>
-                        </div>
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Total Scans
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.scanCount}
-                                </p>
-                            </div>
-                        </div>
+                    <div className="">
+                        <h4 className=" block text-base font-semibold text-[#07074D]">
+                            Date of Birth
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {patient.dob}
+                        </p>
                     </div>
-                </div>
+                    <div className="">
+                        <h4 className=" block text-base font-semibold text-[#07074D]">
+                            Gender
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {patient.gender}
+                        </p>
+                    </div>
+                    <div className="">
+                        <h4 className=" block text-base font-semibold text-[#07074D]">
+                            Address
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {patient.address}
+                        </p>
+                    </div>
+                    <div className="">
+                        <h4 className=" block text-base font-semibold text-[#07074D]">
+                            Total Scans
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {patient.scans.length}
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset className='border-2 border-gray-300 rounded-md px-6 py-4 mb-4 grid grid-cols-1 ss:grid-cols-2 sm:grid-cols-3 gap-3'>
+                    <legend className='font-semibold text-primary px-1'>Next of Kin Details</legend>
+                    <div className="">
+                        <h4 className=" block text-base font-semibold text-[#07074D]">
+                            Name
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {patient.nextOfKinName}
+                        </p>
+                    </div>
+                    <div className="">
+                        <h4 className=" block text-base font-semibold text-[#07074D]">
+                            Relationship
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {patient.nextOfKinRelationship}
+                        </p>
+                    </div>
+                    <div className="">
+                        <h4 className=" block text-base font-semibold text-[#07074D]">
+                            Phone Number
+                        </h4>
+                        <p className="w-full text-base font-medium text-[#6B7280]">
+                            {patient.nextOfKinPhone}
+                        </p>
+                    </div>
+                </fieldset>
             </div>
         </div>
     )
