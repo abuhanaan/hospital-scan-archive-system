@@ -107,7 +107,6 @@ const PatientView = () => {
 
                                                 ))
                                             }
-
                                         </tbody>
                                     </table>
                                 </div>
