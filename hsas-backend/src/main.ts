@@ -1,9 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { GlobalExceptionFilter } from './utils/globalExceptionFilter';
+import { BadRequestExceptionFilter } from './utils/badRequestExceptionFilter';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      enableDebugMessages: true,
+      exceptionFactory: (errors) => {
+        throw new BadRequestException(errors);
+      },
+    }),
+  );
+
+  app.useGlobalFilters(
+    new GlobalExceptionFilter(),
+    new BadRequestExceptionFilter(),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Hospital-Scan-Archive-System')
