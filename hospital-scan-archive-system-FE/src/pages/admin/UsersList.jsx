@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaUserDoctor } from "react-icons/fa6";
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-import { IoSearch } from "react-icons/io5";
+import { IoSearch, IoEyeOutline } from "react-icons/io5";
 
 import AddButton from '../../components/AddButton';
 
@@ -16,8 +16,11 @@ const UsersList = () => {
         { id: 4, firstName: 'Zainab', lastName: 'Musa', email: 'example123@gmail.com', specialty: 'Dermatologist', role: 'nurse', img: 'https://www.clipartmax.com/png/middle/244-2445799_doctor-female-doctor-icon.png' },
     ];
 
-    function viewUser(userId) {
-        navigate(`users/${userId}`);
+    function viewUser(e) {
+        e.preventDefault();
+
+        const userId = e.currentTarget.getAttribute('data-user-id');
+        navigate(`./${userId}`);
     }
 
     function deleteUser(e) {
@@ -82,14 +85,14 @@ const UsersList = () => {
                                                 Role
                                             </th>
                                             <th scope="col" className="th">
-                                                Action
+                                                
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                         {
                                             users.map(user => (
-                                                <tr key={user.id} className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                                                <tr key={user.id} className="hover:bg-gray-100 dark:hover:bg-gray-700">
                                                     <td className="table-data">
                                                         <img src={user.img} className='w-10 h-10 rounded-full' alt={`${user.firstName} ${user.lastName}`} />
                                                     </td>
@@ -98,7 +101,11 @@ const UsersList = () => {
                                                     <td className="table-data">{user.email}</td>
                                                     <td className="table-data">{user.specialty}</td>
                                                     <td className="table-data">{user.role}</td>
-                                                    <td className="py-4 px-6 whitespace-nowrap flex items-center justify-center gap-1">
+                                                    <td className="py-5 px-6 flex items-center justify-center gap-1">
+                                                        <button onClick={viewUser} data-user-id={user.id} className='bg-purple-500 hover:bg-purple-600 p-1 rounded-md'>
+                                                            <IoEyeOutline size={20} color='white' />
+                                                        </button>
+
                                                         <Link to={`create-user`} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
 
                                                         <button onClick={deleteUser} data-user-id={user.id} className="text-grey-lighter py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></button>

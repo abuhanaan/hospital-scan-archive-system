@@ -1,6 +1,7 @@
 export {default as Home} from './Home';
 export {default as AdminDashboard} from './admin/AdminDashboard';
 export {default as UsersList} from './admin/UsersList';
+export {default as UserView} from './admin/UserView';
 export {default as UserForm} from './admin/UserForm';
 export {default as PatientsList} from './admin/PatientsList';
 export {default as PatientView} from './admin/PatientView';

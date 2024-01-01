@@ -5,29 +5,28 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
 import { IoSearch } from 'react-icons/io5';
 
-const PatientView = () => {
-    const patient = {
+const UserView = () => {
+    const user = {
         id: 1,
-        firstName: 'Sandra',
-        lastName: 'Grace',
-        phoneNumber: '08078903425',
-        nextOfKin: 'Aliyu Rasheed',
-        address: '18, Ajanlekoko street, Lagos.',
-        age: '32',
-        gender: 'female',
+        firstName: 'Sodiq',
+        lastName: 'Ishola',
+        email: 'example123@gmail.com',
+        specialty: 'Gynaecologist',
+        role: 'doctor',
+        img: 'https://p7.hiclipart.com/preview/14/65/239/ico-avatar-scalable-vector-graphics-icon-doctor-with-stethoscope.jpg',
         scanCount: 3,
         scans: [
-            { scanId: '1', doctorName: 'Sodiq Ishola', symptoms: 'Chest pains', diagnosis: 'Chest', date: '8/10/2023', scanUrl: 'chest-pain-sandra.zip' },
-            { scanId: '2', doctorName: 'Sodiq Ishola', symptoms: 'Morning sickness', diagnosis: 'Pregnancy', date: '8/10/2023', scanUrl: 'pregnancy-sandra.zip' },
-            { scanId: '3', doctorName: 'Halimah Salis', symptoms: 'Leg Fracture', diagnosis: 'Leg fracture', date: '8/10/2023', scanUrl: 'fracture-sandra.zip' },
+            { scanId: '1', patientName: 'Luqman Salis', symptoms: 'Chest pains', diagnosis: 'Chest', date: '8/10/2023', scanUrl: 'chest-pain-sandra.zip' },
+            { scanId: '2', patientName: 'Sandra Grace', symptoms: 'Morning sickness', diagnosis: 'Pregnancy', date: '8/10/2023', scanUrl: 'pregnancy-sandra.zip' },
+            { scanId: '3', patientName: 'Yusuf Sherif', symptoms: 'Leg Fracture', diagnosis: 'Leg fracture', date: '8/10/2023', scanUrl: 'fracture-sandra.zip' },
         ]
     };
 
-    function deletePatient(e) {
+    function deleteUser(e) {
         e.preventDefault();
 
-        const patientId = e.currentTarget.getAttribute('data-patient-id');
-        console.log('PatientId:', patientId);
+        const userId = e.currentTarget.getAttribute('data-user-id');
+        console.log('User Id:', userId);
     }
 
     return (
@@ -36,17 +35,17 @@ const PatientView = () => {
                 <nav aria-label="breadcrumb">
                     <ol className="flex space-x-2">
                         <li><Link to="/admin" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Dashboard</Link></li>
-                        <li><Link to="/admin/patients" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Patients</Link></li>
-                        <li className="text-purple-700 font-medium text-lg" aria-current="page">Patient</li>
+                        <li><Link to="/admin/users" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Users</Link></li>
+                        <li className="text-purple-700 font-medium text-lg" aria-current="page">User</li>
                     </ol>
                 </nav>
 
                 <div className="flex justify-between items-center w-full mt-6">
-                    <h1 className="font-bold text-primary text-2xl leading-tight">Patient</h1>
+                    <h1 className="font-bold text-primary text-2xl leading-tight">User</h1>
                     <div className="flex items-center gap-2">
-                        <Link to={`/admin/patients/create-patient`} className="text-grey-lighter py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={22} color='white' /></Link>
+                        <Link to={`/admin/users/create-user`} className="text-grey-lighter py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={22} color='white' /></Link>
 
-                        <button onClick={deletePatient} data-patient-id={patient.id} className="text-grey-lighter py-2 px-2 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={22} color='white' /></button>
+                        <button onClick={deleteUser} data-user-id={user.id} className="text-grey-lighter py-2 px-2 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={22} color='white' /></button>
                     </div>
                 </div>
             </div>
@@ -54,8 +53,8 @@ const PatientView = () => {
             <div className="flex flex-col xl:flex-row">
                 <div className="order-2">
                     {
-                        patient.scans?.length === 0 ?
-                            <EmptySearch headers={['Doctor', 'Symptoms', 'Diagnosis', 'Date', 'Scan Link']} />
+                        user.scans?.length === 0 ?
+                            <EmptySearch headers={['Patient', 'Symptoms', 'Diagnosis', 'Date', 'Scan Link']} />
                             :
                             <div className="flex flex-col">
                                 <div className="mb-2 md:flex md:items-center md:justify-between">
@@ -74,7 +73,7 @@ const PatientView = () => {
                                         <thead className="bg-gray-100 dark:bg-gray-700">
                                             <tr className="">
                                                 <th scope="col" className="th">
-                                                    Doctor
+                                                    Patient
                                                 </th>
                                                 <th scope="col" className="th">
                                                     Symptoms
@@ -92,9 +91,9 @@ const PatientView = () => {
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                             {
-                                                patient.scans.map(scan => (
+                                                user.scans.map(scan => (
                                                     <tr key={scan.scanId} className="hover:bg-gray-100 dark:hover:bg-gray-700">
-                                                        <td className="table-data">{scan.doctorName}</td>
+                                                        <td className="table-data">{scan.patientName}</td>
                                                         <td className="table-data">{scan.symptoms}</td>
                                                         <td className="table-data">{scan.diagnosis}</td>
                                                         <td className="table-data">{scan.date}</td>
@@ -119,15 +118,11 @@ const PatientView = () => {
                                     <div className="flex items-center mt-4 gap-x-4 sm:mt-0">
                                         <a href="#" className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
                                             <FaArrowLeftLong size={18} />
-                                            <span>
-                                                previous
-                                            </span>
+                                            <span>previous</span>
                                         </a>
 
                                         <a href="#" className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                                            <span>
-                                                Next
-                                            </span>
+                                            <span>Next</span>
                                             <FaArrowRightLong size={18} />
                                         </a>
                                     </div>
@@ -137,6 +132,9 @@ const PatientView = () => {
                 </div>
 
                 <div className="w-full mx-auto">
+                    <div className="flex justify-between mb-6">
+                        <img src={user.img} className='w-32 rounded-full' alt={`${user.firstName} ${user.lastName}`} />
+                    </div>
                     <div className="-mx-3 flex flex-wrap">
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
@@ -144,7 +142,7 @@ const PatientView = () => {
                                     First Name
                                 </h4>
                                 <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.firstName}
+                                    {user.firstName}
                                 </p>
                             </div>
                         </div>
@@ -154,7 +152,7 @@ const PatientView = () => {
                                     Last Name
                                 </h4>
                                 <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.lastName}
+                                    {user.lastName}
                                 </p>
                             </div>
                         </div>
@@ -163,10 +161,10 @@ const PatientView = () => {
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
                                 <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Next of Kin Name
+                                    Email
                                 </h4>
                                 <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.nextOfKin}
+                                    {user.email}
                                 </p>
                             </div>
                         </div>
@@ -174,10 +172,10 @@ const PatientView = () => {
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
                                 <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Address
+                                    Specialty
                                 </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.address}
+                                <p className="w-full text-base font-medium text-[#6B7280] capitalize">
+                                    {user.specialty}
                                 </p>
                             </div>
                         </div>
@@ -185,41 +183,20 @@ const PatientView = () => {
                     <div className="-mx-3 flex flex-wrap">
                         <div className="w-full px-3 sm:w-1/2">
                             <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                Age
+                                Role
                             </h4>
-                            <p className="w-full text-base font-medium text-[#6B7280]">
-                                {patient.age}
+                            <p className="w-full text-base font-medium text-[#6B7280] capitalize">
+                                {user.role}
                             </p>
                         </div>
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Gender
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.gender}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="-mx-3 flex flex-wrap">
-                        <div className="w-full px-3 sm:w-1/2">
-                            <div className="mb-5">
-                                <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
-                                    Phone Number
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.phoneNumber}
-                                </p>
-                            </div>
-                        </div>
+
                         <div className="w-full px-3 sm:w-1/2">
                             <div className="mb-5">
                                 <h4 className="mb-3 block text-base font-semibold text-[#07074D]">
                                     Total Scans
                                 </h4>
                                 <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.scanCount}
+                                    {user.scanCount}
                                 </p>
                             </div>
                         </div>
@@ -230,4 +207,4 @@ const PatientView = () => {
     )
 }
 
-export default PatientView;
+export default UserView;

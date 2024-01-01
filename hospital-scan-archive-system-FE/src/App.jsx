@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
 import { AdminLayout, AuthLayout, Layout } from './components';
-import { Home, AdminDashboard, UsersList, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView } from './pages';
+import { Home, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView } from './pages';
 import { createBrowserRouter, createRoutesFromChildren, RouterProvider, Route } from 'react-router-dom';
 
 const router = createBrowserRouter(createRoutesFromChildren(
@@ -14,6 +14,7 @@ const router = createBrowserRouter(createRoutesFromChildren(
                 <Route index element={<AdminDashboard />} />
 
                 <Route path='users' element={<UsersList />} />
+                <Route path='users/:id' element={<UserView />} />
                 <Route path='users/create-user' element={<UserForm />} />
 
                 <Route path='patients' element={<PatientsList />} />

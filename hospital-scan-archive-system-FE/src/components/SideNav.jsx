@@ -3,12 +3,17 @@ import { RxDashboard } from "react-icons/rx";
 import { FaUserDoctor, FaUserInjured, FaFileMedical } from "react-icons/fa6";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { FaRegHospital } from "react-icons/fa6";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 
 const SideNav = () => {
     const location = useLocation();
     const pathname = location.pathname;
+    const navigate = useNavigate();
+
+    function signOut() {
+        navigate('/');
+    }
 
     return (
         <div className="flex h-full w-full flex-col bg-[#14141E] py-4 md:px-2">
@@ -77,7 +82,7 @@ const SideNav = () => {
                     <p className={clsx(`hidden md:block`, { 'text-white': pathname.includes('/admin/scans') })}>Scans</p>
                 </Link>
 
-                <button onClick={() => signOut()} className="flex h-[48px] grow items-center justify-center gap-2 rounded-lg bg-red-600 md:bg-transparent md:text-base text-[#9A99A0] hover:bg-[#21212B] md:hover:rounded-lg md:hover:border-t-2 md:hover:border-red-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3 mt-auto">
+                <button onClick={() => signOut()} className="flex h-[48px] grow items-center justify-center gap-2 rounded-lg bg-red-600 text-white md:bg-transparent md:text-base md:text-[#9A99A0] hover:bg-[#21212B] md:hover:rounded-lg md:hover:border-t-2 md:hover:border-red-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3 mt-auto">
                     <RiLogoutCircleRLine size={18} />
                     <p className="hidden md:block">Logout</p>
                 </button>
