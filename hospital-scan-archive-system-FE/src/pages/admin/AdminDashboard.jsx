@@ -4,6 +4,7 @@ import DashboardTable from "../../components/DashboardTable";
 import { FaUserDoctor, FaUserInjured, FaFileMedical, FaStethoscope } from "react-icons/fa6";
 import { dashboardCardsInfo, scans, users } from '../../constants';
 import { Link } from "react-router-dom";
+import { EmptySearch } from '../../components/EmptySearch';
 
 const AdminDashboard = () => {
     return (
@@ -32,23 +33,26 @@ const AdminDashboard = () => {
 
                     <ul className="list-none">
                         {
-                            users.map(user => {
-                                const title = user.role === 'doctor' ? 'Dr. ' : '';
-                                return (
-                                    <li key={user.id} className="py-3 px-6">
-                                        <Link to={`users/${user.id}`} className="flex items-center gap-4">
-                                            <div className="flex items-center justify-center h-14 w-14 rounded-full bg-blue-100">
-                                                <img src={user.img} className='rounded-full' alt={`${title}${user.firstName} ${user.lastName}`} />
-                                                
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <h1 className="text-base font-medium text-primary">{`${title} ${user.firstName} ${user.lastName}`}</h1>
-                                                <p className="text-sm text-gray-800">{user.specialty}</p>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                )
-                            })
+                            users.length === 0 ?
+                                <EmptySearch headers={[]} type='users' />
+                                :
+                                users.map(user => {
+                                    const title = user.role === 'doctor' ? 'Dr. ' : '';
+                                    return (
+                                        <li key={user.id} className="py-3 px-6">
+                                            <Link to={`users/${user.id}`} className="flex items-center gap-4">
+                                                <div className="flex items-center justify-center h-14 w-14 rounded-full bg-blue-100">
+                                                    <img src={user.img} className='rounded-full' alt={`${title}${user.firstName} ${user.lastName}`} />
+
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <h1 className="text-base font-medium text-primary">{`${title} ${user.firstName} ${user.lastName}`}</h1>
+                                                    <p className="text-sm text-gray-800">{user.specialty}</p>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                    )
+                                })
                         }
                     </ul>
                 </div>
