@@ -21,7 +21,8 @@ export const scans = [
         patientNextOfKinPhone: '08054321490',
         patientNextOfKinRelationship: 'husband',
         patientAddress: '18, Ajanlekoko street, Lagos.',
-        patientAge: '32'
+        patientDob: '12/11/1990',
+        patientGender: 'female'
     },
     {
         scanId: '2',
@@ -43,7 +44,8 @@ export const scans = [
         patientNextOfKinPhone: '08054321490',
         patientNextOfKinRelationship: 'husband',
         patientAddress: '18, Ajanlekoko street, Lagos.',
-        patientAge: '32'
+        patientDob: '12/11/1990',
+        patientGender: 'female'
     },
     {
         scanId: '3',
@@ -65,7 +67,8 @@ export const scans = [
         patientNextOfKinPhone: '08054321490',
         patientNextOfKinRelationship: 'husband',
         patientAddress: '18, Ajanlekoko street, Lagos.',
-        patientAge: '32'
+        patientDob: '12/11/1990',
+        patientGender: 'female'
     },
     {
         scanId: '4',
@@ -87,7 +90,8 @@ export const scans = [
         patientNextOfKinPhone: '08054321490',
         patientNextOfKinRelationship: 'husband',
         patientAddress: '18, Ajanlekoko street, Lagos.',
-        patientAge: '32'
+        patientDob: '12/11/1990',
+        patientGender: 'female'
     },
     {
         scanId: '5',
@@ -109,7 +113,8 @@ export const scans = [
         patientNextOfKinPhone: '08054321490',
         patientNextOfKinRelationship: 'husband',
         patientAddress: '18, Ajanlekoko street, Lagos.',
-        patientAge: '32'
+        patientDob: '12/11/1990',
+        patientGender: 'female'
     },
 ];
 
