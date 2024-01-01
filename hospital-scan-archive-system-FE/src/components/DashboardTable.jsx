@@ -1,13 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
+import { MdOutlineFileDownload } from "react-icons/md";
 
-const DashboardTable = () => {
+const DashboardTable = ({ data }) => {
     const navigate = useNavigate();
-    const scans = [
-        { id: 1, patientName: 'Zainab Salihu', specialistName: 'Halima Musa', diagnosis: 'Pregnancy', date: '12/12/2023', downloadUrl: 'zainab-salihu-pregnancy.zip' },
-        { id: 2, patientName: 'Ibrahim Salis', specialistName: 'Ishola Sodiq', diagnosis: 'Chest Pain', date: '12/12/2023', downloadUrl: 'ibrahim-salis-chest.zip' },
-        { id: 3, patientName: 'Ibrahim Salis', specialistName: 'Ishola Sodiq', diagnosis: 'Chest Pain', date: '12/12/2023', downloadUrl: 'ibrahim-salis-chest.zip' },
-        { id: 4, patientName: 'Ibrahim Salis', specialistName: 'Ishola Sodiq', diagnosis: 'Chest Pain', date: '12/12/2023', downloadUrl: 'ibrahim-salis-chest.zip' },
-    ];
 
     function viewScan(scanId) {
         navigate(`scans/${scanId}`);
@@ -19,10 +14,13 @@ const DashboardTable = () => {
                 <thead className="bg-gray-100 dark:bg-gray-700">
                     <tr className="">
                         <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
-                            Patient Name
+                            Patient
                         </th>
                         <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
-                            Specialist Name
+                            Specialist
+                        </th>
+                        <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
+                            Scan Type
                         </th>
                         <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
                             Diagnosis
@@ -31,20 +29,23 @@ const DashboardTable = () => {
                             Scan Date
                         </th>
                         <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
-                            Download Link
+
                         </th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                     {
-                        scans.map(scan => (
-                            <tr key={scan.id} onClick={() => viewScan(scan.id)} className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                        data.map(scan => (
+                            <tr key={scan.scanId} onClick={() => viewScan(scan.scanId)} className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                                 <td className="table-data">{scan.patientName}</td>
-                                <td className="table-data">{`Dr. ${scan.specialistName}`}</td>
-                                <td className="table-data">{scan.diagnosis}</td>
-                                <td className="table-data">{scan.date}</td>
-                                <td className="py-4 px-6 text-sm font-medium whitespace-nowrap">
-                                    <Link to="#" className="text-blue-600 dark:text-blue-500 hover:underline">{scan.downloadUrl}</Link>
+                                <td className="table-data">{`Dr. ${scan.userName}`}</td>
+                                <td className="table-data">{scan.scanType}</td>
+                                <td className="table-data">{scan.scanDiagnosis}</td>
+                                <td className="table-data">{scan.scanDate}</td>
+                                <td className="py-4 px-6 font-medium flex items-center">
+                                    <Link to={scan.scanUrl} className='bg-blue-500 hover:bg-blue-600 p-1 rounded-md'>
+                                        <MdOutlineFileDownload size={20} color='white' />
+                                    </Link>
                                 </td>
                             </tr>
 
