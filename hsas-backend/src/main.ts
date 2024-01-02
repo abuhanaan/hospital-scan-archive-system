@@ -33,6 +33,7 @@ async function bootstrap() {
     .setTitle('Hospital-Scan-Archive-System')
     .setDescription('The Hospital-Scan-Archive-System API description')
     .setVersion('0.1')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
