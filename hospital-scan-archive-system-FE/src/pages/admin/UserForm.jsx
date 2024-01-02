@@ -70,7 +70,7 @@ const UserForm = () => {
                                     readOnly
                                 />
                                 <button
-                                    className="hover:shadow-form rounded-e-md bg-[#6A64F1] py-3 px-4 text-center text-base font-semibold text-white outline-none"
+                                    className="hover:shadow-form rounded-e-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-4 text-center text-base font-semibold text-white outline-none"
                                 >
                                     <MdOutlineSyncLock size={22} color='white' />
                                 </button>
@@ -139,7 +139,7 @@ const UserForm = () => {
 
                     <div className='flex justify-end'>
                         <button
-                            className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
+                            className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
                         >
                             Create User
                         </button>
