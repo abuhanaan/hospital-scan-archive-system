@@ -213,3 +213,9 @@ export const dashboardCardsInfo = [
     { id: 'scans', title: 'Total Scans', count: 10, icon: <FaFileMedical size={20} /> },
     { id: 'diagnosis', title: 'Total Diagnosis', count: 289, icon: <FaStethoscope size={20} /> },
 ];
+
+export const doctorCardsInfo = [
+    { id: 'patients', title: 'Total Patients', count: 6, icon: <FaUserInjured size={20} /> },
+    { id: 'scans', title: 'Total Scans', count: 10, icon: <FaFileMedical size={20} /> },
+    { id: 'diagnosis', title: 'Total Diagnosis', count: 19, icon: <FaStethoscope size={20} /> },
+];

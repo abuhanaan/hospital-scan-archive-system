@@ -1,4 +1,4 @@
-export default function Welcome() {
+export default function Welcome({ person }) {
     const formatDate = () => {
         const options = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
         const today = new Date();
@@ -7,7 +7,7 @@ export default function Welcome() {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold leading-8 text-primary">Welcome, Admin</h1>
+            <h1 className="text-2xl font-bold leading-8 text-primary capitalize">Welcome, {person}</h1>
             <span className="text-sm">
                 {
                     formatDate()

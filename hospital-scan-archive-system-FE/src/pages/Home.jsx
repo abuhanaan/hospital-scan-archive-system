@@ -25,7 +25,7 @@ const Home = () => {
         e.preventDefault();
 
         console.log(loginData);
-        navigate('/admin');
+        navigate('/user');
     }
 
     return (

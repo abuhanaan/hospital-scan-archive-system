@@ -15,7 +15,7 @@ const AdminDashboard = () => {
 
     return (
         <section className="overflow-x-auto font-poppins">
-            <Welcome />
+            <Welcome person='Admin' />
 
             <div className="grid grid-cols-1 gap-4 ss:grid-cols-2 lg:grid-cols-4 mt-6">
                 {
