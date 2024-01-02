@@ -3,34 +3,34 @@ import { Link, useNavigate, useLoaderData } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
-import { patients } from '../../constants';
+import { patients, scans } from '../../constants';
 
 import AddButton from '../../components/AddButton';
 
 export async function loader() {
-    return patients;
+    const userId = 1;
+    const userPatients = scans.filter(scan => scan.userId === userId)
+        .map(scan => ({
+            id: scan.patientId,
+            fullName: scan.patientName,
+            dob: scan.patientDob,
+            address: scan.patientAddress,
+            gender: scan.patientGender,
+            phoneNumber: scan.patientPhoneNumber,
+            nextOfKinName: scan.patientNextOfKinName,
+            nextOfKinPhone: scan.patientNextOfKinPhone,
+            nextOfKinRelationship: scan.nextOfKinRelationship
+        }));
+
+    return userPatients;
 }
 
 const PatientsList = () => {
     const navigate = useNavigate();
     const patients = useLoaderData();
 
-    // const patients = [
-    //     { id: 1, firstName: 'Sandra', lastName: 'Grace', phoneNumber: '08078903425', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '32' },
-    //     { id: 2, firstName: 'Yusuf', lastName: 'Tajudeen', phoneNumber: '07054908745', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '54' },
-    //     { id: 3, firstName: 'Hikmah', lastName: 'Boladale', phoneNumber: '07012308745', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '41' },
-    //     { id: 4, firstName: 'Sandra', lastName: 'Ali', phoneNumber: '07054901235', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '22' }
-    // ];
-
     function viewPatient(patientId) {
         navigate(`./${patientId}`);
-    }
-
-    function deletePatient(e) {
-        e.preventDefault();
-
-        const patientId = e.currentTarget.getAttribute('data-patient-id');
-        console.log('PatientId:', patientId);
     }
 
     return (
@@ -84,29 +84,21 @@ const PatientsList = () => {
                                             <th scope="col" className="th">
                                                 Address
                                             </th>
-                                            <th scope="col" className="th">
-                                                
-                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                         {
-                                            patients.map(patient => (
-                                                <tr key={patient.id} className="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                            patients.map((patient, index) => (
+                                                <tr key={index} className="hover:bg-gray-100 dark:hover:bg-gray-700">
                                                     <td className="table-data cursor-pointer hover:text-blue-600">
                                                         <div onClick={() => viewPatient(patient.id)}>
-                                                            {`${patient.firstName} ${patient.lastName}`}
+                                                            {patient.fullName}
                                                         </div>
                                                     </td>
                                                     <td className="table-data">{patient.phoneNumber}</td>
                                                     <td className="table-data">{patient.dob}</td>
                                                     <td className="table-data">{patient.nextOfKinName}</td>
                                                     <td className="table-data">{patient.address}</td>
-                                                    <td className="py-4 px-6 whitespace-nowrap flex items-center justify-center gap-1">
-                                                        <Link to={`create-patient`} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
-
-                                                        <button onClick={deletePatient} data-patient-id={patient.id} className="text-grey-lighter py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></button>
-                                                    </td>
                                                 </tr>
 
                                             ))

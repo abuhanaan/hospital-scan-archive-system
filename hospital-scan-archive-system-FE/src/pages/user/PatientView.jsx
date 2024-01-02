@@ -9,8 +9,9 @@ import { EmptySearch } from '../../components/EmptySearch';
 import { IoSearch } from 'react-icons/io5';
 
 export async function loader({ params }) {
+    const doctorId = 1;
     const patient = patients.filter(patient => patient.id === Number(params.id));
-    const patientScans = scans.filter(scan => scan.patientId === Number(params.id));
+    const patientScans = scans.filter(scan => scan.patientId === Number(params.id) && scan.userId === doctorId);
 
     const data = {
         ...patient[0],
@@ -28,14 +29,7 @@ const PatientView = () => {
         e.preventDefault();
 
         const scanId = e.currentTarget.getAttribute('data-scan-id');
-        navigate(`/admin/scans/${scanId}`);
-    }
-
-    function deletePatient(e) {
-        e.preventDefault();
-
-        const patientId = e.currentTarget.getAttribute('data-patient-id');
-        console.log('PatientId:', patientId);
+        navigate(`/user/scans/${scanId}`);
     }
 
     return (
@@ -51,11 +45,6 @@ const PatientView = () => {
 
                 <div className="flex justify-between items-center w-full mt-6">
                     <h1 className="font-bold text-primary text-2xl leading-tight">Patient</h1>
-                    <div className="flex items-center gap-2">
-                        <Link to={`/admin/patients/create-patient`} className="text-grey-lighter py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={22} color='white' /></Link>
-
-                        <button onClick={deletePatient} data-patient-id={patient.id} className="text-grey-lighter py-2 px-2 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={22} color='white' /></button>
-                    </div>
                 </div>
             </div>
 
@@ -63,7 +52,7 @@ const PatientView = () => {
                 <div className="order-2">
                     {
                         patient.scans?.length === 0 ?
-                            <EmptySearch headers={['Doctor', 'Symptoms', 'Diagnosis', 'Date', 'Scan Link']} type='scans' />
+                            <EmptySearch headers={['Patient', 'Scan Type', 'Diagnosis', 'Date', 'Scan Link']} type='scans' />
                             :
                             <div className="flex flex-col">
                                 <div className="mb-2 md:flex md:items-center md:justify-between">
@@ -82,10 +71,10 @@ const PatientView = () => {
                                         <thead className="bg-gray-100 dark:bg-gray-700">
                                             <tr className="">
                                                 <th scope="col" className="th">
-                                                    Doctor
+                                                    Patient
                                                 </th>
                                                 <th scope="col" className="th">
-                                                    Symptoms
+                                                    Type
                                                 </th>
                                                 <th scope="col" className="th">
                                                     Diagnosis
@@ -102,8 +91,8 @@ const PatientView = () => {
                                             {
                                                 patient.scans.map(scan => (
                                                     <tr key={scan.scanId} className="hover:bg-gray-100 dark:hover:bg-gray-700">
-                                                        <td className="table-data">{scan.userName}</td>
-                                                        <td className="table-data">{scan.scanSymptoms}</td>
+                                                        <td className="table-data">{scan.patientName}</td>
+                                                        <td className="table-data">{scan.scanType}</td>
                                                         <td className="table-data">{scan.scanDiagnosis}</td>
                                                         <td className="table-data">{scan.scanDate}</td>
                                                         <td className='table-data flex items-center justify-center gap-1'>

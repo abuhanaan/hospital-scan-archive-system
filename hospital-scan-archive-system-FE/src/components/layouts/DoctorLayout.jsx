@@ -4,9 +4,9 @@ import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BiSolidEdit } from "react-icons/bi";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { useState } from 'react';
-import SideNav from '../SideNav';
+import DoctorSideNav from '../DoctorSideNav';
 
-const AdminLayout = () => {
+const DoctorLayout = () => {
     const [showMenu, setShowMenu] = useState(false);
 
     function toggleMenu(e) {
@@ -18,7 +18,7 @@ const AdminLayout = () => {
     return (
         <div className='flex flex-col min-h-screen md:flex-row md:overflow-hidden'>
             <div className='w-full flex-none md:w-64'>
-                <SideNav />
+                <DoctorSideNav />
             </div>
 
             <div className='flex-grow flex flex-col min-h-screen'>
@@ -29,13 +29,13 @@ const AdminLayout = () => {
                                 <div className="border border-blue-300 p-[2px]  rounded-full mr-1">
                                     <HiUser color='rgb(59, 130, 246)' size={20} />
                                 </div>
-                                <span className='text-primary font-medium'>Admin</span>
+                                <span className='text-primary font-medium'>Dr. Sodiq</span>
                                 <MdKeyboardArrowDown size={24} color='#102255' />
                             </button>
                             <ul className={`${showMenu ? 'block' : 'hidden'} absolute right-0 top-10 mt-3 z-[1] shadow w-52 rounded-sm bg-dimWhite`}>
                                 <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
-                                    <BiSolidEdit size={20} />
-                                    <Link href='#'>Change Password</Link>
+                                    <HiUser size={20} />
+                                    <Link href='#'>Profile</Link>
                                 </li>
                                 <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
                                     <RiLogoutCircleRLine color='red' size={20} />
@@ -54,4 +54,4 @@ const AdminLayout = () => {
     )
 }
 
-export default AdminLayout;
+export default DoctorLayout;
