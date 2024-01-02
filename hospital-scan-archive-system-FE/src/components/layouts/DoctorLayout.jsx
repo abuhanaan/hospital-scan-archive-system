@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { HiUser } from 'react-icons/hi';
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BiSolidEdit } from "react-icons/bi";
@@ -8,11 +8,16 @@ import DoctorSideNav from '../DoctorSideNav';
 
 const DoctorLayout = () => {
     const [showMenu, setShowMenu] = useState(false);
+    const navigate = useNavigate();
 
     function toggleMenu(e) {
         e.preventDefault();
 
         setShowMenu(prev => !prev);
+    }
+
+    function signOut() {
+        navigate('/');
     }
 
     return (
@@ -35,11 +40,11 @@ const DoctorLayout = () => {
                             <ul className={`${showMenu ? 'block' : 'hidden'} absolute right-0 top-10 mt-3 z-[1] shadow w-52 rounded-sm bg-dimWhite`}>
                                 <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
                                     <HiUser size={20} />
-                                    <Link href='#'>Profile</Link>
+                                    <Link href='./profile'>Profile</Link>
                                 </li>
                                 <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
                                     <RiLogoutCircleRLine color='red' size={20} />
-                                    <Link onClick={() => signOut()} href='#'>Logout</Link>
+                                    <Link onClick={() => signOut()}>Logout</Link>
                                 </li>
                             </ul>
                         </div>

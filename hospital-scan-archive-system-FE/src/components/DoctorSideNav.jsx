@@ -22,7 +22,7 @@ const DoctorSideNav = () => {
             >
                 <div className="navbar p-6">
                     <Link className="flex items-center justify-start gap-1"
-                        to="/admin">
+                        to="/user">
                         <FaRegHospital size={30} color='white' />
                         <span className="text-white font-poppins text-xl font-bold">HSAS</span>
                     </Link>
@@ -43,18 +43,18 @@ const DoctorSideNav = () => {
                     <p className={clsx(`hidden md:block`, { 'text-white': pathname === '/user' })}>Dashboard</p>
                 </Link>
 
-                {/* <Link
-                    to='/admin/users'
+                <Link
+                    to='/user/profile'
                     className={clsx(
                         `flex h-[48px] grow items-center justify-center gap-2 rounded-lg p-3 bg-[#21212B] md:bg-transparent text-xl md:text-base text-[#9A99A0] hover:bg-[#21212B] md:hover:rounded-lg md:hover:border-t-2 md:hover:border-blue-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3`,
                         {
-                            'bg-sky-100 text-blue-600': pathname.includes('/admin/users')
+                            'bg-sky-100 text-blue-600': pathname.includes('//user/profile')
                         }
                     )}
                 >
                     <FaUserDoctor size={18} />
-                    <p className={clsx(`hidden md:block`, { 'text-white': pathname.includes('/admin/users') })}>Users</p>
-                </Link> */}
+                    <p className={clsx(`hidden md:block`, { 'text-white': pathname.includes('/user/profile') })}>Profile</p>
+                </Link>
 
                 <Link
                     to='/user/patients'
