@@ -50,6 +50,20 @@ export class UsersController {
     return new UserEntity(user);
   }
 
+  @Patch('/activate/:id')
+  @ApiOkResponse({ type: UserEntity })
+  async activateUser(@Param('id', ParseIntPipe) id: number) {
+    const user = await this.usersService.activateUser(id);
+    return new UserEntity(user);
+  }
+
+  @Patch('deactivate/:id')
+  @ApiOkResponse({ type: UserEntity })
+  async deactivateUser(@Param('id', ParseIntPipe) id: number) {
+    const user = await this.usersService.deactivateUser(id);
+    return new UserEntity(user);
+  }
+
   @Delete(':id')
   @ApiOkResponse({ type: UserEntity })
   async remove(@Param('id', ParseIntPipe) id: number) {

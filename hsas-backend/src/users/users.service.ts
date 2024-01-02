@@ -7,11 +7,20 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { User } from '@prisma/client';
 
 export const roundsOfHashing = 10;
 
 @Injectable()
 export class UsersService {
+  private checkIfUserExists(user: User, id: number) {
+    if (!user) {
+      throw new NotFoundException({
+        message: 'Not Found',
+        error: `User with id ${id} does not exist`,
+      });
+    }
+  }
   constructor(private prisma: PrismaService) {}
   async create(createUserDto: CreateUserDto) {
     try {
@@ -44,23 +53,27 @@ export class UsersService {
 
   async findOne(id: number) {
     const user = await this.prisma.user.findUnique({ where: { id } });
-    if (!user) {
-      throw new NotFoundException({
-        message: 'Not Found',
-        error: `User with id ${id} does not exist`,
-      });
-    }
+    this.checkIfUserExists(user, id);
     return user;
+  }
+
+  async activateUser(id: number) {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    this.checkIfUserExists(user, id);
+
+    return this.prisma.user.update({ where: { id }, data: { active: true } });
+  }
+
+  async deactivateUser(id: number) {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    this.checkIfUserExists(user, id);
+
+    return this.prisma.user.update({ where: { id }, data: { active: false } });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.prisma.user.findUnique({ where: { id } });
-    if (!user) {
-      throw new NotFoundException({
-        message: 'Not Found',
-        error: `User with id ${id} does not exist`,
-      });
-    }
+    this.checkIfUserExists(user, id);
     if (updateUserDto.password) {
       const hashedPassword = await bcrypt.hash(
         updateUserDto.password,
@@ -74,12 +87,7 @@ export class UsersService {
 
   async remove(id: number) {
     const user = await this.prisma.user.findUnique({ where: { id } });
-    if (!user) {
-      throw new NotFoundException({
-        message: 'Not Found',
-        error: `User with id ${id} does not exist`,
-      });
-    }
+    this.checkIfUserExists(user, id);
     return this.prisma.user.delete({ where: { id } });
   }
 }
