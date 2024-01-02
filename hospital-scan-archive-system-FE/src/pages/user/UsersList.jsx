@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLoaderData } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { IoSearch, IoEyeOutline } from "react-icons/io5";
@@ -7,8 +7,13 @@ import { users } from '../../constants';
 
 import AddButton from '../../components/AddButton';
 
+export async function loader() {
+    return users;
+}
+
 const UsersList = () => {
     const navigate = useNavigate();
+    const usersData = useLoaderData();
 
     function viewUser(e) {
         e.preventDefault();
@@ -42,7 +47,7 @@ const UsersList = () => {
 
             <div className="h-full overflow-auto w-full">
                 {
-                    users?.length === 0 ?
+                    usersData?.length === 0 ?
                         <EmptySearch headers={['Profile Image', 'First Name', 'Last Name', 'Email', 'Specialty', 'Role']} />
                         :
                         <div className="flex flex-col">
@@ -85,7 +90,7 @@ const UsersList = () => {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                         {
-                                            users.map(user => (
+                                            usersData.map(user => (
                                                 <tr key={user.id} className="hover:bg-gray-100 dark:hover:bg-gray-700">
                                                     <td className="table-data">
                                                         <div className="w-10 h-10 rounded-full">

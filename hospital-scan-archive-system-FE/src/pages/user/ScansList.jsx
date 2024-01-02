@@ -1,20 +1,22 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLoaderData } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline, MdOutlineFileDownload } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { IoSearch, IoEyeOutline } from "react-icons/io5";
-
+import { scans } from '../../constants';
 
 import AddButton from '../../components/AddButton';
 
+export async function loader() {
+    // console.log(scans);
+    const data = [...scans];
+    return data;
+}
+
 const ScansList = () => {
     const navigate = useNavigate();
-    const scans = [
-        { scanId: '1', patientName: 'Sandra Grace', doctorName: 'Sodiq Ishola', symptoms: 'Chest pains', diagnosis: 'Chest', date: '8/10/2023', scanUrl: 'chest-pain-sandra.zip' },
-        { scanId: '2', patientName: 'Aishat Yusuf', doctorName: 'Sodiq Ishola', symptoms: 'Morning sickness', diagnosis: 'Pregnancy', date: '8/10/2023', scanUrl: 'pregnancy-sandra.zip' },
-        { scanId: '3', patientName: 'Sandra Grace', doctorName: 'Halimah Salis', symptoms: 'Leg Fracture', diagnosis: 'Leg fracture', date: '8/10/2023', scanUrl: 'fracture-sandra.zip' },
-        { scanId: '4', patientName: 'Ali Musa', doctorName: 'Ishaq Musa', symptoms: 'MRI', diagnosis: 'MRI Scan', date: '8/10/2023', scanUrl: 'fracture-sandra.zip' },
-        { scanId: '5', patientName: 'Elizabeth Joshua', doctorName: 'Halimah Salis', symptoms: 'Vomitting and Spitting', diagnosis: 'Ultrasound Scan', date: '8/10/2023', scanUrl: 'fracture-sandra.zip' },
-    ];
+    const scansData = useLoaderData();
+
+    console.log('Component: \n', scansData);
 
     function viewScan(e) {
         e.preventDefault();
@@ -48,7 +50,7 @@ const ScansList = () => {
 
             <div className="h-full overflow-auto w-full">
                 {
-                    scans?.length === 0 ?
+                    scansData?.length === 0 ?
                         <EmptySearch headers={['ScanId', 'Doctor', 'Symptoms', 'Diagnosis', 'Date', 'Scan Link']} />
                         :
                         <div className="flex flex-col">
@@ -76,7 +78,7 @@ const ScansList = () => {
                                                 Doctor
                                             </th>
                                             <th scope="col" className="th">
-                                                Symptoms
+                                                Type
                                             </th>
                                             <th scope="col" className="th">
                                                 Diagnosis
@@ -85,20 +87,20 @@ const ScansList = () => {
                                                 Date
                                             </th>
                                             <th scope="col" className="th">
-                                                Actions
+                                                
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                         {
-                                            scans.map(scan => (
+                                            scansData.map(scan => (
                                                 <tr key={scan.scanId} className="hover:bg-gray-100 dark:hover:bg-gray-700">
                                                     <td className="table-data">{scan.scanId}</td>
                                                     <td className="table-data">{scan.patientName}</td>
-                                                    <td className="table-data">{scan.doctorName}</td>
-                                                    <td className="table-data">{scan.symptoms}</td>
-                                                    <td className="table-data">{scan.diagnosis}</td>
-                                                    <td className="table-data">{scan.date}</td>
+                                                    <td className="table-data">{scan.userName}</td>
+                                                    <td className="table-data">{scan.scanType}</td>
+                                                    <td className="table-data">{scan.scanDiagnosis}</td>
+                                                    <td className="table-data">{scan.scanDate}</td>
                                                     <td className="py-4 px-6 whitespace-nowrap flex items-center justify-center gap-1">
                                                         <button onClick={viewScan} data-scan-id={scan.scanId} className='bg-purple-500 hover:bg-purple-600 p-1 rounded-md'>
                                                             <IoEyeOutline size={20} color='white' />
