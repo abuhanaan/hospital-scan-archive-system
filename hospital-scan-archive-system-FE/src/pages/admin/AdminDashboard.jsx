@@ -3,17 +3,23 @@ import OverviewCard from "../../components/OverviewCard";
 import DashboardTable from "../../components/DashboardTable";
 import { FaUserDoctor, FaUserInjured, FaFileMedical, FaStethoscope } from "react-icons/fa6";
 import { dashboardCardsInfo, scans, users } from '../../constants';
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { EmptySearch } from '../../components/EmptySearch';
 
+export async function loader() {
+    return [dashboardCardsInfo, scans, users];
+}
+
 const AdminDashboard = () => {
+    const [cardsData, scansData, usersData] = useLoaderData();
+
     return (
         <section className="overflow-x-auto font-poppins">
             <Welcome />
 
             <div className="grid grid-cols-1 gap-4 ss:grid-cols-2 lg:grid-cols-4 mt-6">
                 {
-                    dashboardCardsInfo.map((data, index) => {
+                    cardsData.map((data, index) => {
 
                         return (
                             <OverviewCard key={data.id} count={data.count} title={data.title} icon={data.icon} id={data.id} />
@@ -25,7 +31,7 @@ const AdminDashboard = () => {
             <div className="flex flex-col xl:flex-row gap-8 mt-10">
                 <div className="overflow-y-auto flex-1 bg-white rounded-lg shadow-sm">
                     <h1 className="text-primary text-xl py-4 font-medium px-6 border-b-2 border-gray-200">Recent Scans</h1>
-                    <DashboardTable data={scans} />
+                    <DashboardTable data={scansData} />
                 </div>
 
                 <div className="flex flex-col flex-1 bg-white pb-4 shadow-xl rounded-md max-w-[440px]">
@@ -33,10 +39,10 @@ const AdminDashboard = () => {
 
                     <ul className="list-none">
                         {
-                            users.length === 0 ?
+                            usersData.length === 0 ?
                                 <EmptySearch headers={[]} type='users' />
                                 :
-                                users.map(user => {
+                                usersData.map(user => {
                                     const title = user.role === 'doctor' ? 'Dr. ' : '';
                                     return (
                                         <li key={user.id} className="py-3 px-6">

@@ -84,6 +84,9 @@ const PatientsList = () => {
                                             <th scope="col" className="th">
                                                 Address
                                             </th>
+                                            <th scope="col" className="th">
+                                                
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
