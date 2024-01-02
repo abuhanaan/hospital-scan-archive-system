@@ -1,11 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineFileDownload } from "react-icons/md";
+import { IoEyeOutline } from "react-icons/io5";
 import { EmptySearch } from "./EmptySearch";
 
 const DashboardTable = ({ data }) => {
     const navigate = useNavigate();
 
-    function viewScan(scanId) {
+    function viewScan(e) {
+        e.preventDefault();
+
+        const scanId = e.currentTarget.getAttribute('data-scan-id');
         navigate(`scans/${scanId}`);
     }
 
@@ -48,7 +52,11 @@ const DashboardTable = ({ data }) => {
                                             <td className="table-data">{scan.scanType}</td>
                                             <td className="table-data">{scan.scanDiagnosis}</td>
                                             <td className="table-data">{scan.scanDate}</td>
-                                            <td className="py-4 px-6 font-medium flex items-center">
+                                            <td className="py-4 px-6 font-medium flex items-center justify-center gap-1">
+                                                <button onClick={viewScan} data-scan-id={scan.scanId} className='bg-purple-500 hover:bg-purple-600 p-1 rounded-md'>
+                                                    <IoEyeOutline size={20} color='white' />
+                                                </button>
+
                                                 <Link to={scan.scanUrl} className='bg-blue-500 hover:bg-blue-600 p-1 rounded-md'>
                                                     <MdOutlineFileDownload size={20} color='white' />
                                                 </Link>
