@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaExclamationCircle } from "react-icons/fa";
 import Header from '../components/Header';
+import {users} from '../constants';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -24,8 +25,20 @@ const Home = () => {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        console.log(loginData);
-        navigate('/user');
+        const user = users.filter(user => user.email === loginData.username && user.password === loginData.password)[0];
+
+        if (!user) {
+            console.log('User not found!');
+            return;
+        } else {
+            localStorage.setItem('user', JSON.stringify(user));
+        }
+
+        if (user.role === 'admin') {
+            navigate('/admin');
+        } else {
+            navigate('/user');
+        }
     }
 
     return (

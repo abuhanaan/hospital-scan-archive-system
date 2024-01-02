@@ -123,7 +123,8 @@ export const users = [
         id: 1,
         firstName: 'Sodiq',
         lastName: 'Ishola',
-        email: 'example123@gmail.com',
+        email: 'doctor@g.com',
+        password: 'doc123',
         specialty: 'Gynaecologist',
         role: 'doctor',
         img: 'https://p7.hiclipart.com/preview/14/65/239/ico-avatar-scalable-vector-graphics-icon-doctor-with-stethoscope.jpg'
@@ -132,15 +133,18 @@ export const users = [
         id: 2,
         firstName: 'Hamzat',
         lastName: 'Turawa',
-        email: 'example123@gmail.com',
-        specialty: 'Neurologist', role: 'doctor',
+        email: 'admin@g.com',
+        password: 'admin123',
+        specialty: 'Neurologist', 
+        role: 'admin',
         img: 'https://cdn.imgbin.com/2/21/3/imgbin-computer-icons-doctor-of-medicine-health-care-physician-health-f0nPVnd5XSZmZra6C8BRi8kU4.jpg'
     },
     {
         id: 3,
         firstName: 'Halimah',
         lastName: 'Salis',
-        email: 'example123@gmail.com',
+        email: 'doctor2@g.com',
+        password: 'doc456',
         specialty: 'Opthalmologist',
         role: 'doctor',
         img: 'https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/7525866/hijab-doctor-clipart-md.png'
@@ -149,9 +153,10 @@ export const users = [
         id: 4,
         firstName: 'Zainab',
         lastName: 'Musa',
-        email: 'example123@gmail.com',
+        email: 'staff@g.com',
+        password: 'staff123',
         specialty: 'Dermatologist',
-        role: 'nurse',
+        role: 'staff',
         img: 'https://www.clipartmax.com/png/middle/244-2445799_doctor-female-doctor-icon.png'
     },
 ];
