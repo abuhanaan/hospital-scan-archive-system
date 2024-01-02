@@ -20,6 +20,9 @@ export class UserEntity implements User {
   speciality: string;
 
   @ApiProperty()
+  active: boolean;
+
+  @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()
