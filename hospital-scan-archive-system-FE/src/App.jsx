@@ -1,6 +1,6 @@
 import './App.css';
 import { AdminLayout, DoctorLayout, AuthLayout, Layout } from './components';
-import { Home, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView, DoctorDashboard, DoctorPatientsList, DoctorPatientView, adminDashboardLoader, usersListLoader, userViewLoader, patientViewLoader, patientsListLoader, scanViewLoader, scansListLoader, doctorDashboardLoader, doctorPatientsListLoader, doctorpatientViewLoader } from './pages';
+import { Home, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView, DoctorDashboard, DoctorPatientsList, DoctorPatientView, DoctorScansList, DoctorScanView, adminDashboardLoader, usersListLoader, userViewLoader, patientViewLoader, patientsListLoader, scanViewLoader, scansListLoader, doctorDashboardLoader, doctorPatientsListLoader, doctorPatientViewLoader, DoctorScansListLoader, DoctorScanViewLoader } from './pages';
 import { createBrowserRouter, createRoutesFromChildren, RouterProvider, Route } from 'react-router-dom';
 
 const router = createBrowserRouter(createRoutesFromChildren(
@@ -27,7 +27,10 @@ const router = createBrowserRouter(createRoutesFromChildren(
                 <Route index loader={doctorDashboardLoader} element={<DoctorDashboard />} />
 
                 <Route path='patients' loader={doctorPatientsListLoader} element={<DoctorPatientsList />} />
-                <Route path='patients/:id' loader={doctorpatientViewLoader} element={<DoctorPatientView />} />
+                <Route path='patients/:id' loader={doctorPatientViewLoader} element={<DoctorPatientView />} />
+
+                <Route path='scans' loader={DoctorScansListLoader} element={<DoctorScansList />} />
+                <Route path='scans/:id' loader={DoctorScanViewLoader} element={<DoctorScanView />} />
             </Route>
         </Route>
     </Route>

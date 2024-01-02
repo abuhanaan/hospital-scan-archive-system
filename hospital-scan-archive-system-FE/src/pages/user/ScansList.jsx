@@ -3,12 +3,11 @@ import { MdOutlineEdit, MdDeleteOutline, MdOutlineFileDownload } from "react-ico
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { IoSearch, IoEyeOutline } from "react-icons/io5";
 import { scans } from '../../constants';
-
-import AddButton from '../../components/AddButton';
+import { EmptySearch } from '../../components/EmptySearch';
 
 export async function loader() {
-    // console.log(scans);
-    const data = [...scans];
+    const doctorId = 1;
+    const data = scans.filter(scan => scan.userId === doctorId);
     return data;
 }
 
@@ -25,33 +24,21 @@ const ScansList = () => {
         navigate(`./${scanId}`);
     }
 
-    function deleteScan(e) {
-        e.preventDefault();
-
-        const scanId = e.currentTarget.getAttribute('data-scan-id');
-        console.log('ScanId:', scanId);
-    }
-
     return (
         <div className="mt-6 min-h-screen w-full font-poppins">
             <div className="mb-10">
                 <nav aria-label="breadcrumb">
                     <ol className="flex space-x-2">
-                        <li><Link to="/admin" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Dashboard</Link></li>
+                        <li><Link to="/user" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Dashboard</Link></li>
                         <li className="text-purple-700 font-medium text-lg" aria-current="page">Scans</li>
                     </ol>
                 </nav>
-
-                <div className="flex justify-between items-center w-full">
-                    <h1 className="font-bold text-primary text-2xl leading-tight mt-6">Scans</h1>
-                    <AddButton navigateTo={`create-scan`}>Add New</AddButton>
-                </div>
             </div>
 
             <div className="h-full overflow-auto w-full">
                 {
                     scansData?.length === 0 ?
-                        <EmptySearch headers={['ScanId', 'Doctor', 'Symptoms', 'Diagnosis', 'Date', 'Scan Link']} />
+                        <EmptySearch headers={['ScanId', 'Patient', 'Type', 'Diagnosis', 'Date', 'Scan Link']} type='scans' />
                         :
                         <div className="flex flex-col">
                             <div className="mb-4 md:flex md:items-center md:justify-between">
@@ -75,9 +62,6 @@ const ScansList = () => {
                                                 Patient
                                             </th>
                                             <th scope="col" className="th">
-                                                Doctor
-                                            </th>
-                                            <th scope="col" className="th">
                                                 Type
                                             </th>
                                             <th scope="col" className="th">
@@ -97,7 +81,6 @@ const ScansList = () => {
                                                 <tr key={scan.scanId} className="hover:bg-gray-100 dark:hover:bg-gray-700">
                                                     <td className="table-data">{scan.scanId}</td>
                                                     <td className="table-data">{scan.patientName}</td>
-                                                    <td className="table-data">{scan.userName}</td>
                                                     <td className="table-data">{scan.scanType}</td>
                                                     <td className="table-data">{scan.scanDiagnosis}</td>
                                                     <td className="table-data">{scan.scanDate}</td>
@@ -109,10 +92,6 @@ const ScansList = () => {
                                                         <Link to={scan.scanUrl} className='bg-green-500 hover:bg-green-600 p-1 rounded-md'>
                                                             <MdOutlineFileDownload size={20} color='white' />
                                                         </Link>
-
-                                                        <Link to={`create-scan`} className="py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
-
-                                                        <button onClick={deleteScan} data-scan-id={scan.scanId} className="py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></button>
                                                     </td>
                                                 </tr>
 

@@ -14,6 +14,8 @@ export { default as ScanForm } from './admin/ScanForm';
 export { default as DoctorDashboard } from './user/UserDashboard';
 export { default as DoctorPatientsList } from './user/PatientsList';
 export { default as DoctorPatientView } from './user/PatientView';
+export { default as DoctorScansList } from './user/ScansList';
+export { default as DoctorScanView } from './user/ScanView';
 
 // Admin Loaders
 export { loader as adminDashboardLoader } from './admin/AdminDashboard';
@@ -27,4 +29,6 @@ export { loader as scansListLoader } from './admin/ScansList';
 // User Loaders
 export { loader as doctorDashboardLoader } from './user/UserDashboard';
 export { loader as doctorPatientsListLoader } from './user/PatientsList';
-export { loader as doctorpatientViewLoader } from './user/PatientView';
+export { loader as doctorPatientViewLoader } from './user/PatientView';
+export { loader as DoctorScansListLoader } from './user/ScansList';
+export { loader as DoctorScanViewLoader } from './user/ScanView';
