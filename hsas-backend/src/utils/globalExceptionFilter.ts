@@ -28,14 +28,15 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (message !== 'Internal Server Error') {
       error = exception.getResponse()['error'] || null;
     }
-    // console.log(exception.getResponse());
 
-    response.status(status).json({
+    const errorResponse = {
       statusCode: status,
       message: message,
       error: error,
       timestamp: new Date().toISOString(),
       path: request.url,
-    });
+    };
+
+    response.status(status).json(errorResponse);
   }
 }
