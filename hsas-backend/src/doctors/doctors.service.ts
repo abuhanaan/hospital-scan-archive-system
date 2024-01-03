@@ -57,7 +57,7 @@ export class DoctorsService {
     });
     this.checkIfDoctorExists(doctor, id);
     return this.prisma.doctor.update({
-      where: { id },
+      where: { doctorId: id },
       data: updateDoctorDto,
       include: { user: true },
     });
@@ -66,7 +66,6 @@ export class DoctorsService {
   async remove(id: number) {
     const doctor = await this.prisma.doctor.findUnique({
       where: { doctorId: id },
-      include: { user: true },
     });
     this.checkIfDoctorExists(doctor, id);
     return this.prisma.doctor.delete({ where: { doctorId: id } });

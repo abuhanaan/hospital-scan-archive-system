@@ -40,7 +40,7 @@ export class DoctorsController {
     return new DoctorEntity(doctor);
   }
 
-  @Patch(':id')
+  @Patch('/update-profile/:id')
   @ApiOkResponse({ type: DoctorEntity })
   async update(
     @Param('id', ParseIntPipe) id: number,
