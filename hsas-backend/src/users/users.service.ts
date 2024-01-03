@@ -8,6 +8,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
+import { DoctorsService } from 'src/doctors/doctors.service';
 
 export const roundsOfHashing = 10;
 
@@ -21,7 +22,10 @@ export class UsersService {
       });
     }
   }
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private doctorService: DoctorsService,
+  ) {}
   async create(createUserDto: CreateUserDto) {
     try {
       const existingUser = await this.prisma.user.findUnique({
@@ -39,7 +43,11 @@ export class UsersService {
       );
 
       createUserDto.password = hashedPassword;
-      return this.prisma.user.create({ data: createUserDto });
+      const newUser = await this.prisma.user.create({ data: createUserDto });
+      if (newUser.role === 'doctor') {
+        await this.doctorService.create({ userId: newUser.id });
+      }
+      return newUser;
     } catch (error) {
       console.log(error);
       throw error;
