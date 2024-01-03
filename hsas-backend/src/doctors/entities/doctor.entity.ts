@@ -19,7 +19,7 @@ export class DoctorEntity implements Doctor {
   speciality: string;
 
   @ApiProperty()
-  userId: number | null;
+  doctorId: number | null;
 
   @ApiProperty({ required: false, type: UserEntity })
   user?: UserEntity;

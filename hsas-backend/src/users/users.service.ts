@@ -45,7 +45,7 @@ export class UsersService {
       createUserDto.password = hashedPassword;
       const newUser = await this.prisma.user.create({ data: createUserDto });
       if (newUser.role === 'doctor') {
-        await this.doctorService.create({ userId: newUser.id });
+        await this.doctorService.create({ doctorId: newUser.id });
       }
       return newUser;
     } catch (error) {

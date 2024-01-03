@@ -25,5 +25,5 @@ export class CreateDoctorDto {
   @IsNumber()
   @IsNotEmpty()
   @ApiProperty()
-  userId: number;
+  doctorId: number;
 }

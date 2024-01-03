@@ -1,34 +1,59 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { DoctorsService } from './doctors.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { DoctorEntity } from './entities/doctor.entity';
 
 @Controller('doctors')
+@ApiTags('doctor')
 export class DoctorsController {
   constructor(private readonly doctorsService: DoctorsService) {}
 
   @Post()
-  create(@Body() createDoctorDto: CreateDoctorDto) {
-    return this.doctorsService.create(createDoctorDto);
+  @ApiCreatedResponse({ type: DoctorEntity })
+  async create(@Body() createDoctorDto: CreateDoctorDto) {
+    const doctor = await this.doctorsService.create(createDoctorDto);
+    return new DoctorEntity(doctor);
   }
 
   @Get()
-  findAll() {
-    return this.doctorsService.findAll();
+  @ApiOkResponse({ type: DoctorEntity, isArray: true })
+  async findAll() {
+    const doctors = await this.doctorsService.findAll();
+    return doctors.map((doctor) => new DoctorEntity(doctor));
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.doctorsService.findOne(+id);
+  @ApiOkResponse({ type: DoctorEntity })
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const doctor = await this.doctorsService.findOne(id);
+    return new DoctorEntity(doctor);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDoctorDto: UpdateDoctorDto) {
-    return this.doctorsService.update(+id, updateDoctorDto);
+  @ApiOkResponse({ type: DoctorEntity })
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateDoctorDto: UpdateDoctorDto,
+  ) {
+    const doctor = await this.doctorsService.update(id, updateDoctorDto);
+    return new DoctorEntity(doctor);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.doctorsService.remove(+id);
+  @ApiOkResponse({ type: DoctorEntity })
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const doctor = await this.doctorsService.remove(id);
+    return new DoctorEntity(doctor);
   }
 }

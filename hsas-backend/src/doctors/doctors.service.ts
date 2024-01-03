@@ -22,12 +22,12 @@ export class DoctorsService {
   }
   async create(createDoctorDto: CreateDoctorDto) {
     const existingProfile = await this.prisma.doctor.findUnique({
-      where: { userId: createDoctorDto.userId },
+      where: { doctorId: createDoctorDto.doctorId },
     });
 
     if (existingProfile) {
       throw new ConflictException({
-        message: `Doctor with userId ${createDoctorDto.userId} already have a doctor profile`,
+        message: `Doctor with doctorId ${createDoctorDto.doctorId} already have a doctor profile`,
         error: 'Conflict Operation',
       });
     }
@@ -43,7 +43,7 @@ export class DoctorsService {
 
   async findOne(id: number) {
     const doctor = await this.prisma.doctor.findUnique({
-      where: { userId: id },
+      where: { doctorId: id },
       include: { user: true },
     });
     this.checkIfDoctorExists(doctor, id);
@@ -52,7 +52,7 @@ export class DoctorsService {
 
   async update(id: number, updateDoctorDto: UpdateDoctorDto) {
     const doctor = await this.prisma.doctor.findUnique({
-      where: { userId: id },
+      where: { doctorId: id },
       include: { user: true },
     });
     this.checkIfDoctorExists(doctor, id);
@@ -65,10 +65,10 @@ export class DoctorsService {
 
   async remove(id: number) {
     const doctor = await this.prisma.doctor.findUnique({
-      where: { userId: id },
+      where: { doctorId: id },
       include: { user: true },
     });
     this.checkIfDoctorExists(doctor, id);
-    return this.prisma.doctor.delete({ where: { userId: id } });
+    return this.prisma.doctor.delete({ where: { doctorId: id } });
   }
 }
