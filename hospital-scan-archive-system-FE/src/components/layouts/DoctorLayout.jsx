@@ -3,12 +3,18 @@ import { HiUser } from 'react-icons/hi';
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BiSolidEdit } from "react-icons/bi";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DoctorSideNav from '../DoctorSideNav';
 
 const DoctorLayout = () => {
     const [showMenu, setShowMenu] = useState(false);
+    const [user, setUser] = useState(null);
     const navigate = useNavigate();
+    const title = user?.role === 'doctor' ? 'Dr.' : '';
+
+    useEffect(() => {
+        setUser(JSON.parse(localStorage.getItem('user')));
+    }, []);
 
     function toggleMenu(e) {
         e.preventDefault();
@@ -24,7 +30,7 @@ const DoctorLayout = () => {
     return (
         <div className='flex flex-col min-h-screen md:flex-row md:overflow-hidden'>
             <div className='w-full flex-none md:w-64'>
-                <DoctorSideNav />
+                <DoctorSideNav user={user} />
             </div>
 
             <div className='flex-grow flex flex-col min-h-screen'>
@@ -35,14 +41,17 @@ const DoctorLayout = () => {
                                 <div className="border border-blue-300 p-[2px]  rounded-full mr-1">
                                     <HiUser color='rgb(59, 130, 246)' size={20} />
                                 </div>
-                                <span className='text-primary font-medium'>Dr. Sodiq</span>
+                                <span className='text-primary font-medium'>{`${title} ${user?.firstName}`}</span>
                                 <MdKeyboardArrowDown size={24} color='#102255' />
                             </button>
                             <ul className={`${showMenu ? 'block' : 'hidden'} absolute right-0 top-10 mt-3 z-[1] shadow w-52 rounded-sm bg-dimWhite`}>
-                                <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
-                                    <HiUser size={20} />
-                                    <Link href='./profile'>Profile</Link>
-                                </li>
+                                {
+                                    user?.role === 'doctor' &&
+                                    <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
+                                        <HiUser size={20} />
+                                        <Link href='./profile'>Profile</Link>
+                                    </li>
+                                }
                                 <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
                                     <RiLogoutCircleRLine color='red' size={20} />
                                     <Link onClick={() => signOut()}>Logout</Link>
