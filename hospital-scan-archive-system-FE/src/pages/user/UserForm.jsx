@@ -4,7 +4,7 @@ import { MdOutlineSyncLock } from "react-icons/md";
 
 const UserForm = () => {
     const { state } = useLocation();
-    const {user} = state;
+    const { user } = state;
 
     // console.log(state);
 
@@ -14,7 +14,10 @@ const UserForm = () => {
                 <nav aria-label="breadcrumb">
                     <ol className="flex space-x-2">
                         <li><Link to="/user" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Home</Link></li>
-                        <li><Link to="/user/profile" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Profile</Link></li>
+                        {
+                            user.role === 'doctor' &&
+                            <li><Link to="/user/profile" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Profile</Link></li>
+                        }
                         <li className="text-purple-700 font-medium text-lg" aria-current="page">Update Profile</li>
                     </ol>
                 </nav>

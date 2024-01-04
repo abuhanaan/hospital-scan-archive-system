@@ -5,7 +5,7 @@ export const EmptySearch = ({ headers, type }) => {
         <>
             {
                 headers &&
-                <div className="hidden md:flex justify-between items-center pr-24 mt-5">
+                <div className="hidden md:flex justify-between items-center px-6 mt-5">
                     {
                         headers.map((title, index) => (
                             <h3 key={index} className="text-base font-medium text-primary">{title}</h3>
