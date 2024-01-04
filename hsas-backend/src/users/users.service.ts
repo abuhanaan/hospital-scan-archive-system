@@ -9,6 +9,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
 import { DoctorsService } from 'src/doctors/doctors.service';
+import { UserEntity } from './entities/user.entity';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 export const roundsOfHashing = 10;
 
@@ -63,6 +65,16 @@ export class UsersService {
     const user = await this.prisma.user.findUnique({ where: { id } });
     this.checkIfUserExists(user, id);
     return user;
+  }
+
+  async changepassword(user: UserEntity, changePasswordDto: ChangePasswordDto) {
+    try {
+      await this.update(user.id, changePasswordDto);
+      return { status: true, message: 'Password changed Successfully' };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   async activateUser(id: number) {

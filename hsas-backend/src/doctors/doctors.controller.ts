@@ -22,10 +22,7 @@ import {
 import { DoctorEntity } from './entities/doctor.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UserEntity } from 'src/users/entities/user.entity';
-
-interface AuthenticatedRequest extends Request {
-  user?: UserEntity;
-}
+import { AdminJwtAuthGuard } from 'src/auth/guards/admin-auth.guards';
 
 @Controller('doctors')
 @ApiTags('doctor')
@@ -34,6 +31,8 @@ export class DoctorsController {
 
   @Post()
   @ApiCreatedResponse({ type: DoctorEntity })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async create(@Body() createDoctorDto: CreateDoctorDto) {
     const doctor = await this.doctorsService.create(createDoctorDto);
     return new DoctorEntity(doctor);
@@ -41,6 +40,8 @@ export class DoctorsController {
 
   @Get()
   @ApiOkResponse({ type: DoctorEntity, isArray: true })
+  @UseGuards(JwtAuthGuard, JwtAuthGuard)
+  @ApiBearerAuth()
   async findAll() {
     const doctors = await this.doctorsService.findAll();
     return doctors.map((doctor) => new DoctorEntity(doctor));
@@ -48,23 +49,17 @@ export class DoctorsController {
 
   @Get(':id')
   @ApiOkResponse({ type: DoctorEntity })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async findOne(@Param('id', ParseIntPipe) id: number) {
     const doctor = await this.doctorsService.findOne(id);
     return new DoctorEntity(doctor);
   }
 
-  @Patch('/change-password')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOkResponse({ type: Object })
-  async changepassword(@Req() request: AuthenticatedRequest) {
-    const user = request.user as UserEntity;
-    console.log(user.id);
-    return user;
-  }
-
   @Patch('/update-profile/:id')
   @ApiOkResponse({ type: DoctorEntity })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateDoctorDto: UpdateDoctorDto,
@@ -75,6 +70,8 @@ export class DoctorsController {
 
   @Delete(':id')
   @ApiOkResponse({ type: DoctorEntity })
+  @UseGuards(JwtAuthGuard, AdminJwtAuthGuard)
+  @ApiBearerAuth()
   async remove(@Param('id', ParseIntPipe) id: number) {
     const doctor = await this.doctorsService.remove(id);
     return new DoctorEntity(doctor);

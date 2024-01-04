@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -21,6 +22,11 @@ import {
 import { UserEntity } from './entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AdminJwtAuthGuard } from 'src/auth/guards/admin-auth.guards';
+import { ChangePasswordDto } from './dto/change-password.dto';
+
+interface AuthenticatedRequest extends Request {
+  user?: UserEntity;
+}
 
 @Controller('users')
 @ApiTags('users')
@@ -79,6 +85,18 @@ export class UsersController {
   async deactivateUser(@Param('id', ParseIntPipe) id: number) {
     const user = await this.usersService.deactivateUser(id);
     return new UserEntity(user);
+  }
+
+  @Patch('/change-password')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: Object })
+  async changepassword(
+    @Req() request: AuthenticatedRequest,
+    @Body() changePasswordDto: ChangePasswordDto,
+  ) {
+    const user = request.user as UserEntity;
+    return this.usersService.changepassword(user, changePasswordDto);
   }
 
   @Delete(':id')
