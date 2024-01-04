@@ -7,12 +7,25 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { DoctorsService } from './doctors.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { DoctorEntity } from './entities/doctor.entity';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UserEntity } from 'src/users/entities/user.entity';
+
+interface AuthenticatedRequest extends Request {
+  user?: UserEntity;
+}
 
 @Controller('doctors')
 @ApiTags('doctor')
@@ -38,6 +51,16 @@ export class DoctorsController {
   async findOne(@Param('id', ParseIntPipe) id: number) {
     const doctor = await this.doctorsService.findOne(id);
     return new DoctorEntity(doctor);
+  }
+
+  @Patch('/change-password')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: Object })
+  async changepassword(@Req() request: AuthenticatedRequest) {
+    const user = request.user as UserEntity;
+    console.log(user.id);
+    return user;
   }
 
   @Patch('/update-profile/:id')
