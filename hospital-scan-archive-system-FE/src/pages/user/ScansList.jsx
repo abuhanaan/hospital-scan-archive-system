@@ -7,8 +7,8 @@ import { EmptySearch } from '../../components/EmptySearch';
 import AddButton from '../../components/AddButton';
 
 export async function loader() {
-    const doctorId = 1;
-    const data = scans.filter(scan => scan.userId === doctorId);
+    const user = JSON.parse(localStorage.getItem('user'));
+    const data = scans.filter(scan => scan.userId === user.id);
     return data;
 }
 

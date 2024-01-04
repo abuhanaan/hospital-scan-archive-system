@@ -4,25 +4,28 @@ import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
 import { patients, scans } from '../../constants';
-
+import { EmptySearch } from '../../components/EmptySearch';
 import AddButton from '../../components/AddButton';
 
 export async function loader() {
-    const userId = 1;
-    const userPatients = scans.filter(scan => scan.userId === userId)
-        .map(scan => ({
-            id: scan.patientId,
-            fullName: scan.patientName,
-            dob: scan.patientDob,
-            address: scan.patientAddress,
-            gender: scan.patientGender,
-            phoneNumber: scan.patientPhoneNumber,
-            nextOfKinName: scan.patientNextOfKinName,
-            nextOfKinPhone: scan.patientNextOfKinPhone,
-            nextOfKinRelationship: scan.nextOfKinRelationship
-        }));
+    const user = JSON.parse(localStorage.getItem('user'));
+    const allPatients = user.role === 'doctor' ?
+        scans.filter(scan => scan.userId === user.id)
+            .map(scan => ({
+                id: scan.patientId,
+                fullName: scan.patientName,
+                dob: scan.patientDob,
+                address: scan.patientAddress,
+                gender: scan.patientGender,
+                phoneNumber: scan.patientPhoneNumber,
+                nextOfKinName: scan.patientNextOfKinName,
+                nextOfKinPhone: scan.patientNextOfKinPhone,
+                nextOfKinRelationship: scan.nextOfKinRelationship
+            })) :
+        patients
+        ;
 
-    return userPatients;
+    return allPatients;
 }
 
 const PatientsList = () => {

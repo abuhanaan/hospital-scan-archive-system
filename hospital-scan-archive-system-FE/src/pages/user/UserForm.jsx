@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MdOutlineSyncLock } from "react-icons/md";
 
 const UserForm = () => {
     const { state } = useLocation();

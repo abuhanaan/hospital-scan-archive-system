@@ -1,12 +1,7 @@
 import React from 'react';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
-import { MdOutlineEdit, MdDeleteOutline, MdOutlineFileDownload } from "react-icons/md";
-import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-import { IoEyeOutline } from "react-icons/io5";
+import { MdOutlineFileDownload } from "react-icons/md";
 import { scans, patients } from '../../constants';
-import { EmptySearch } from '../../components/EmptySearch';
-
-import { IoSearch } from 'react-icons/io5';
 
 export async function loader({ params }) {
     const scan = scans.filter(scan => scan.scanId === params.id);

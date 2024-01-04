@@ -7,13 +7,12 @@ import { users } from '../../constants';
 import { EmptySearch } from '../../components/EmptySearch';
 
 export async function loader() {
-    const userId = 1;
-    const data = users.filter(user => user.id === userId)[0];
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    const data = users.filter(user => user.id === currentUser.id)[0];
 
     return data;
 }
 
-import { IoSearch } from 'react-icons/io5';
 import { HiUser } from 'react-icons/hi';
 
 const UserView = () => {

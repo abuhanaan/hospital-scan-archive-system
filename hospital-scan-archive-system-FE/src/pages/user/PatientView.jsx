@@ -9,14 +9,18 @@ import { EmptySearch } from '../../components/EmptySearch';
 import { IoSearch } from 'react-icons/io5';
 
 export async function loader({ params }) {
-    const doctorId = 1;
+    const user = JSON.parse(localStorage.getItem('user'));
     const patient = patients.filter(patient => patient.id === Number(params.id));
-    const patientScans = scans.filter(scan => scan.patientId === Number(params.id) && scan.userId === doctorId);
+    const patientScans = scans.filter(scan => scan.patientId === Number(params.id) && scan.userId === user.id);
 
-    const data = {
-        ...patient[0],
-        scans: patientScans
-    };
+    const data = user.role === 'doctor' ?
+        {
+            ...patient[0],
+            scans: patientScans
+        } :
+        {
+            ...patient[0]
+        };
 
     return data;
 }

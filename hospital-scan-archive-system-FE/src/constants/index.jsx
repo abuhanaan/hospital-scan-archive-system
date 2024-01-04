@@ -116,6 +116,39 @@ export const scans = [
         patientDob: '12/11/1990',
         patientGender: 'female'
     },
+    {
+        id: 3,
+        firstName: 'Halimah',
+        lastName: 'Salis',
+        email: 'doctor2@g.com',
+        password: 'doc456',
+        specialty: 'Opthalmologist',
+        role: 'doctor',
+        img: 'https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/7525866/hijab-doctor-clipart-md.png'
+    },
+    {
+        scanId: '6',
+        scanSymptoms: 'Chest pains',
+        scanDiagnosis: 'Chest pain',
+        scanType: 'Chest Scan',
+        scanDate: '8/10/2023',
+        scanUrl: 'https://chest-pain-sandra.zip',
+        userId: 3,
+        userName: 'Halimah Salis',
+        userEmail: 'doctor2@g.com',
+        userSpecialty: 'Opthalmologist',
+        userRole: 'doctor',
+        userImg: 'https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/7525866/hijab-doctor-clipart-md.png',
+        patientId: 2,
+        patientName: 'Yusuf Tajudeen',
+        patientPhoneNumber: '07054908745',
+        patientNextOfKinName: 'Zainab Tiamiyu',
+        patientNextOfKinPhone: '08054125690',
+        patientNextOfKinRelationship: 'wife',
+        patientAddress: '18, Ajanlekoko street, Lagos.',
+        patientDob: '14/11/1998',
+        patientGender: 'male'
+    },
 ];
 
 export const users = [
