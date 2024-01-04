@@ -1,6 +1,6 @@
 import './App.css';
-import { AdminLayout, DoctorLayout, AuthLayout, Layout } from './components';
-import { Home, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView, DoctorDashboard, DoctorPatientsList, DoctorPatientView, DoctorScansList, DoctorScanView, DoctorScanForm, DoctorProfileView, DoctorForm, adminDashboardLoader, usersListLoader, userViewLoader, patientViewLoader, patientsListLoader, scanViewLoader, scansListLoader, doctorDashboardLoader, doctorPatientsListLoader, doctorPatientViewLoader, doctorScansListLoader, doctorScanViewLoader, doctorScanFormLoader, doctorProfileViewLoader } from './pages';
+import { AdminLayout, UserLayout, AuthLayout, Layout } from './components';
+import { Home, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView, UserDashboard, UserPatientsList, UserPatientView, UserScansList, UserScanView, UserScanForm, UserProfileView, UserProfileForm, adminDashboardLoader, usersListLoader, userViewLoader, patientViewLoader, patientsListLoader, scanViewLoader, scansListLoader, userDashboardLoader, userPatientsListLoader, userPatientViewLoader, userScansListLoader, userScanViewLoader, userScanFormLoader, userProfileViewLoader } from './pages';
 import { createBrowserRouter, createRoutesFromChildren, RouterProvider, Route } from 'react-router-dom';
 
 const router = createBrowserRouter(createRoutesFromChildren(
@@ -23,18 +23,18 @@ const router = createBrowserRouter(createRoutesFromChildren(
                 <Route path='scans/create-scan' element={<ScanForm />} />
             </Route>
 
-            <Route path='user' element={<DoctorLayout />}>
-                <Route index loader={doctorDashboardLoader} element={<DoctorDashboard />} />
+            <Route path='user' element={<UserLayout />}>
+                <Route index loader={userDashboardLoader} element={<UserDashboard />} />
 
-                <Route path='profile' loader={doctorProfileViewLoader} element={<DoctorProfileView />} />
-                <Route path='profile/update' element={<DoctorForm />} />
+                <Route path='profile' loader={userProfileViewLoader} element={<UserProfileView />} />
+                <Route path='profile/update' element={<UserProfileForm />} />
 
-                <Route path='patients' loader={doctorPatientsListLoader} element={<DoctorPatientsList />} />
-                <Route path='patients/:id' loader={doctorPatientViewLoader} element={<DoctorPatientView />} />
+                <Route path='patients' loader={userPatientsListLoader} element={<UserPatientsList />} />
+                <Route path='patients/:id' loader={userPatientViewLoader} element={<UserPatientView />} />
 
-                <Route path='scans' loader={doctorScansListLoader} element={<DoctorScansList />} />
-                <Route path='scans/:id' loader={doctorScanViewLoader} element={<DoctorScanView />} />
-                <Route path='scans/create-scan' loader={doctorScanFormLoader} element={<DoctorScanForm />} />
+                <Route path='scans' loader={userScansListLoader} element={<UserScansList />} />
+                <Route path='scans/:id' loader={userScanViewLoader} element={<UserScanView />} />
+                <Route path='scans/create-scan' loader={userScanFormLoader} element={<UserScanForm />} />
             </Route>
         </Route>
     </Route>

@@ -24,7 +24,7 @@ const UserForm = () => {
 
             <div className="mx-auto w-full">
                 <form>
-                    <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-x-3 gap-y-6">
+                    <div className="grid grid-cols-1 xs:grid-cols-2 gap-x-3 gap-y-6">
                         <div className="">
                             <label
                                 htmlFor='email'

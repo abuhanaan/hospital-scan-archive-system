@@ -4,9 +4,9 @@ import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BiSolidEdit } from "react-icons/bi";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { useState, useEffect } from 'react';
-import DoctorSideNav from '../DoctorSideNav';
+import UserSideNav from '../UserSideNav';
 
-const DoctorLayout = () => {
+const UserLayout = () => {
     const [showMenu, setShowMenu] = useState(false);
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ const DoctorLayout = () => {
     return (
         <div className='flex flex-col min-h-screen md:flex-row md:overflow-hidden'>
             <div className='w-full flex-none md:w-64'>
-                <DoctorSideNav user={user} />
+                <UserSideNav user={user} />
             </div>
 
             <div className='flex-grow flex flex-col min-h-screen'>
@@ -69,4 +69,4 @@ const DoctorLayout = () => {
     )
 }
 
-export default DoctorLayout;
+export default UserLayout;

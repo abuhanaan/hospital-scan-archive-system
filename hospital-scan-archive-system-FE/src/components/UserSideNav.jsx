@@ -7,7 +7,7 @@ import { HiOutlineUser } from 'react-icons/hi';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 
-const DoctorSideNav = ({ user }) => {
+const UserSideNav = ({ user }) => {
     const location = useLocation();
     const pathname = location.pathname;
     const navigate = useNavigate();
@@ -124,4 +124,4 @@ const DoctorSideNav = ({ user }) => {
     )
 }
 
-export default DoctorSideNav;
+export default UserSideNav;

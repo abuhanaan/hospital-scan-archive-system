@@ -11,14 +11,14 @@ export { default as ScansList } from './admin/ScansList';
 export { default as ScanView } from './admin/ScanView';
 export { default as ScanForm } from './admin/ScanForm';
 
-export { default as DoctorDashboard } from './user/UserDashboard';
-export { default as DoctorPatientsList } from './user/PatientsList';
-export { default as DoctorPatientView } from './user/PatientView';
-export { default as DoctorScansList } from './user/ScansList';
-export { default as DoctorScanView } from './user/ScanView';
-export { default as DoctorScanForm } from './user/ScanForm';
-export { default as DoctorProfileView } from './user/UserView';
-export { default as DoctorForm } from './user/UserForm';
+export { default as UserDashboard } from './user/UserDashboard';
+export { default as UserPatientsList } from './user/PatientsList';
+export { default as UserPatientView } from './user/PatientView';
+export { default as UserScansList } from './user/ScansList';
+export { default as UserScanView } from './user/ScanView';
+export { default as UserScanForm } from './user/ScanForm';
+export { default as UserProfileView } from './user/UserView';
+export { default as UserProfileForm } from './user/UserForm';
 
 // Admin Loaders
 export { loader as adminDashboardLoader } from './admin/AdminDashboard';
@@ -30,10 +30,10 @@ export { loader as scanViewLoader } from './admin/ScanView';
 export { loader as scansListLoader } from './admin/ScansList';
 
 // User Loaders
-export { loader as doctorDashboardLoader } from './user/UserDashboard';
-export { loader as doctorPatientsListLoader } from './user/PatientsList';
-export { loader as doctorPatientViewLoader } from './user/PatientView';
-export { loader as doctorScansListLoader } from './user/ScansList';
-export { loader as doctorScanViewLoader } from './user/ScanView';
-export { loader as doctorScanFormLoader } from './user/ScanForm';
-export { loader as doctorProfileViewLoader } from './user/UserView';
+export { loader as userDashboardLoader } from './user/UserDashboard';
+export { loader as userPatientsListLoader } from './user/PatientsList';
+export { loader as userPatientViewLoader } from './user/PatientView';
+export { loader as userScansListLoader } from './user/ScansList';
+export { loader as userScanViewLoader } from './user/ScanView';
+export { loader as userScanFormLoader } from './user/ScanForm';
+export { loader as userProfileViewLoader } from './user/UserView';
