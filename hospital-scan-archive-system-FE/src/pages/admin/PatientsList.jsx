@@ -15,13 +15,6 @@ const PatientsList = () => {
     const navigate = useNavigate();
     const patients = useLoaderData();
 
-    // const patients = [
-    //     { id: 1, firstName: 'Sandra', lastName: 'Grace', phoneNumber: '08078903425', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '32' },
-    //     { id: 2, firstName: 'Yusuf', lastName: 'Tajudeen', phoneNumber: '07054908745', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '54' },
-    //     { id: 3, firstName: 'Hikmah', lastName: 'Boladale', phoneNumber: '07012308745', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '41' },
-    //     { id: 4, firstName: 'Sandra', lastName: 'Ali', phoneNumber: '07054901235', nextOfKin: 'Aliyu Rasheed', address: '18, Ajanlekoko street, Lagos.', age: '22' }
-    // ];
-
     function viewPatient(patientId) {
         navigate(`./${patientId}`);
     }
@@ -103,7 +96,7 @@ const PatientsList = () => {
                                                     <td className="table-data">{patient.nextOfKinName}</td>
                                                     <td className="table-data">{patient.address}</td>
                                                     <td className="py-4 px-6 whitespace-nowrap flex items-center justify-center gap-1">
-                                                        <Link to={`create-patient`} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
+                                                        <Link to={`create-patient`} state={{patient: patient}} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
 
                                                         <button onClick={deletePatient} data-patient-id={patient.id} className="text-grey-lighter py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></button>
                                                     </td>
