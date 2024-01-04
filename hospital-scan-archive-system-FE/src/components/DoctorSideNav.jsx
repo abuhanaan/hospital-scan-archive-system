@@ -55,13 +55,13 @@ const DoctorSideNav = ({ user }) => {
                 </Link>
 
                 {
-                    user?.role !== 'doctor' &&
+                    user?.role === 'doctor' &&
                     <Link
                         to='/user/profile'
                         className={clsx(
                             `flex h-[48px] grow items-center justify-center gap-2 rounded-lg p-3 bg-[#21212B] md:bg-transparent text-xl md:text-base text-[#9A99A0] hover:bg-[#21212B] md:hover:rounded-lg md:hover:border-t-2 md:hover:border-blue-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3`,
                             {
-                                'bg-sky-100 text-blue-600': pathname.includes('//user/profile')
+                                'bg-sky-100 text-blue-600': pathname.includes('/user/profile')
                             }
                         )}
                     >
@@ -102,7 +102,7 @@ const DoctorSideNav = ({ user }) => {
                 {
                     user?.role !== 'doctor' &&
                     <Link
-                        to='/user/scans'
+                        to='/user/scans/create-scan'
                         className={clsx(
                             `flex h-[48px] grow items-center justify-center gap-2 rounded-lg p-3 bg-[#21212B] md:bg-transparent md:text-base text-[#9A99A0] hover:bg-[#21212B] md:hover:border-t-2 md:hover:border-blue-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3`,
                             {
