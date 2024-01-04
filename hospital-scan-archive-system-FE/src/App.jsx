@@ -1,6 +1,6 @@
 import './App.css';
 import { AdminLayout, DoctorLayout, AuthLayout, Layout } from './components';
-import { Home, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView, DoctorDashboard, DoctorPatientsList, DoctorPatientView, DoctorScansList, DoctorScanView, DoctorProfileView, DoctorForm, adminDashboardLoader, usersListLoader, userViewLoader, patientViewLoader, patientsListLoader, scanViewLoader, scansListLoader, doctorDashboardLoader, doctorPatientsListLoader, doctorPatientViewLoader, doctorScansListLoader, doctorScanViewLoader, doctorProfileViewLoader } from './pages';
+import { Home, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView, DoctorDashboard, DoctorPatientsList, DoctorPatientView, DoctorScansList, DoctorScanView, DoctorScanForm, DoctorProfileView, DoctorForm, adminDashboardLoader, usersListLoader, userViewLoader, patientViewLoader, patientsListLoader, scanViewLoader, scansListLoader, doctorDashboardLoader, doctorPatientsListLoader, doctorPatientViewLoader, doctorScansListLoader, doctorScanViewLoader, doctorScanFormLoader, doctorProfileViewLoader } from './pages';
 import { createBrowserRouter, createRoutesFromChildren, RouterProvider, Route } from 'react-router-dom';
 
 const router = createBrowserRouter(createRoutesFromChildren(
@@ -34,6 +34,7 @@ const router = createBrowserRouter(createRoutesFromChildren(
 
                 <Route path='scans' loader={doctorScansListLoader} element={<DoctorScansList />} />
                 <Route path='scans/:id' loader={doctorScanViewLoader} element={<DoctorScanView />} />
+                <Route path='scans/create-scan' loader={doctorScanFormLoader} element={<DoctorScanForm />} />
             </Route>
         </Route>
     </Route>

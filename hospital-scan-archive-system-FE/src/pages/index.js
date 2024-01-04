@@ -16,6 +16,7 @@ export { default as DoctorPatientsList } from './user/PatientsList';
 export { default as DoctorPatientView } from './user/PatientView';
 export { default as DoctorScansList } from './user/ScansList';
 export { default as DoctorScanView } from './user/ScanView';
+export { default as DoctorScanForm } from './user/ScanForm';
 export { default as DoctorProfileView } from './user/UserView';
 export { default as DoctorForm } from './user/UserForm';
 
@@ -34,4 +35,5 @@ export { loader as doctorPatientsListLoader } from './user/PatientsList';
 export { loader as doctorPatientViewLoader } from './user/PatientView';
 export { loader as doctorScansListLoader } from './user/ScansList';
 export { loader as doctorScanViewLoader } from './user/ScanView';
+export { loader as doctorScanFormLoader } from './user/ScanForm';
 export { loader as doctorProfileViewLoader } from './user/UserView';

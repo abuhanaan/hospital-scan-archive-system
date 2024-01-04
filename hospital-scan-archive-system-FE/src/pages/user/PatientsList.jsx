@@ -45,7 +45,6 @@ const PatientsList = () => {
 
                 <div className="flex justify-between items-center mb-6 w-full">
                     <h1 className="font-bold text-primary text-2xl leading-tight mt-6">Patients</h1>
-                    <AddButton navigateTo={`create-patient`}>Add New</AddButton>
                 </div>
             </div>
 

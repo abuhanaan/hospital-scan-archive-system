@@ -4,6 +4,7 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { IoSearch, IoEyeOutline } from "react-icons/io5";
 import { scans } from '../../constants';
 import { EmptySearch } from '../../components/EmptySearch';
+import AddButton from '../../components/AddButton';
 
 export async function loader() {
     const doctorId = 1;
@@ -14,8 +15,6 @@ export async function loader() {
 const ScansList = () => {
     const navigate = useNavigate();
     const scansData = useLoaderData();
-
-    console.log('Component: \n', scansData);
 
     function viewScan(e) {
         e.preventDefault();
@@ -33,6 +32,11 @@ const ScansList = () => {
                         <li className="text-purple-700 font-medium text-lg" aria-current="page">Scans</li>
                     </ol>
                 </nav>
+            </div>
+
+            <div className="flex justify-between items-center mb-6 w-full">
+                <h1 className="font-bold text-primary text-2xl leading-tight mt-6">Scans</h1>
+                <AddButton navigateTo={`create-scan`}>Add New</AddButton>
             </div>
 
             <div className="h-full overflow-auto w-full">
@@ -71,7 +75,7 @@ const ScansList = () => {
                                                 Date
                                             </th>
                                             <th scope="col" className="th">
-                                                
+
                                             </th>
                                         </tr>
                                     </thead>
