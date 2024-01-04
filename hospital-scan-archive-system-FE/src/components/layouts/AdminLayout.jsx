@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { HiUser } from 'react-icons/hi';
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BiSolidEdit } from "react-icons/bi";
@@ -8,11 +8,17 @@ import SideNav from '../SideNav';
 
 const AdminLayout = () => {
     const [showMenu, setShowMenu] = useState(false);
+    const navigate = useNavigate();
 
     function toggleMenu(e) {
         e.preventDefault();
 
         setShowMenu(prev => !prev);
+    }
+
+    function signOut() {
+        localStorage.removeItem('user');
+        navigate('/');
     }
 
     return (

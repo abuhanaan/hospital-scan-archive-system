@@ -17,6 +17,7 @@ const DoctorLayout = () => {
     }
 
     function signOut() {
+        localStorage.removeItem('user');
         navigate('/');
     }
 

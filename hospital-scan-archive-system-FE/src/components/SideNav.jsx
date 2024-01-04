@@ -12,6 +12,7 @@ const SideNav = () => {
     const navigate = useNavigate();
 
     function signOut() {
+        localStorage.removeItem('user');
         navigate('/');
     }
 
