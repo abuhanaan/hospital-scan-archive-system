@@ -37,7 +37,7 @@ const PatientView = () => {
             <div className="mb-6">
                 <nav aria-label="breadcrumb">
                     <ol className="flex space-x-2">
-                        <li><Link to="/user" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Dashboard</Link></li>
+                        <li><Link to="/user" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Home</Link></li>
                         <li><Link to="/user/patients" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Patients</Link></li>
                         <li className="text-purple-700 font-medium text-lg" aria-current="page">Patient</li>
                     </ol>
