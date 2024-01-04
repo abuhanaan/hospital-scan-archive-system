@@ -96,7 +96,7 @@ const PatientsList = () => {
                                                     <td className="table-data">{patient.nextOfKinName}</td>
                                                     <td className="table-data">{patient.address}</td>
                                                     <td className="py-4 px-6 whitespace-nowrap flex items-center justify-center gap-1">
-                                                        <Link to={`create-patient`} state={{patient: patient}} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
+                                                        <Link to={`create-patient`} state={{currentPatient: patient}} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
 
                                                         <button onClick={deletePatient} data-patient-id={patient.id} className="text-grey-lighter py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></button>
                                                     </td>

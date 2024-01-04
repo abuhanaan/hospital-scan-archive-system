@@ -52,7 +52,7 @@ const PatientView = () => {
                 <div className="flex justify-between items-center w-full mt-6">
                     <h1 className="font-bold text-primary text-2xl leading-tight">Patient</h1>
                     <div className="flex items-center gap-2">
-                        <Link to={`/admin/patients/create-patient`} className="text-grey-lighter py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={22} color='white' /></Link>
+                        <Link to={`/admin/patients/create-patient`} state={{currentPatient: patient}} className="text-grey-lighter py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={22} color='white' /></Link>
 
                         <button onClick={deletePatient} data-patient-id={patient.id} className="text-grey-lighter py-2 px-2 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={22} color='white' /></button>
                     </div>

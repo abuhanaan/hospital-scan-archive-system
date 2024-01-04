@@ -1,9 +1,34 @@
-import React from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const PatientForm = () => {
     const { state } = useLocation();
-    const { patient } = state;
+
+    const patient = state && state.currentPatient;
+    const [formData, setFormData] = useState(patient || {
+        id: patient?.id || '',
+        firstName: '',
+        lastName: '',
+        gender: '',
+        phoneNumber: '',
+        address: '',
+        dob: '',
+        nextOfKinName: '',
+        nextOfKinPhone: '',
+        nextOfKinRelationship: ''
+    });
+
+    function handleChange(e) {
+        const {name, value, checked, type} = e.target;
+        const elementValue = type === 'checkbox' ? checked : value;
+
+        setFormData(prev => ({
+            ...prev,
+            [name]: elementValue
+        }))
+    }
+
+    // console.log(formData);
 
     return (
         <div className="flex flex-col pt-6 font-poppins">
@@ -11,12 +36,12 @@ const PatientForm = () => {
                 <nav aria-label="breadcrumb">
                     <ol className="flex space-x-2">
                         <li><Link to="/admin" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Dashboard</Link></li>
-                        <li><Link to="/admin/users" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Patients</Link></li>
+                        <li><Link to="/admin/patients" className="after:content-['>'] after:ml-2 text-gray-600 hover:text-purple-700 text-lg">Patients</Link></li>
                         <li className="text-purple-700 font-medium text-lg" aria-current="page">Patient Form</li>
                     </ol>
                 </nav>
 
-                <h1 className="font-bold text-primary text-2xl leading-tight mt-6">Create Patient</h1>
+                <h1 className="font-bold text-primary text-2xl leading-tight mt-6">{state ? 'Update' : 'Create'} Patient</h1>
             </div>
 
             <div className="mx-auto w-full">
@@ -24,30 +49,34 @@ const PatientForm = () => {
                     <div className="grid grid-cols-1 gap-6 xs:grid-cols-2">
                         <div className="">
                             <label
-                                htmlFor='fName'
+                                htmlFor='firstName'
                                 className="mb-1 block text-base font-medium text-[#07074D]"
                             >
                                 First Name
                             </label>
                             <input
                                 type="text"
-                                name="fName"
-                                id="fName"
+                                name="firstName"
+                                id="firstName"
+                                value={formData.firstName}
+                                onChange={handleChange}
                                 placeholder="First Name"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             />
                         </div>
                         <div className="">
                             <label
-                                htmlFor="lName"
+                                htmlFor="lastName"
                                 className="mb-1 block text-base font-medium text-[#07074D]"
                             >
                                 Last Name
                             </label>
                             <input
                                 type="text"
-                                name="lName"
-                                id="lName"
+                                name="lastName"
+                                id="lastName"
+                                value={formData.lastName}
+                                onChange={handleChange}
                                 placeholder="Last Name"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             />
@@ -63,6 +92,8 @@ const PatientForm = () => {
                                 type="text"
                                 name="phoneNumber"
                                 id="phoneNumber"
+                                value={formData.phoneNumber}
+                                onChange={handleChange}
                                 placeholder="08064590912"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             />
@@ -78,6 +109,8 @@ const PatientForm = () => {
                                 type="date"
                                 name="dob"
                                 id="dob"
+                                value={formData.dob}
+                                onChange={handleChange}
                                 placeholder="Date"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             />
@@ -90,7 +123,12 @@ const PatientForm = () => {
                             >
                                 Gender
                             </label>
-                            <select name="gender" id="gender" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
+                            <select
+                                name="gender"
+                                id="gender"
+                                value={formData.gender}
+                                onChange={handleChange}
+                                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                                 <option value="">--Select an option--</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
@@ -104,7 +142,13 @@ const PatientForm = () => {
                             >
                                 Address
                             </label>
-                            <textarea name="address" id="address" placeholder='Address' className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md h-[56px]"></textarea>
+                            <textarea
+                                name="address"
+                                id="address"
+                                value={formData.address}
+                                onChange={handleChange}
+                                placeholder='Address'
+                                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md h-[56px]"></textarea>
                         </div>
                     </div>
 
@@ -113,16 +157,18 @@ const PatientForm = () => {
 
                         <div className="">
                             <label
-                                htmlFor="nextOfKin"
+                                htmlFor="nextOfKinName"
                                 className="mb-1 block text-base font-medium text-[#07074D]"
                             >
                                 Name
                             </label>
                             <input
                                 type="text"
-                                name="nextOfKin"
-                                id="nextOfKin"
-                                placeholder="Next of Kin"
+                                name="nextOfKinName"
+                                id="nextOfKinName"
+                                value={formData.nextOfKinName}
+                                onChange={handleChange}
+                                placeholder="Name"
                                 className="w-full rounded-s-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             />
                         </div>
@@ -137,7 +183,9 @@ const PatientForm = () => {
                                 type="text"
                                 name="nextOfKinRelationship"
                                 id="nextOfKinRelationship"
-                                placeholder="Next of Kin Relationship"
+                                value={formData.nextOfKinRelationship}
+                                onChange={handleChange}
+                                placeholder="Relationship"
                                 className="w-full rounded-s-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             />
                         </div>
@@ -152,18 +200,20 @@ const PatientForm = () => {
                                 type="text"
                                 name="nextOfKinPhone"
                                 id="nextOfKinPhone"
-                                placeholder="Next of Kin Phone Number"
+                                value={formData.nextOfKinPhone}
+                                onChange={handleChange}
+                                placeholder="Phone Number"
                                 className="w-full rounded-s-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             />
                         </div>
                     </fieldset>
 
                     <div className='flex justify-end'>
-                        <button
-                            className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
-                        >
-                            Create Patient
-                        </button>
+                        {
+                            state ?
+                                <button className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update Patient</button> :
+                                <button className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Create Patient</button>
+                        }
                     </div>
                 </form>
             </div>

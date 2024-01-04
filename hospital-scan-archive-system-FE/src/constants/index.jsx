@@ -117,16 +117,6 @@ export const scans = [
         patientGender: 'female'
     },
     {
-        id: 3,
-        firstName: 'Halimah',
-        lastName: 'Salis',
-        email: 'doctor2@g.com',
-        password: 'doc456',
-        specialty: 'Opthalmologist',
-        role: 'doctor',
-        img: 'https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/7525866/hijab-doctor-clipart-md.png'
-    },
-    {
         scanId: '6',
         scanSymptoms: 'Chest pains',
         scanDiagnosis: 'Chest pain',
@@ -146,7 +136,7 @@ export const scans = [
         patientNextOfKinPhone: '08054125690',
         patientNextOfKinRelationship: 'wife',
         patientAddress: '18, Ajanlekoko street, Lagos.',
-        patientDob: '14/11/1998',
+        patientDob: '12/11/1998',
         patientGender: 'male'
     },
 ];
@@ -201,7 +191,7 @@ export const patients = [
         lastName: 'Grace',
         phoneNumber: '08078903425',
         address: '18, Ajanlekoko street, Lagos.',
-        dob: '14/11/1998',
+        dob: '12/11/1998',
         gender: 'female',
         nextOfKinName: 'Aliyu Rasheed',
         nextOfKinRelationship: 'husband',
@@ -213,7 +203,7 @@ export const patients = [
         lastName: 'Tajudeen',
         phoneNumber: '07054908745',
         address: '18, Ajanlekoko street, Lagos.',
-        dob: '14/11/1998',
+        dob: '12/11/1998',
         gender: 'male',
         nextOfKinName: 'zainab Tiamiyu',
         nextOfKinRelationship: 'wife',
@@ -225,7 +215,7 @@ export const patients = [
         lastName: 'Boladale',
         phoneNumber: '07012308745',
         address: '18, Ajanlekoko street, Lagos.',
-        dob: '14/11/1998',
+        dob: '12/11/1998',
         gender: 'female',
         nextOfKinName: 'Aliyu Rasheed',
         nextOfKinRelationship: 'brother',
@@ -237,7 +227,7 @@ export const patients = [
         lastName: 'Ali',
         phoneNumber: '07054901235',
         address: '18, Ajanlekoko street, Lagos.',
-        dob: '14/11/1998',
+        dob: '12/11/1998',
         gender: 'female',
         nextOfKinName: 'Aliyu Rasheed',
         nextOfKinRelationship: 'husband',
