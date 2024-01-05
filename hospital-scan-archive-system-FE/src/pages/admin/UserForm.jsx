@@ -45,6 +45,17 @@ const UserForm = () => {
 
     }
 
+    function generatePassword(e) {
+        e.preventDefault();
+
+        if (formData.email) {
+            setFormData(prev => ({
+                ...prev,
+                password: formData.email.slice(0, 6)
+            }));
+        }
+    }
+
     return (
         <div className="flex flex-col pt-6 font-poppins">
             <div className="pb-6">
@@ -100,6 +111,7 @@ const UserForm = () => {
                                     readOnly
                                 />
                                 <button
+                                    onClick={generatePassword}
                                     className="hover:shadow-form rounded-e-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-4 text-center text-base font-semibold text-white outline-none"
                                 >
                                     <MdOutlineSyncLock size={22} color='white' />
