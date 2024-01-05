@@ -4,6 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 const ScanForm = () => {
     const { state } = useLocation();
     const scan = state && state.currentScan;
+    const fileRef = useRef(null);
+    const [selectedScan, setSelectedScan] = useState(null);
     const [formData, setFormData] = useState(
         {
             patientId: scan.patientId,
@@ -33,6 +35,25 @@ const ScanForm = () => {
             [name]: elementValue
         }));
     }
+
+    function browseScan(e) {
+        e.preventDefault();
+
+        fileRef.current?.click();
+    }
+
+    function handleScanSelect(e) {
+        e.preventDefault();
+
+        const file = e.target.files[0];
+
+        if (file) {
+            setSelectedScan(file);
+        }
+
+    }
+
+    console.log(selectedScan);
 
     return (
         <div className="flex flex-col pt-6 font-poppins">
@@ -147,9 +168,15 @@ const ScanForm = () => {
                                 type="file"
                                 name="file"
                                 id="file"
+                                ref={fileRef}
+                                onChange={handleScanSelect}
                                 placeholder="Next of Kin"
-                                className="w-full rounded-s-md h-[50px] border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                className="w-full rounded-s-md h-[50px] border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md hidden"
                             />
+                            <div className="flex items-end gap-4">
+                                <button onClick={browseScan} className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">{selectedScan ? 'Change Scan' : 'Browse Scan'}</button>
+                                <p className="font-poppins font-medium text-lg">{selectedScan ? selectedScan.name : 'No file chosen'}</p>
+                            </div>
                         </div>
                     </div>
 
