@@ -7,7 +7,6 @@ import { scans } from '../../constants';
 import AddButton from '../../components/AddButton';
 
 export async function loader() {
-    // console.log(scans);
     const data = [...scans];
     return data;
 }
@@ -15,8 +14,6 @@ export async function loader() {
 const ScansList = () => {
     const navigate = useNavigate();
     const scansData = useLoaderData();
-
-    console.log('Component: \n', scansData);
 
     function viewScan(e) {
         e.preventDefault();
@@ -110,7 +107,7 @@ const ScansList = () => {
                                                             <MdOutlineFileDownload size={20} color='white' />
                                                         </Link>
 
-                                                        <Link to={`create-scan`} className="py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
+                                                        <Link to={`create-scan`} state={{currentScan: scan}} className="py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
 
                                                         <button onClick={deleteScan} data-scan-id={scan.scanId} className="py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></button>
                                                     </td>

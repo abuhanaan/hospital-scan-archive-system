@@ -25,7 +25,7 @@ const UserForm = () => {
         setFormData(prev => ({
             ...prev,
             [name]: elementValue
-        }))
+        }));
     }
 
     function browseImage(e) {

@@ -52,7 +52,7 @@ const ScanView = () => {
                     <div className="flex items-center gap-2">
                         <Link to={scan.scanUrl} className="py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineFileDownload size={22} color='white' /></Link>
 
-                        <Link to={`/admin/scans/create-scan`} className="py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={22} color='white' /></Link>
+                        <Link to={`/admin/scans/create-scan`} state={{currentScan: scan}} className="py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={22} color='white' /></Link>
 
                         <button onClick={deleteScan} className="py-2 px-2 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={22} color='white' /></button>
                     </div>
