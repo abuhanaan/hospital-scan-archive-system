@@ -17,9 +17,6 @@ export class UserEntity implements User {
   email: string;
 
   @ApiProperty()
-  speciality: string;
-
-  @ApiProperty()
   active: boolean;
 
   @ApiProperty()
