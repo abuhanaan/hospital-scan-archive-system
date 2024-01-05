@@ -150,6 +150,7 @@ export const users = [
         password: 'doc123',
         specialty: 'Gynaecologist',
         role: 'doctor',
+        active: true,
         img: 'https://p7.hiclipart.com/preview/14/65/239/ico-avatar-scalable-vector-graphics-icon-doctor-with-stethoscope.jpg'
     },
     {
@@ -160,6 +161,7 @@ export const users = [
         password: 'admin123',
         specialty: 'Neurologist', 
         role: 'admin',
+        active: true,
         img: 'https://cdn.imgbin.com/2/21/3/imgbin-computer-icons-doctor-of-medicine-health-care-physician-health-f0nPVnd5XSZmZra6C8BRi8kU4.jpg'
     },
     {
@@ -170,6 +172,7 @@ export const users = [
         password: 'doc456',
         specialty: 'Opthalmologist',
         role: 'doctor',
+        active: false,
         img: 'https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/7525866/hijab-doctor-clipart-md.png'
     },
     {
@@ -180,6 +183,7 @@ export const users = [
         password: 'staff123',
         specialty: 'Dermatologist',
         role: 'staff',
+        active: true,
         img: 'https://www.clipartmax.com/png/middle/244-2445799_doctor-female-doctor-icon.png'
     },
 ];
