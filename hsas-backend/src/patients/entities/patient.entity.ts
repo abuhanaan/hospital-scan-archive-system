@@ -35,8 +35,13 @@ export class PatientEntity implements Patient {
   @ApiProperty()
   updatedAt: Date;
 
-  @ApiProperty()
-  scans: Scan[];
+  @ApiProperty({ required: false, isArray: true })
+  scans?: Scan[];
 
-  doctors: DoctorPatient[];
+  @ApiProperty({ required: false, isArray: true })
+  doctors?: DoctorPatient[];
+
+  constructor(data: Partial<PatientEntity>) {
+    Object.assign(this, data);
+  }
 }

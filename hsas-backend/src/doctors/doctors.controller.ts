@@ -21,7 +21,6 @@ import {
 } from '@nestjs/swagger';
 import { DoctorEntity } from './entities/doctor.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { UserEntity } from 'src/users/entities/user.entity';
 import { AdminJwtAuthGuard } from 'src/auth/guards/admin-auth.guards';
 
 @Controller('doctors')
