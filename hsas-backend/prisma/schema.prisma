@@ -33,7 +33,7 @@ model Doctor {
   doctorId        Int?        @unique
 
   scans           Scan[]
-  doctorPatients  DoctorPatient[]
+  patients  DoctorPatient[]
 }
 
 model Patient {
@@ -50,7 +50,7 @@ model Patient {
   updatedAt             DateTime  @updatedAt
 
   scans                 Scan[]
-  doctorPatients        DoctorPatient[]
+  doctors        DoctorPatient[]
 }
 
 model Scan {
