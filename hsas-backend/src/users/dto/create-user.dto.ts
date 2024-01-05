@@ -19,10 +19,6 @@ export class CreateUserDto {
   @ApiProperty()
   role: string;
 
-  @IsString()
-  @ApiProperty()
-  speciality?: string;
-
   @IsBoolean()
   @ApiProperty()
   @IsNotEmpty()
