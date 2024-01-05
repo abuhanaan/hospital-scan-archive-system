@@ -52,7 +52,7 @@ const UserView = () => {
                 <div className="flex justify-between items-center w-full mt-6">
                     <h1 className="font-bold text-primary text-2xl leading-tight">User</h1>
                     <div className="flex items-center gap-2">
-                        <Link to={`/admin/users/create-user`} className="text-grey-lighter py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={22} color='white' /></Link>
+                        <Link to={`/admin/users/create-user`} state={{currentUser: user}} className="text-grey-lighter py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={22} color='white' /></Link>
 
                         <button onClick={deleteUser} data-user-id={user.id} className="text-grey-lighter py-2 px-2 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={22} color='white' /></button>
                     </div>

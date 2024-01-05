@@ -1,8 +1,50 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { MdOutlineSyncLock } from "react-icons/md";
 
 const UserForm = () => {
+    const { state } = useLocation();
+    const user = state && state.currentUser;
+    const [formData, setFormData] = useState(user || {
+        id: user?.id || '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        role: '',
+        specialty: '',
+        img: '',
+    });
+    const [image, setImage] = useState(null);
+    const fileRef = useRef(null);
+
+    function handleChange(e) {
+        const { name, value, type, checked } = e.target;
+        const elementValue = type === 'checkbox' ? checked : value;
+
+        setFormData(prev => ({
+            ...prev,
+            [name]: elementValue
+        }))
+    }
+
+    function browseImage(e) {
+        e.preventDefault();
+
+        fileRef.current?.click();
+    }
+
+    function handleImageSelect(e) {
+        e.preventDefault();
+
+        const file = e.target.files[0];
+
+        if (file) {
+            setImage(file);
+        }
+
+    }
+
     return (
         <div className="flex flex-col pt-6 font-poppins">
             <div className="pb-6">
@@ -14,12 +56,12 @@ const UserForm = () => {
                     </ol>
                 </nav>
 
-                <h1 className="font-bold text-primary text-2xl leading-tight mt-6">Create User</h1>
+                <h1 className="font-bold text-primary text-2xl leading-tight mt-6">{state ? 'Update' : 'Create'} User</h1>
             </div>
 
             <div className="mx-auto w-full">
                 <form>
-                    <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-x-3 gap-y-6">
+                    <div className="grid grid-cols-1 xs:grid-cols-2 gap-6">
                         <div className="">
                             <label
                                 htmlFor='email'
@@ -31,23 +73,9 @@ const UserForm = () => {
                                 type="email"
                                 name="email"
                                 id="email"
+                                value={formData.email}
+                                onChange={handleChange}
                                 placeholder="Email"
-                                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                                required
-                            />
-                        </div>
-                        <div className="">
-                            <label
-                                htmlFor="role"
-                                className="mb-1 block text-base font-medium text-[#07074D]"
-                            >
-                                Role <span className="text-red-600">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                name="role"
-                                id="role"
-                                placeholder="Role"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                 required
                             />
@@ -64,6 +92,8 @@ const UserForm = () => {
                                     type="text"
                                     name="password"
                                     id="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
                                     placeholder="Password"
                                     className="w-full rounded-s-md border border-[#e0e0e0] bg-gray-200 py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     required
@@ -78,30 +108,52 @@ const UserForm = () => {
                         </div>
                         <div className="">
                             <label
-                                htmlFor='fName'
+                                htmlFor="role"
+                                className="mb-1 block text-base font-medium text-[#07074D]"
+                            >
+                                Role <span className="text-red-600">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="role"
+                                id="role"
+                                value={formData.role}
+                                onChange={handleChange}
+                                placeholder="Role"
+                                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                required
+                            />
+                        </div>
+                        <div className="">
+                            <label
+                                htmlFor='firstName'
                                 className="mb-1 block text-base font-medium text-[#07074D]"
                             >
                                 First Name
                             </label>
                             <input
                                 type="text"
-                                name="fName"
-                                id="fName"
+                                name="firstName"
+                                id="firstName"
+                                value={formData.firstName}
+                                onChange={handleChange}
                                 placeholder="First Name"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             />
                         </div>
                         <div className="">
                             <label
-                                htmlFor="lName"
+                                htmlFor="lastName"
                                 className="mb-1 block text-base font-medium text-[#07074D]"
                             >
                                 Last Name
                             </label>
                             <input
                                 type="text"
-                                name="lName"
-                                id="lName"
+                                name="lastName"
+                                id="lastName"
+                                value={formData.lastName}
+                                onChange={handleChange}
                                 placeholder="Last Name"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             />
@@ -117,6 +169,8 @@ const UserForm = () => {
                                 type="text"
                                 name="specialty"
                                 id="specialty"
+                                value={formData.specialty}
+                                onChange={handleChange}
                                 placeholder="Specialty"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             />
@@ -132,17 +186,24 @@ const UserForm = () => {
                                 type="file"
                                 name="profileImage"
                                 id="profileImage"
-                                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                accept='image/*'
+                                onChange={handleImageSelect}
+                                ref={fileRef}
+                                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md hidden"
                             />
+                            <div className="flex items-end gap-4">
+                                <button onClick={browseImage} className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">{image ? 'Change Image' : 'Browse Image'}</button>
+                                <p className="font-poppins font-medium text-lg">{image ? image.name : 'No files chosen'}</p>
+                            </div>
                         </div>
                     </div>
 
                     <div className='flex justify-end'>
-                        <button
-                            className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
-                        >
-                            Create User
-                        </button>
+                        {
+                            state ?
+                                <button className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update User</button> :
+                                <button className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Create User</button>
+                        }
                     </div>
                 </form>
             </div>

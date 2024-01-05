@@ -107,7 +107,7 @@ const UsersList = () => {
                                                             <IoEyeOutline size={20} color='white' />
                                                         </button>
 
-                                                        <Link to={`create-user`} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
+                                                        <Link to={`create-user`} state={{currentUser: user}} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
 
                                                         <button onClick={deleteUser} data-user-id={user.id} className="text-grey-lighter py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></button>
                                                     </td>
