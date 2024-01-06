@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-// import { users } from '../constants';
+import { useState, useEffect } from 'react';
 import { createColumnHelper, getCoreRowModel, useReactTable, flexRender, getPaginationRowModel, getFilteredRowModel } from '@tanstack/react-table';
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import SearchInput from './SearchInput';
 import DownLoadBtn from './DownLoadBtn';
 
-const Table = ({ data: users, columns: cols }) => {
+const Table = ({ data: users, columns: cols, render }) => {
     const columnHelper = createColumnHelper();
 
     const columns = cols.map(col => {
@@ -49,6 +48,18 @@ const Table = ({ data: users, columns: cols }) => {
             )
         }
 
+        if (col.id === 'actions') {
+            return (
+                columnHelper.accessor('', {
+                    id: col.id,
+                    cell: props => (
+                        render(props.row.original)
+                    ),
+                    header: col.header
+                })
+            )
+        }
+
         return (
             columnHelper.accessor(col.id, {
                 id: col.id,
@@ -83,8 +94,8 @@ const Table = ({ data: users, columns: cols }) => {
     }
 
     return (
-        <div className='flex flex-col'>
-            <div className="mt-6 mb-4 md:flex md:items-center md:justify-between">
+        <div className='flex flex-col w-full'>
+            <div className="mt-6 mb-4 flex flex-col items-start gap-2 sm:gap-0 sm:flex-row sm:items-center sm:justify-between w-full">
                 <SearchInput
                     value={globalFilter ?? ''}
                     onChange={(value) => setGlobalFilter(String(value))}
@@ -108,6 +119,9 @@ const Table = ({ data: users, columns: cols }) => {
                                             </th>
                                         ))
                                     }
+                                    <th className='th'>
+
+                                    </th>
                                 </tr>
                             ))
                         }

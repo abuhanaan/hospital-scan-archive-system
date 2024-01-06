@@ -12,21 +12,7 @@ export async function loader() {
     return users;
 }
 
-const UsersList = () => {
-    const navigate = useNavigate();
-    const usersData = useLoaderData();
-
-    const columns = [
-        { id: 'S/N', header: 'S/N' },
-        { id: 'img', header: 'Profile Image' },
-        { id: 'firstName', header: 'First Name' },
-        { id: 'lastName', header: 'Last Name' },
-        { id: 'email', header: 'Email' },
-        { id: 'role', header: 'Role' },
-        { id: 'speciality', header: 'Specialty' },
-        { id: 'active', header: 'Status' },
-    ];
-
+const ActionButtons = ({ user }) => {
     function viewUser(e) {
         e.preventDefault();
 
@@ -40,6 +26,35 @@ const UsersList = () => {
         const userId = e.currentTarget.getAttribute('data-user-id');
         console.log('UserId:', userId);
     }
+    
+    return (
+        <div className="py-5 px-6 flex items-center justify-center gap-1">
+            <button onClick={viewUser} data-user-id={user.id} className='bg-purple-500 hover:bg-purple-600 p-1 rounded-md'>
+                <IoEyeOutline size={20} color='white' />
+            </button>
+
+            <Link to={`create-user`} state={{ currentUser: user }} className="text-grey-lighter py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
+
+            <button onClick={deleteUser} data-user-id={user.id} className="text-grey-lighter py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></button>
+        </div>
+    )
+}
+
+const UsersList = () => {
+    const navigate = useNavigate();
+    const usersData = useLoaderData();
+
+    const columns = [
+        { id: 'S/N', header: 'S/N' },
+        { id: 'img', header: 'Profile Image' },
+        { id: 'firstName', header: 'First Name' },
+        { id: 'lastName', header: 'Last Name' },
+        { id: 'email', header: 'Email' },
+        { id: 'role', header: 'Role' },
+        { id: 'speciality', header: 'Specialty' },
+        { id: 'active', header: 'Status' },
+        { id: 'actions', header: '' }
+    ];
 
     return (
         <div className="mt-6 min-h-screen w-full font-poppins">
@@ -62,7 +77,9 @@ const UsersList = () => {
                     usersData?.length === 0 ?
                         <EmptySearch headers={['Profile Image', 'First Name', 'Last Name', 'Email', 'Specialty', 'Role']} />
                         :
-                        <Table data={users} columns={columns} />
+                        <Table data={users} columns={columns} render={(user) => (
+                            <ActionButtons user={user} />
+                        )} />
                 }
             </div>
         </div>

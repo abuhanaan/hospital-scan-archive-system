@@ -18,7 +18,7 @@ const SearchInput = ({ value: initValue, onChange, debounce = 500 }) => {
     }, [value]);
 
     return (
-        <div className="relative flex items-center mt-4 md:mt-0">
+        <div className="relative flex items-center md:mt-0">
             <span className="absolute w-5 h-5 mx-3 text-gray-400 dark:text-gray-600">
                 <IoSearch size={18} />
             </span>
