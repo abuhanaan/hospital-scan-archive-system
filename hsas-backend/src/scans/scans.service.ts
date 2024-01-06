@@ -3,10 +3,19 @@ import { CreateScanDto } from './dto/create-scan.dto';
 import { UpdateScanDto } from './dto/update-scan.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Scan } from '@prisma/client';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ScansService {
-  constructor(private prisma: PrismaService) {}
+  private readonly s3Client = new S3Client({
+    region: this.configService.getOrThrow('AWS_S3_REGION'),
+  });
+
+  constructor(
+    private prisma: PrismaService,
+    private readonly configService: ConfigService,
+  ) {}
 
   private async checkIfDoctorExists(doctorId: number) {
     const doctor = await this.prisma.doctor.findUnique({
@@ -21,12 +30,12 @@ export class ScansService {
   }
 
   private async checkIfPatientExists(patientId: number) {
-    const doctor = await this.prisma.patient.findUnique({
+    const patient = await this.prisma.patient.findUnique({
       where: { id: patientId },
     });
-    if (!doctor) {
+    if (!patient) {
       throw new NotFoundException({
-        message: `Doctor with id ${patientId} does not exist`,
+        message: `Patient with id ${patientId} does not exist`,
         error: 'Not Found',
       });
     }
@@ -40,11 +49,25 @@ export class ScansService {
       });
     }
   }
-  async create(createScanDto: CreateScanDto) {
-    // TODO: Implement scan upload before record insertion
+  async create(createScanDto: CreateScanDto, fileName: string, file: Buffer) {
+    await this.s3Client.send(
+      new PutObjectCommand({
+        Bucket: this.configService.getOrThrow('S3_BUCKET_NAME'),
+        Key: fileName,
+        Body: file,
+      }),
+    );
     await this.checkIfDoctorExists(createScanDto.doctorId);
     await this.checkIfPatientExists(createScanDto.patientId);
-    return this.prisma.scan.create({ data: createScanDto });
+
+    createScanDto.url = `${this.configService.getOrThrow(
+      'S3_BASE_URL',
+    )}/${fileName}`;
+
+    const { symptoms, diagnosis, type, url, doctorId, patientId } =
+      createScanDto;
+    const scanObject = { symptoms, diagnosis, type, url, doctorId, patientId };
+    return this.prisma.scan.create({ data: scanObject });
   }
 
   findAll() {

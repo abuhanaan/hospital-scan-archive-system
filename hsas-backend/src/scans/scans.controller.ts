@@ -7,12 +7,23 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  UsePipes,
+  UseInterceptors,
+  ValidationPipe,
+  UploadedFile,
+  ParseFilePipe,
 } from '@nestjs/common';
 import { ScansService } from './scans.service';
 import { CreateScanDto } from './dto/create-scan.dto';
 import { UpdateScanDto } from './dto/update-scan.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiConsumes,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ScanEntity } from './entities/scan.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('scans')
 @ApiTags('scans')
@@ -20,9 +31,20 @@ export class ScansController {
   constructor(private readonly scansService: ScansService) {}
 
   @Post()
+  @ApiConsumes('multipart/form-data')
+  @UsePipes(new ValidationPipe())
+  @UseInterceptors(FileInterceptor('file'))
   @ApiCreatedResponse({ type: ScanEntity })
-  async create(@Body() createScanDto: CreateScanDto) {
-    const scan = await this.scansService.create(createScanDto);
+  async create(
+    @Body() createScanDto: CreateScanDto,
+    @UploadedFile(new ParseFilePipe({ validators: [] }))
+    file: Express.Multer.File,
+  ) {
+    const scan = await this.scansService.create(
+      createScanDto,
+      file.originalname,
+      file.buffer,
+    );
     return new ScanEntity(scan);
   }
 

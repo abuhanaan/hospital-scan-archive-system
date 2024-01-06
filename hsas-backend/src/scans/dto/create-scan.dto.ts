@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Scan } from '@prisma/client';
+import { File } from 'buffer';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateScanDto {
@@ -18,18 +18,25 @@ export class CreateScanDto {
   @ApiProperty()
   type: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({
+    type: 'string',
+    format: 'binary',
+    required: true,
+  })
+  file: File;
+
+  // @IsString()
+  // @IsNotEmpty()
+  // @ApiProperty()
   url: string;
 
   @IsNumber()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ type: Number, format: 'int' })
   doctorId: number;
 
   @IsNumber()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ type: Number })
   patientId: number;
 }
