@@ -4,6 +4,7 @@ import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { IoSearch, IoEyeOutline } from "react-icons/io5";
 import { users } from '../../constants';
+import Table from '../../components/Table';
 
 import AddButton from '../../components/AddButton';
 
@@ -61,7 +62,11 @@ const UsersList = () => {
                                 </div>
                             </div>
 
-                            <div className="overflow-auto">
+                            <div className="">
+                                <Table />
+                            </div>
+
+                            {/* <div className="overflow-auto">
                                 <table className="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
                                     <thead className="bg-gray-100 dark:bg-gray-700">
                                         <tr className="">
@@ -118,9 +123,9 @@ const UsersList = () => {
 
                                     </tbody>
                                 </table>
-                            </div>
+                            </div> */}
 
-                            <div className="mt-6 sm:flex sm:items-center sm:justify-between ">
+                            {/* <div className="mt-6 sm:flex sm:items-center sm:justify-between ">
                                 <div className="text-sm text-gray-500 dark:text-gray-400">
                                     Page <span className="font-medium text-gray-700 dark:text-gray-100">1 of 10</span>
                                 </div>
@@ -140,7 +145,7 @@ const UsersList = () => {
                                         <FaArrowRightLong size={18} />
                                     </a>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                 }
             </div>
