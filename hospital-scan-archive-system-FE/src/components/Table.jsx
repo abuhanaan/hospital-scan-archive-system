@@ -3,6 +3,7 @@ import { users } from '../constants';
 import { createColumnHelper, getCoreRowModel, useReactTable, flexRender, getPaginationRowModel, getFilteredRowModel } from '@tanstack/react-table';
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import SearchInput from './SearchInput';
+import DownLoadBtn from './DownLoadBtn';
 
 const Table = () => {
     const columnHelper = createColumnHelper();
@@ -87,6 +88,8 @@ const Table = () => {
                     value={globalFilter ?? ''}
                     onChange={(value) => setGlobalFilter(String(value))}
                 />
+
+                <DownLoadBtn data={users} fileName={'users.csv'}>Download Users</DownLoadBtn>
             </div>
 
             <div className='overflow-auto'>
@@ -125,7 +128,9 @@ const Table = () => {
                                         }
                                     </tr>
                                 )) :
-                                null
+                                <tr className='text-center h-32'>
+                                    <td colSpan={12}>No record found!</td>
+                                </tr>
                         }
                     </tbody>
                 </table>
