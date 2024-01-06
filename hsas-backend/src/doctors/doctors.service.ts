@@ -2,11 +2,13 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Doctor } from '@prisma/client';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class DoctorsService {
@@ -50,7 +52,13 @@ export class DoctorsService {
     return doctor;
   }
 
-  async update(id: number, updateDoctorDto: UpdateDoctorDto) {
+  async update(id: number, updateDoctorDto: UpdateDoctorDto, user: UserEntity) {
+    if (id !== user.id) {
+      throw new UnauthorizedException({
+        message: "You are not Authorised to update someonele's profile",
+        error: 'Unauthorised',
+      });
+    }
     const doctor = await this.prisma.doctor.findUnique({
       where: { doctorId: id },
       include: { user: true },

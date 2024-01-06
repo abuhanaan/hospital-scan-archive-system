@@ -22,6 +22,8 @@ import {
 import { DoctorEntity } from './entities/doctor.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AdminJwtAuthGuard } from 'src/auth/guards/admin-auth.guards';
+import { AuthenticatedRequest } from 'src/utils/interfaces/authRequest.interface';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 @Controller('doctors')
 @ApiTags('doctor')
@@ -61,9 +63,11 @@ export class DoctorsController {
   @ApiBearerAuth()
   async update(
     @Param('id', ParseIntPipe) id: number,
+    @Req() request: AuthenticatedRequest,
     @Body() updateDoctorDto: UpdateDoctorDto,
   ) {
-    const doctor = await this.doctorsService.update(id, updateDoctorDto);
+    const user = request.user as UserEntity;
+    const doctor = await this.doctorsService.update(id, updateDoctorDto, user);
     return new DoctorEntity(doctor);
   }
 
