@@ -16,6 +16,17 @@ const UsersList = () => {
     const navigate = useNavigate();
     const usersData = useLoaderData();
 
+    const columns = [
+        { id: 'S/N', header: 'S/N' },
+        { id: 'img', header: 'Profile Image' },
+        { id: 'firstName', header: 'First Name' },
+        { id: 'lastName', header: 'Last Name' },
+        { id: 'email', header: 'Email' },
+        { id: 'role', header: 'Role' },
+        { id: 'speciality', header: 'Specialty' },
+        { id: 'active', header: 'Status' },
+    ];
+
     function viewUser(e) {
         e.preventDefault();
 
@@ -41,7 +52,7 @@ const UsersList = () => {
                 </nav>
 
                 <div className="flex justify-between items-center mb-6 w-full">
-                    <h1 className="font-bold text-primary text-2xl leading-tight mt-6">Specialists</h1>
+                    <h1 className="font-bold text-primary text-2xl leading-tight mt-6">Users</h1>
                     <AddButton navigateTo={`create-user`}>Add New</AddButton>
                 </div>
             </div>
@@ -51,7 +62,7 @@ const UsersList = () => {
                     usersData?.length === 0 ?
                         <EmptySearch headers={['Profile Image', 'First Name', 'Last Name', 'Email', 'Specialty', 'Role']} />
                         :
-                        <Table />
+                        <Table data={users} columns={columns} />
                 }
             </div>
         </div>

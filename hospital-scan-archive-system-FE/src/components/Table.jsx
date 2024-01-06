@@ -1,61 +1,62 @@
 import React, { useState } from 'react';
-import { users } from '../constants';
+// import { users } from '../constants';
 import { createColumnHelper, getCoreRowModel, useReactTable, flexRender, getPaginationRowModel, getFilteredRowModel } from '@tanstack/react-table';
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import SearchInput from './SearchInput';
 import DownLoadBtn from './DownLoadBtn';
 
-const Table = () => {
+const Table = ({ data: users, columns: cols }) => {
     const columnHelper = createColumnHelper();
 
-    const columns = [
-        columnHelper.accessor('', {
-            id: 'S/N',
-            cell: info => <span>{info.row.index + 1}</span>,
-            header: 'S/N'
-        }),
-        columnHelper.accessor('img', {
-            id: 'img',
-            cell: info => (
-                <img
-                    src={info?.getValue()}
-                    className='rounded-full w-10 h-10 object-cover'
-                    alt=""
-                />
-            ),
-            header: 'Profile Image'
-        }),
-        columnHelper.accessor('firstName', {
-            id: 'firstName',
-            cell: info => <span>{info.getValue()}</span>,
-            header: 'First Name'
-        }),
-        columnHelper.accessor('lastName', {
-            id: 'lastName',
-            cell: info => <span>{info.getValue()}</span>,
-            header: 'Last Name'
-        }),
-        columnHelper.accessor('email', {
-            id: 'email',
-            cell: info => <span>{info.getValue()}</span>,
-            header: 'Email'
-        }),
-        columnHelper.accessor('role', {
-            id: 'role',
-            cell: info => <span>{info.getValue()}</span>,
-            header: 'Role'
-        }),
-        columnHelper.accessor('speciality', {
-            id: 'speciality',
-            cell: info => <span>{info.getValue()}</span>,
-            header: 'Specialty'
-        }),
-        columnHelper.accessor('active', {
-            id: 'active',
-            cell: info => <span>{info.getValue() === true ? 'Active' : 'Inactive'}</span>,
-            header: 'Status'
-        }),
-    ];
+    const columns = cols.map(col => {
+        if (col.id === 'S/N') {
+            return (
+                columnHelper.accessor('', {
+                    id: col.id,
+                    cell: info => <span>{info.row.index + 1}</span>,
+                    header: col.header
+                })
+            )
+        }
+
+        if (col.id === 'img') {
+            return (
+                columnHelper.accessor(col.id, {
+                    id: col.id,
+                    cell: info => (
+                        <img
+                            src={info?.getValue()}
+                            className='rounded-full w-10 h-10 object-cover'
+                            alt=""
+                        />
+                    ),
+                    header: col.header
+                })
+            )
+        }
+
+        if (col.id === 'active') {
+            return (
+                columnHelper.accessor(col.id, {
+                    id: col.id,
+                    cell: info => (
+                        <span className={info.getValue() === true ? 'active-pill' : 'inactive-pill'}>
+                            {info.getValue() === true ? 'Active' : 'Inactive'}
+                        </span>
+                    ),
+                    header: col.header
+                })
+            )
+        }
+
+        return (
+            columnHelper.accessor(col.id, {
+                id: col.id,
+                cell: info => <span>{info.getValue()}</span>,
+                header: col.header
+            })
+        )
+    });
 
     const [data] = useState(() => [...users]);
     const [globalFilter, setGlobalFilter] = useState('');

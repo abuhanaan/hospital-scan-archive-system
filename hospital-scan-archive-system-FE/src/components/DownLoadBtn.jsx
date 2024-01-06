@@ -6,10 +6,10 @@ const DownLoadBtn = ({ children, data = [], fileName }) => {
         <CSVLink
             data={data}
             filename={fileName}
-            className="flex items-center gap-1 py-3 px-4 rounded-md bg-[#477BFF] text-white"
+            className="flex items-center gap-1 py-2 px-4 rounded-md bg-[#477BFF] text-white"
             target="_blank"
         >
-            <MdOutlineFileDownload size={24} />
+            <MdOutlineFileDownload size={20} />
             {children}
         </CSVLink>
     )

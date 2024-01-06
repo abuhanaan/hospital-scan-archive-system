@@ -16,3 +16,11 @@
 .th {
     @apply py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400
 }
+
+.active-pill {
+    @apply p-2 bg-green-500 text-white text-sm rounded-md
+}
+
+.inactive-pill {
+    @apply p-2 bg-red-500 text-white text-sm rounded-md
+}
