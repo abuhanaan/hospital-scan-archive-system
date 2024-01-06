@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  role        String
+  active      Boolean
+  password    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  doctor      Doctor?
+}
+
+model Doctor {
+  id              Int         @id @default(autoincrement())
+  firstName       String?
+  lastName        String?
+  phoneNumber     String?
+  speciality      String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  user            User?       @relation(fields: doctorId, references: id)
+  doctorId        Int?        @unique
+
+  scans           Scan[]
+  patients  DoctorPatient[]
+}
+
+model Patient {
+  id                    Int       @id @default(autoincrement())
+  firstName             String
+  lastName              String
+  phoneNumber           String
+  address               String
+  dob                   DateTime
+  nextOfKinName         String
+  nextOfKinPhone        String
+  nextOfKinRelationship String
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  scans                 Scan[]
+  doctors        DoctorPatient[]
+}
+
+model Scan {
+  id            Int       @id @default(autoincrement())
+  symptoms      String
+  diagnosis     String
+  type          String
+  url           String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  doctor        Doctor    @relation(fields: doctorId, references: doctorId)
+  doctorId      Int
+
+  patient       Patient   @relation(fields: patientId, references: id)
+  patientId     Int
+}
+
+model DoctorPatient {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  doctor      Doctor    @relation(fields: [doctorId], references: [id])
+  doctorId    Int
+
+  patient     Patient   @relation(fields: [patientId], references: [id])
+  patientId   Int
+}
