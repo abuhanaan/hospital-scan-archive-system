@@ -23,10 +23,7 @@ import { UserEntity } from './entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AdminJwtAuthGuard } from 'src/auth/guards/admin-auth.guards';
 import { ChangePasswordDto } from './dto/change-password.dto';
-
-interface AuthenticatedRequest extends Request {
-  user?: UserEntity;
-}
+import { AuthenticatedRequest } from 'src/utils/interfaces/authRequest.interface';
 
 @Controller('users')
 @ApiTags('users')
