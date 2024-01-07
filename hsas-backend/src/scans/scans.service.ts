@@ -50,6 +50,11 @@ export class ScansService {
     }
   }
   async create(createScanDto: CreateScanDto, fileName: string, file: Buffer) {
+    createScanDto.doctorId = +createScanDto.doctorId;
+    createScanDto.patientId = +createScanDto.patientId;
+
+    await this.checkIfDoctorExists(createScanDto.doctorId);
+    await this.checkIfPatientExists(createScanDto.patientId);
     await this.s3Client.send(
       new PutObjectCommand({
         Bucket: this.configService.getOrThrow('S3_BUCKET_NAME'),
@@ -57,8 +62,6 @@ export class ScansService {
         Body: file,
       }),
     );
-    await this.checkIfDoctorExists(createScanDto.doctorId);
-    await this.checkIfPatientExists(createScanDto.patientId);
 
     createScanDto.url = `${this.configService.getOrThrow(
       'S3_BASE_URL',

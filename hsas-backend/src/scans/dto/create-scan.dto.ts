@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { File } from 'buffer';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsNumberString,
+  IsString,
+  isNumber,
+} from 'class-validator';
 
 export class CreateScanDto {
   @IsString()
@@ -30,13 +36,13 @@ export class CreateScanDto {
   // @ApiProperty()
   url: string;
 
-  @IsNumber()
+  @IsNumberString()
   @IsNotEmpty()
-  @ApiProperty({ type: Number, format: 'int' })
+  @ApiProperty()
   doctorId: number;
 
-  @IsNumber()
+  @IsNumberString()
   @IsNotEmpty()
-  @ApiProperty({ type: Number })
+  @ApiProperty()
   patientId: number;
 }
