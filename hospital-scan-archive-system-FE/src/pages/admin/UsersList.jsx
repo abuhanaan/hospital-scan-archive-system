@@ -1,8 +1,7 @@
 import { useRef, useState } from 'react';
 import { Link, useNavigate, useLoaderData } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
-import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-import { IoSearch, IoEyeOutline } from "react-icons/io5";
+import { IoEyeOutline } from "react-icons/io5";
 import { users } from '../../constants';
 import Table from '../../components/Table';
 
@@ -13,6 +12,8 @@ export async function loader() {
 }
 
 const ActionButtons = ({ user }) => {
+    const navigate = useNavigate();
+
     function viewUser(e) {
         e.preventDefault();
 
@@ -26,9 +27,9 @@ const ActionButtons = ({ user }) => {
         const userId = e.currentTarget.getAttribute('data-user-id');
         console.log('UserId:', userId);
     }
-    
+
     return (
-        <div className="py-5 px-6 flex items-center justify-center gap-1">
+        <div className="py-2 px-6 flex items-center justify-center gap-1">
             <button onClick={viewUser} data-user-id={user.id} className='bg-purple-500 hover:bg-purple-600 p-1 rounded-md'>
                 <IoEyeOutline size={20} color='white' />
             </button>
@@ -41,7 +42,6 @@ const ActionButtons = ({ user }) => {
 }
 
 const UsersList = () => {
-    const navigate = useNavigate();
     const usersData = useLoaderData();
 
     const columns = [

@@ -53,8 +53,6 @@ const ScanForm = () => {
 
     }
 
-    console.log(selectedScan);
-
     return (
         <div className="flex flex-col pt-6 font-poppins">
             <div className="pb-6">

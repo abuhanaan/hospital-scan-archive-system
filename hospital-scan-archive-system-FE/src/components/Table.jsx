@@ -106,7 +106,7 @@ const Table = ({ data: users, columns: cols, render }) => {
 
             <div className='overflow-auto'>
                 <table className='min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700'>
-                    <thead className='bg-gray-100 dark:bg-gray-700'>
+                    <thead className='bg-gray-100 dark:bg-gray-700 w-full'>
                         {
                             table.getHeaderGroups().map(headerGroup => (
                                 <tr key={headerGroup.id}>
@@ -119,15 +119,12 @@ const Table = ({ data: users, columns: cols, render }) => {
                                             </th>
                                         ))
                                     }
-                                    <th className='th'>
-
-                                    </th>
                                 </tr>
                             ))
                         }
                     </thead>
 
-                    <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                    <tbody className="bg-white divide-y w-full divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                         {
                             table.getRowModel().rows.length > 0 ?
                                 table.getRowModel().rows.map((row, i) => (
