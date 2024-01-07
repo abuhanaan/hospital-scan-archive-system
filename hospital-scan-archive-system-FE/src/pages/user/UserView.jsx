@@ -81,7 +81,7 @@ const UserView = () => {
                             Specialty
                         </h4>
                         <p className="w-full text-base font-medium text-[#6B7280]">
-                            {user.specialty}
+                            {user.speciality}
                         </p>
                     </div>
                     <div className="">

@@ -7,27 +7,33 @@ import { scans, patients } from '../../constants';
 import { EmptySearch } from '../../components/EmptySearch';
 
 import { IoSearch } from 'react-icons/io5';
+import Table from '../../components/Table';
 
 export async function loader({ params }) {
     const user = JSON.parse(localStorage.getItem('user'));
     const patient = patients.filter(patient => patient.id === Number(params.id));
     const patientScans = scans.filter(scan => scan.patientId === Number(params.id) && scan.userId === user.id);
+    // console.log(scans);
+    const data = {
+        ...patient[0],
+        patientName: `${patient[0].firstName} ${patient[0].lastName}`,
+        scans: patientScans
+    };
+    // const data = user.role === 'doctor' ?
+    //     {
+    //         ...patient[0],
+    //         scans: patientScans
+    //     } :
+    //     {
+    //         ...patient[0]
+    //     };
 
-    const data = user.role === 'doctor' ?
-        {
-            ...patient[0],
-            scans: patientScans
-        } :
-        {
-            ...patient[0]
-        };
-
+    // console.log(data);
     return data;
 }
 
-const PatientView = () => {
+const ActionButtons = ({ scan }) => {
     const navigate = useNavigate();
-    const patient = useLoaderData();
 
     function viewScan(e) {
         e.preventDefault();
@@ -35,6 +41,69 @@ const PatientView = () => {
         const scanId = e.currentTarget.getAttribute('data-scan-id');
         navigate(`/user/scans/${scanId}`);
     }
+
+    return (
+        <div className="py-2 px-6 flex items-center justify-center gap-1">
+            <button onClick={viewScan} data-scan-id={scan.scanId} className='bg-purple-500 hover:bg-purple-600 p-1 rounded-md'>
+                <IoEyeOutline size={20} color='white' />
+            </button>
+
+            <Link to={scan.scanUrl} className='bg-blue-500 hover:bg-blue-600 p-1 rounded-md'>
+                <MdOutlineFileDownload size={20} color='white' />
+            </Link>
+        </div>
+    )
+}
+
+const PatientView = () => {
+    const navigate = useNavigate();
+    // const patient = useLoaderData();
+    const patient = {
+        id: 1,
+        firstName: 'Sandra',
+        lastName: 'Grace',
+        phoneNumber: '08078903425',
+        address: '18, Ajanlekoko street, Lagos.',
+        dob: '12/11/1998',
+        gender: 'female',
+        nextOfKinName: 'Aliyu Rasheed',
+        nextOfKinRelationship: 'husband',
+        nextOfKinPhone: '08054125690',
+        scans: [
+            {
+                scanId: '3',
+                scanSymptoms: 'Chest pains',
+                scanDiagnosis: 'Pregnancy',
+                scanType: 'Ultrasound',
+                scanDate: '8/10/2023',
+                scanUrl: 'https://chest-pain-sandra.zip',
+                userId: 1,
+                userName: 'Sodiq Ishola',
+                userEmail: 'example123@gmail.com',
+                userSpecialty: 'Gynaecologist',
+                userRole: 'doctor',
+                userImg: 'https://p7.hiclipart.com/preview/14/65/239/ico-avatar-scalable-vector-graphics-icon-doctor-with-stethoscope.jpg',
+                patientId: 1,
+                patientName: 'Sandra Grace',
+                patientPhoneNumber: '08078903425',
+                patientNextOfKinName: 'Aliyu Rasheed',
+                patientNextOfKinPhone: '08054321490',
+                patientNextOfKinRelationship: 'husband',
+                patientAddress: '18, Ajanlekoko street, Lagos.',
+                patientDob: '12/11/1990',
+                patientGender: 'female'
+            }
+        ]
+    }
+
+    const columns = [
+        { id: 'S/N', header: 'S/N' },
+        { id: 'patientName', header: 'Patient' },
+        { id: 'scanType', header: 'Type' },
+        { id: 'scanDiagnosis', header: 'Diagnosis' },
+        { id: 'scanDate', header: 'Date' },
+        { id: 'actions', header: '' },
+    ];
 
     return (
         <div className="mt-6 min-h-screen w-full font-poppins">
@@ -54,90 +123,14 @@ const PatientView = () => {
 
             <div className="flex flex-col xl:flex-row">
                 <div className="order-2">
+                    <h3 className="text-xl text-primary font-semibold">Scans</h3>
                     {
-                        patient.scans?.length === 0 ?
+                        patient.scans.length === 0 ?
                             <EmptySearch headers={['Patient', 'Scan Type', 'Diagnosis', 'Date', 'Scan Link']} type='scans' />
                             :
-                            <div className="flex flex-col">
-                                <div className="mb-2 md:flex md:items-center md:justify-between">
-                                    <h3 className="text-xl text-primary font-semibold">Scans</h3>
-                                    <div className="relative flex items-center mt-4 md:mt-0">
-                                        <span className="absolute w-5 h-5 mx-3 text-gray-400 dark:text-gray-600">
-                                            <IoSearch size={18} />
-                                        </span>
-
-                                        <input type="text" placeholder="Search" className="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
-                                    </div>
-                                </div>
-
-                                <div className="overflow-auto">
-                                    <table className="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
-                                        <thead className="bg-gray-100 dark:bg-gray-700">
-                                            <tr className="">
-                                                <th scope="col" className="th">
-                                                    Patient
-                                                </th>
-                                                <th scope="col" className="th">
-                                                    Type
-                                                </th>
-                                                <th scope="col" className="th">
-                                                    Diagnosis
-                                                </th>
-                                                <th scope="col" className="th">
-                                                    Date
-                                                </th>
-                                                <th scope="col" className="th">
-                                                    Download
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                                            {
-                                                patient.scans.map(scan => (
-                                                    <tr key={scan.scanId} className="hover:bg-gray-100 dark:hover:bg-gray-700">
-                                                        <td className="table-data">{scan.patientName}</td>
-                                                        <td className="table-data">{scan.scanType}</td>
-                                                        <td className="table-data">{scan.scanDiagnosis}</td>
-                                                        <td className="table-data">{scan.scanDate}</td>
-                                                        <td className='table-data flex items-center justify-center gap-1'>
-                                                            <button onClick={viewScan} data-scan-id={scan.scanId} className='bg-purple-500 hover:bg-purple-600 p-1 rounded-md'>
-                                                                <IoEyeOutline size={20} color='white' />
-                                                            </button>
-
-                                                            <Link to={scan.scanUrl} className='bg-blue-500 hover:bg-blue-600 p-1 rounded-md'>
-                                                                <MdOutlineFileDownload size={20} color='white' />
-                                                            </Link>
-                                                        </td>
-                                                    </tr>
-
-                                                ))
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div className="mt-6 sm:flex sm:items-center sm:justify-between ">
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                                        Page <span className="font-medium text-gray-700 dark:text-gray-100">1 of 10</span>
-                                    </div>
-
-                                    <div className="flex items-center mt-4 gap-x-4 sm:mt-0">
-                                        <a href="#" className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                                            <FaArrowLeftLong size={18} />
-                                            <span>
-                                                previous
-                                            </span>
-                                        </a>
-
-                                        <a href="#" className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                                            <span>
-                                                Next
-                                            </span>
-                                            <FaArrowRightLong size={18} />
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            <Table data={patient.scans} columns={columns} render={scan => (
+                                <ActionButtons scan={scan} />
+                            )} />
                     }
                 </div>
 
@@ -196,7 +189,9 @@ const PatientView = () => {
                             Total Scans
                         </h4>
                         <p className="w-full text-base font-medium text-[#6B7280]">
-                            {patient.scans.length}
+                            {
+                                patient.scans ? patient.scans.length : 0
+                            }
                         </p>
                     </div>
                 </fieldset>

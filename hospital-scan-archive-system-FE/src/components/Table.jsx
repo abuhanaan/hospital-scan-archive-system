@@ -4,7 +4,7 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import SearchInput from './SearchInput';
 import DownLoadBtn from './DownLoadBtn';
 
-const Table = ({ data: users, columns: cols, render }) => {
+const Table = ({ data: tableData, columns: cols, render }) => {
     const columnHelper = createColumnHelper();
 
     const columns = cols.map(col => {
@@ -69,7 +69,7 @@ const Table = ({ data: users, columns: cols, render }) => {
         )
     });
 
-    const [data] = useState(() => [...users]);
+    const [data] = useState(() => [...tableData]);
     const [globalFilter, setGlobalFilter] = useState('');
 
     const table = useReactTable({
@@ -101,7 +101,7 @@ const Table = ({ data: users, columns: cols, render }) => {
                     onChange={(value) => setGlobalFilter(String(value))}
                 />
 
-                <DownLoadBtn data={users} fileName={'users.csv'}>Download Users</DownLoadBtn>
+                <DownLoadBtn data={tableData} fileName={'tableData.csv'}>Download data</DownLoadBtn>
             </div>
 
             <div className='overflow-auto'>
@@ -176,7 +176,7 @@ const Table = ({ data: users, columns: cols, render }) => {
                             className='p-2 bg-transparent'
                         >
                             {
-                                generateMultiplesOf10(users.length).map(pageSize => (
+                                generateMultiplesOf10(tableData.length).map(pageSize => (
                                     <option key={pageSize} value={pageSize}>
                                         Show {pageSize}
                                     </option>
