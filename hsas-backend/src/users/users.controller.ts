@@ -31,7 +31,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard, AdminJwtAuthGuard)
+  @UseGuards(AdminJwtAuthGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: UserEntity })
   async create(@Body() createUserDto: CreateUserDto) {
@@ -40,11 +40,21 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard, AdminJwtAuthGuard)
+  @UseGuards(AdminJwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity, isArray: true })
   async findAll() {
     const users = await this.usersService.findAll();
     return users.map((user) => new UserEntity(user));
+  }
+
+  @Get('/admin/dashboard')
+  @UseGuards(AdminJwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: Object })
+  async dashboard() {
+    const result = await this.usersService.adminDashboard();
+    return new Object(result);
   }
 
   @Get(':id')
@@ -57,7 +67,7 @@ export class UsersController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard, AdminJwtAuthGuard)
+  @UseGuards(AdminJwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   async update(
@@ -69,7 +79,7 @@ export class UsersController {
   }
 
   @Patch('/activate/:id')
-  @UseGuards(JwtAuthGuard, AdminJwtAuthGuard)
+  @UseGuards(AdminJwtAuthGuard)
   @ApiOkResponse({ type: UserEntity })
   async activateUser(@Param('id', ParseIntPipe) id: number) {
     const user = await this.usersService.activateUser(id);
@@ -77,7 +87,7 @@ export class UsersController {
   }
 
   @Patch('deactivate/:id')
-  @UseGuards(JwtAuthGuard, AdminJwtAuthGuard)
+  @UseGuards(AdminJwtAuthGuard)
   @ApiOkResponse({ type: UserEntity })
   async deactivateUser(@Param('id', ParseIntPipe) id: number) {
     const user = await this.usersService.deactivateUser(id);
@@ -97,7 +107,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard, AdminJwtAuthGuard)
+  @UseGuards(AdminJwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   async remove(@Param('id', ParseIntPipe) id: number) {
