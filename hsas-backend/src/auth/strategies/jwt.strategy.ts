@@ -20,8 +20,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'user-auth') {
       throw new UnauthorizedException();
     }
 
-    console.log({ status: user.active });
-
     if (user.active === false) {
       throw new UnauthorizedException({
         message:

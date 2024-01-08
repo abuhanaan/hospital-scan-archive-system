@@ -17,6 +17,21 @@ export class AdminJwtStrategy extends PassportStrategy(Strategy, 'admin-auth') {
     const user = await this.usersService.findOne(payload.userId);
     console.log(user);
 
+    if (!user) {
+      throw new UnauthorizedException({
+        message: 'You are not a logged in user',
+        error: 'UnAuthoried',
+      });
+    }
+
+    if (user.active === false) {
+      throw new UnauthorizedException({
+        message:
+          'Your account has been DEACTIVATED, please contact the management for more information',
+        error: 'Unauthorised',
+      });
+    }
+
     if (user.role !== 'admin') {
       throw new UnauthorizedException({
         message: 'You are not authorised to access this resource',
