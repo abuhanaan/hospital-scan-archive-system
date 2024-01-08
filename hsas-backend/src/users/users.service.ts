@@ -61,6 +61,30 @@ export class UsersService {
     return users;
   }
 
+  async adminDashboard() {
+    const doctorsCount = await this.prisma.doctor.count();
+    const patientsCount = await this.prisma.patient.count();
+    const scansCount = await this.prisma.scan.count();
+    const recentDoctors = await this.prisma.doctor.findMany({
+      take: 3,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    const recentScans = await this.prisma.scan.findMany({
+      take: 3,
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return {
+      doctorsCount,
+      patientsCount,
+      scansCount,
+      recentDoctors,
+      recentScans,
+    };
+  }
+
   async findOne(id: number) {
     const user = await this.prisma.user.findUnique({ where: { id } });
     this.checkIfUserExists(user, id);

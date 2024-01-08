@@ -48,6 +48,15 @@ export class UsersController {
     return users.map((user) => new UserEntity(user));
   }
 
+  @Get('/admin/dashboard')
+  @UseGuards(AdminJwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: Object })
+  async dashboard() {
+    const result = await this.usersService.adminDashboard();
+    return new Object(result);
+  }
+
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
