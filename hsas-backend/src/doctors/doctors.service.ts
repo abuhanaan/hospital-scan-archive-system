@@ -22,6 +22,24 @@ export class DoctorsService {
       });
     }
   }
+
+  async dashboard(user: UserEntity) {
+    const doctor = await this.prisma.doctor.findUnique({
+      where: { doctorId: user.id },
+    });
+    this.checkIfDoctorExists(doctor, user.id);
+
+    const patientCount = await this.prisma.patient.count();
+    const scanCount = await this.prisma.scan.count({
+      where: { doctorId: doctor.doctorId },
+    });
+    const recentScans = await this.prisma.scan.findMany({
+      where: { doctorId: user.id },
+    });
+
+    return { patientCount, scanCount, recentScans };
+  }
+
   async create(createDoctorDto: CreateDoctorDto) {
     const existingProfile = await this.prisma.doctor.findUnique({
       where: { doctorId: createDoctorDto.doctorId },

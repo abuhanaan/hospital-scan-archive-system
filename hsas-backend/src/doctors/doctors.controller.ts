@@ -48,6 +48,16 @@ export class DoctorsController {
     return doctors.map((doctor) => new DoctorEntity(doctor));
   }
 
+  @Get('/dashboard')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: Object })
+  async dashboard(@Req() request: AuthenticatedRequest) {
+    const user = request.user as UserEntity;
+    const result = await this.doctorsService.dashboard(user);
+    return new Object(result);
+  }
+
   @Get(':id')
   @ApiOkResponse({ type: DoctorEntity })
   @UseGuards(JwtAuthGuard)
