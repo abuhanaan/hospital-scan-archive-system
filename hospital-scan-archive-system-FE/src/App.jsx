@@ -1,11 +1,11 @@
 import './App.css';
 import { AdminLayout, UserLayout, AuthLayout, Layout } from './components';
-import { Home, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView, UserDashboard, UserPatientsList, UserPatientView, UserScansList, UserScanView, UserScanForm, UserProfileView, UserProfileForm, adminDashboardLoader, usersListLoader, userViewLoader, patientViewLoader, patientsListLoader, scanViewLoader, scansListLoader, userDashboardLoader, userPatientsListLoader, userPatientViewLoader, userScansListLoader, userScanViewLoader, userScanFormLoader, userProfileViewLoader } from './pages';
+import { Home, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView, UserDashboard, UserPatientsList, UserPatientView, UserScansList, UserScanView, UserScanForm, UserProfileView, UserProfileForm, adminDashboardLoader, usersListLoader, userViewLoader, patientViewLoader, patientsListLoader, scanViewLoader, scansListLoader, userDashboardLoader, userPatientsListLoader, userPatientViewLoader, userScansListLoader, userScanViewLoader, userScanFormLoader, userProfileViewLoader, loginAction } from './pages';
 import { createBrowserRouter, createRoutesFromChildren, RouterProvider, Route } from 'react-router-dom';
 
 const router = createBrowserRouter(createRoutesFromChildren(
     <Route path='/' element={<Layout />}>
-        <Route index element={<Home />} />
+        <Route index element={<Home />} action={loginAction} />
         <Route element={<AuthLayout />}>
             <Route path='admin' element={<AdminLayout />}>
                 <Route index loader={adminDashboardLoader} element={<AdminDashboard />} />

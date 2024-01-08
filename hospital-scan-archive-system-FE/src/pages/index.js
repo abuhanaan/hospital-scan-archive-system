@@ -37,3 +37,6 @@ export { loader as userScansListLoader } from './user/ScansList';
 export { loader as userScanViewLoader } from './user/ScanView';
 export { loader as userScanFormLoader } from './user/ScanForm';
 export { loader as userProfileViewLoader } from './user/UserView';
+
+// Actions
+export { action as loginAction } from './Home';
