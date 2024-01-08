@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { GlobalExceptionFilter } from './utils/globalExceptionFilter';
 import { BadRequestExceptionFilter } from './utils/badRequestExceptionFilter';
+import * as cors from 'cors';
 import {
   BadRequestException,
   ClassSerializerInterceptor,
@@ -39,6 +40,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  app.use(cors());
   await app.listen(3000);
 }
 bootstrap();
