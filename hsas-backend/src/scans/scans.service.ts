@@ -74,7 +74,12 @@ export class ScansService {
   }
 
   findAll() {
-    return this.prisma.scan.findMany();
+    return this.prisma.scan.findMany({
+      include: {
+        patient: true,
+        doctor: true,
+      },
+    });
   }
 
   async findOne(id: number) {

@@ -83,6 +83,7 @@ export class UsersService {
       orderBy: { createdAt: 'desc' },
     });
     const recentScans = await this.prisma.scan.findMany({
+      include: { patient: true, doctor: true },
       take: 3,
       orderBy: { createdAt: 'desc' },
     });
