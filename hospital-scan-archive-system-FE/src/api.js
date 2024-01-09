@@ -28,7 +28,6 @@ export async function loginUser(creds) {
 
     // Decode token and get the payload
     const decodedToken = jwtDecode(JSON.stringify(resData.accessToken));
-    console.log('Decoded Token: \n', decodedToken);
 
     const data = {
         ...resData,
@@ -38,7 +37,7 @@ export async function loginUser(creds) {
     return data;
 }
 
-export async function createUser(request) {
+export async function createUser(userData) {
     const user = JSON.parse(localStorage.getItem('user'));
     const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users`, {
         method: 'POST',
@@ -46,13 +45,17 @@ export async function createUser(request) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.accessToken}`,
         },
+        body: JSON.stringify(userData)
     });
 
     const data = await res.json();
 
     if (res.status === 401) {
-        const pathname = new URL(request.url).pathname;
-        throw redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
+        return {
+            unAuthorize: true
+        }
+        // const pathname = new URL(request.url).pathname;
+        // throw redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
     }
 
     if (!res.ok || data.error) {
@@ -129,6 +132,95 @@ export async function getUser(userId, request) {
     const user = JSON.parse(localStorage.getItem('user'));
     const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users/${userId}`, {
         method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`,
+        },
+    });
+
+    const data = await res.json();
+
+    if (res.status === 401) {
+        const pathname = new URL(request.url).pathname;
+        throw redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
+    }
+
+    if (!res.ok || data.error) {
+        return {
+            statusCode: data.statusCode,
+            message: data.message,
+            error: data.error ?? 'Something went wrong',
+            path: data.path
+        }
+    }
+
+    return data;
+}
+
+export async function activateUser(userId, request) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users/activate/${userId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`,
+        },
+    });
+
+    const data = await res.json();
+
+    if (res.status === 401) {
+        return {
+            unAuthorize: true
+        }
+    }
+
+    if (!res.ok || data.error) {
+        return {
+            statusCode: data.statusCode,
+            message: data.message,
+            error: data.error ?? 'Something went wrong',
+            path: data.path
+        }
+    }
+
+    return data;
+}
+
+export async function deactivateUser(userId) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users/deactivate/${userId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`,
+        },
+    });
+
+    const data = await res.json();
+
+    if (res.status === 401) {
+        return {
+            unAuthorize: true
+        }
+    }
+
+    if (!res.ok || data.error) {
+        return {
+            statusCode: data.statusCode,
+            message: data.message,
+            error: data.error ?? 'Something went wrong',
+            path: data.path
+        }
+    }
+
+    return data;
+}
+
+export async function deleteUser(userId) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users/delete/${userId}`, {
+        method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.accessToken}`,
