@@ -32,7 +32,7 @@ export class DoctorsController {
 
   @Post()
   @ApiCreatedResponse({ type: DoctorEntity })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminJwtAuthGuard)
   @ApiBearerAuth()
   async create(@Body() createDoctorDto: CreateDoctorDto) {
     const doctor = await this.doctorsService.create(createDoctorDto);
