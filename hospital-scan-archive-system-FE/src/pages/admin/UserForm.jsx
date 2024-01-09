@@ -1,10 +1,59 @@
 import { useState, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Form } from 'react-router-dom';
 import { MdOutlineSyncLock } from "react-icons/md";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { createUser } from '../../api';
+
+export async function action({ request }) {
+    const formData = await request.formData();
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const role = formData.get('role');
+    const intent = formData.get('intent');
+
+    const data = {
+        email,
+        role,
+        active: true,
+        password
+    }
+
+    console.log(data);
+
+    if (intent === 'create') {
+        try {
+            const user = await createUser(data);
+
+            if (user.error) {
+                toast.error(`Error: ${user.error}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                });
+
+                return {
+                    error: user.error
+                }
+            }
+
+            toast.success(`User successfully created!`, {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+            });
+
+            return redirect('/admin/users');
+        } catch (error) {
+            return error;
+        }
+    }
+
+}
 
 const UserForm = () => {
     const { state } = useLocation();
     const user = state && state.currentUser;
+    const passwordRef = useRef(null);
+    const emailRef = useRef(null);
     const [formData, setFormData] = useState(user || {
         id: user?.id || '',
         firstName: '',
@@ -48,16 +97,19 @@ const UserForm = () => {
     function generatePassword(e) {
         e.preventDefault();
 
-        if (formData.email) {
-            setFormData(prev => ({
-                ...prev,
-                password: formData.email.slice(0, 6)
-            }));
+        if (!emailRef.current.value) {
+            toast.error(`Specify user email to generate password`, {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+            });
         }
+
+        passwordRef.current.value = emailRef.current.value.slice(0, 6);
     }
 
     return (
         <div className="flex flex-col pt-6 font-poppins">
+            <ToastContainer />
             <div className="pb-6">
                 <nav aria-label="breadcrumb">
                     <ol className="flex space-x-2">
@@ -71,7 +123,7 @@ const UserForm = () => {
             </div>
 
             <div className="mx-auto w-full">
-                <form>
+                <Form method='post'>
                     <div className="grid grid-cols-1 xs:grid-cols-2 gap-6">
                         <div className="">
                             <label
@@ -84,8 +136,7 @@ const UserForm = () => {
                                 type="email"
                                 name="email"
                                 id="email"
-                                value={formData.email}
-                                onChange={handleChange}
+                                ref={emailRef}
                                 placeholder="Email"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                 required
@@ -103,8 +154,7 @@ const UserForm = () => {
                                     type="text"
                                     name="password"
                                     id="password"
-                                    value={formData.password}
-                                    onChange={handleChange}
+                                    ref={passwordRef}
                                     placeholder="Password"
                                     className="w-full rounded-s-md border border-[#e0e0e0] bg-gray-200 py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     required
@@ -129,14 +179,12 @@ const UserForm = () => {
                                 type="text"
                                 name="role"
                                 id="role"
-                                value={formData.role}
-                                onChange={handleChange}
                                 placeholder="Role"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                 required
                             />
                         </div>
-                        <div className="">
+                        {/* <div className="">
                             <label
                                 htmlFor='firstName'
                                 className="mb-1 block text-base font-medium text-[#07074D]"
@@ -207,17 +255,17 @@ const UserForm = () => {
                                 <button onClick={browseImage} className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">{image ? 'Change Image' : 'Browse Image'}</button>
                                 <p className="font-poppins font-medium text-lg">{image ? image.name : 'No files chosen'}</p>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className='flex justify-end'>
                         {
                             state ?
-                                <button className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update User</button> :
-                                <button className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Create User</button>
+                                <button type='submit' name='intent' value='update' className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update User</button> :
+                                <button type='submit' name='intent' value='create' className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Create User</button>
                         }
                     </div>
-                </form>
+                </Form>
             </div>
         </div>
     )

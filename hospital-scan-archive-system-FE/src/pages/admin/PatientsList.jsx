@@ -6,15 +6,30 @@ import { patients } from '../../constants';
 
 import AddButton from '../../components/AddButton';
 import Table from '../../components/Table';
+import { requireAuth } from '../../utils';
+import { getPatients } from '../../api';
 
-export async function loader() {
-    return patients;
+export async function loader({ request }) {
+    await requireAuth(request);
+
+    const data = await getPatients(request);
+
+    if (data.message || data.error) {
+        return {
+            error: data.error ?? data.message
+        };
+    }
+
+    return data;
 }
 
 const ActionButtons = ({ patient }) => {
     const navigate = useNavigate();
-    
-    function viewPatient(patientId) {
+
+    function viewPatient(e) {
+        e.preventDefault();
+
+        const patientId = e.currentTarget.getAttribute('data-patient-id');
         navigate(`./${patientId}`);
     }
 
@@ -44,7 +59,7 @@ const PatientsList = () => {
         { id: 'firstName', header: 'firstName' },
         { id: 'lastName', header: 'lastName' },
         { id: 'phoneNumber', header: 'Phone Number' },
-        { id: 'dob', header: 'Birth Date' },
+        { id: 'dob', header: 'Age' },
         { id: 'address', header: 'Address' },
         { id: 'actions', header: '' },
     ];
@@ -65,16 +80,20 @@ const PatientsList = () => {
                 </div>
             </div>
 
-            <div className="h-full overflow-auto w-full">
-                {
-                    patients.length === 0 ?
-                        <EmptySearch headers={['First Name', 'Last Name', 'Age', 'Phone NUmber', 'Next of Kin', 'Address']} type='patients' />
-                        :
-                        <Table data={patients} columns={columns} render={(patient) => (
-                            <ActionButtons patient={patient} />
-                        )} />
-                }
-            </div>
+            {
+                patients.error ?
+                    <h1>{patients.error}</h1> :
+                    <div className="h-full overflow-auto w-full">
+                        {
+                            patients.length === 0 ?
+                                <EmptySearch headers={['First Name', 'Last Name', 'Age', 'Phone NUmber', 'Next of Kin', 'Address']} type='patients' />
+                                :
+                                <Table data={patients} columns={columns} render={(patient) => (
+                                    <ActionButtons patient={patient} />
+                                )} />
+                        }
+                    </div>
+            }
         </div>
     )
 }

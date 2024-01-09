@@ -1,10 +1,15 @@
 import React from 'react';
 import { useState } from 'react';
-import { useNavigate, Form, useActionData, redirect, useNavigation, useRouteError } from 'react-router-dom';
+import { useNavigate, Form, useActionData, useLoaderData, redirect, useNavigation, useLocation, useRouteError } from 'react-router-dom';
 import { FaExclamationCircle } from "react-icons/fa";
 import Header from '../components/Header';
 import { users } from '../constants';
 import { loginUser } from '../api';
+
+export async function loader({ request }) {
+    localStorage.removeItem('user');
+    return new URL(request.url).searchParams.get('message');
+}
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -20,13 +25,12 @@ export async function action({ request }) {
             }
         }
 
+        const defaultUrl = user.role === 'admin' ? '/admin' : '/user';
+        const redirectTo = new URL(request.url).searchParams.get('redirectTo') || defaultUrl;
+
         localStorage.setItem('user', JSON.stringify(user));
-        
-        if (user.role === 'admin') {
-            return redirect('/admin');
-        } else {
-            return redirect('/user');
-        }
+
+        return redirect(redirectTo);
     } catch (error) {
         return error;
     }
@@ -36,6 +40,7 @@ const Home = () => {
     const navigate = useNavigate();
     const navigation = useNavigation();
     const error = useActionData();
+    const message = useLoaderData();
 
     const [loginData, setLoginData] = useState({
         username: '',
@@ -52,19 +57,6 @@ const Home = () => {
         }));
     }
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-
-        const user = users.filter(user => user.email === loginData.username && user.password === loginData.password)[0];
-
-        if (!user) {
-            console.log('User not found!');
-            return;
-        } else {
-            localStorage.setItem('user', JSON.stringify(user));
-        }
-    }
-
     return (
         <section className=''>
             <Header />
@@ -72,11 +64,19 @@ const Home = () => {
                 <div className='flex flex-col  text-primary py-5 xs:py-10 px-5 xs:px-10 w-full sm:w-[70%] max-w-lg'>
                     <h1 className='text-2xl sm:text-3xl font-extrabold'>Login</h1>
 
+                    {
+                        message &&
+                        (<div className="flex h-8 items-end space-x-1" aria-live="polite" aria-atomic="true" >
+                            <FaExclamationCircle color='red' size={20} />
+                            <p className="text-sm text-red-600 font-medium">{message}</p>
+                        </div>)
+                    }
+
                     <Form method='post' replace className={`form-control w-full mt-6 px-5 py-7 border-2 border-primary rounded-xl`}>
                         {error?.message && (
                             <div className="flex h-8 items-end space-x-1 mb-6" aria-live="polite" aria-atomic="true" >
                                 <FaExclamationCircle color='red' size={20} />
-                                <p className="text-sm text-red-500 font-medium">{error.message}</p>
+                                <p className="text-sm text-red-600 font-medium">{error.message}</p>
                             </div>
                         )}
 

@@ -6,9 +6,21 @@ import { users } from '../../constants';
 import Table from '../../components/Table';
 
 import AddButton from '../../components/AddButton';
+import { requireAuth } from '../../utils';
+import { getUsers } from '../../api';
 
-export async function loader() {
-    return users;
+export async function loader({ request }) {
+    await requireAuth(request);
+
+    const data = await getUsers(request);
+
+    if (data.message || data.error) {
+        return {
+            error: data.error ?? data.message
+        };
+    }
+
+    return data;
 }
 
 const ActionButtons = ({ user }) => {
@@ -42,7 +54,7 @@ const ActionButtons = ({ user }) => {
 }
 
 const UsersList = () => {
-    const usersData = useLoaderData();
+    const users = useLoaderData();
 
     const columns = [
         { id: 'S/N', header: 'S/N' },
@@ -72,16 +84,20 @@ const UsersList = () => {
                 </div>
             </div>
 
-            <div className="h-full overflow-auto w-full">
-                {
-                    usersData?.length === 0 ?
-                        <EmptySearch headers={['Profile Image', 'First Name', 'Last Name', 'Email', 'Specialty', 'Role']} />
-                        :
-                        <Table data={users} columns={columns} render={(user) => (
-                            <ActionButtons user={user} />
-                        )} />
-                }
-            </div>
+            {
+                users.error ?
+                    <h1>{users.error}</h1> :
+                    <div className="h-full overflow-auto w-full">
+                        {
+                            users?.length === 0 ?
+                                <EmptySearch headers={['Profile Image', 'First Name', 'Last Name', 'Email', 'Specialty', 'Role']} />
+                                :
+                                <Table data={users} columns={columns} render={(user) => (
+                                    <ActionButtons user={user} />
+                                )} />
+                        }
+                    </div>
+            }
         </div>
     )
 }

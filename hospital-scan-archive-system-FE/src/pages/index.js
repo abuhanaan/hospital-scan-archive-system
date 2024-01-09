@@ -21,6 +21,7 @@ export { default as UserProfileView } from './user/UserView';
 export { default as UserProfileForm } from './user/UserForm';
 
 // Admin Loaders
+export { loader as loginLoader } from './Home';
 export { loader as adminDashboardLoader } from './admin/AdminDashboard';
 export { loader as usersListLoader } from './admin/UsersList';
 export { loader as userViewLoader } from './admin/UserView';
@@ -40,3 +41,4 @@ export { loader as userProfileViewLoader } from './user/UserView';
 
 // Actions
 export { action as loginAction } from './Home';
+export { action as userCreateAction } from './admin/UserForm';

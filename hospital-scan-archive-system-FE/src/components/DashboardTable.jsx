@@ -27,7 +27,7 @@ const DashboardTable = ({ data }) => {
                                         Patient
                                     </th>
                                     <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
-                                        Specialist
+                                        Doctor
                                     </th>
                                     <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
                                         Scan Type
@@ -46,14 +46,14 @@ const DashboardTable = ({ data }) => {
                             <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                 {
                                     data.map(scan => (
-                                        <tr key={scan.scanId} onClick={() => viewScan(scan.scanId)} className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                                            <td className="table-data">{scan.patientName}</td>
-                                            <td className="table-data">{`Dr. ${scan.userName}`}</td>
-                                            <td className="table-data">{scan.scanType}</td>
-                                            <td className="table-data">{scan.scanDiagnosis}</td>
-                                            <td className="table-data">{scan.scanDate}</td>
+                                        <tr key={scan.id} onClick={() => viewScan(scan.id)} className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                                            <td className="table-data">{scan.patientId}</td>
+                                            <td className="table-data">{`Dr. ${scan.doctorId}`}</td>
+                                            <td className="table-data">{scan.type}</td>
+                                            <td className="table-data">{scan.diagnosis}</td>
+                                            <td className="table-data">{new Date(scan.createdAt).toDateString()}</td>
                                             <td className="py-4 px-6 font-medium flex items-center justify-center gap-1">
-                                                <button onClick={viewScan} data-scan-id={scan.scanId} className='bg-purple-500 hover:bg-purple-600 p-1 rounded-md'>
+                                                <button onClick={viewScan} data-scan-id={scan.id} className='bg-purple-500 hover:bg-purple-600 p-1 rounded-md'>
                                                     <IoEyeOutline size={20} color='white' />
                                                 </button>
 

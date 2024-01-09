@@ -3,6 +3,7 @@ import { createColumnHelper, getCoreRowModel, useReactTable, flexRender, getPagi
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import SearchInput from './SearchInput';
 import DownLoadBtn from './DownLoadBtn';
+import { HiUserCircle } from 'react-icons/hi';
 
 const Table = ({ data: tableData, columns: cols, render }) => {
     const columnHelper = createColumnHelper();
@@ -22,13 +23,21 @@ const Table = ({ data: tableData, columns: cols, render }) => {
             return (
                 columnHelper.accessor(col.id, {
                     id: col.id,
-                    cell: info => (
-                        <img
-                            src={info?.getValue()}
-                            className='rounded-full w-10 h-10 object-cover'
-                            alt=""
-                        />
-                    ),
+                    cell: info => {
+                        return info.getValue() ?
+                            <img src={info?.getValue()} className='rounded-full w-10 h-10 object-cover' alt="" /> :
+                            <HiUserCircle className='rounded-full text-primary' size={40} />
+                    },
+                    header: col.header
+                })
+            )
+        }
+
+        if (col.id === 'dob') {
+            return (
+                columnHelper.accessor(col.id, {
+                    id: col.id,
+                    cell: info => new Date().getFullYear() - new Date(info.getValue()).getFullYear(),
                     header: col.header
                 })
             )
@@ -63,7 +72,11 @@ const Table = ({ data: tableData, columns: cols, render }) => {
         return (
             columnHelper.accessor(col.id, {
                 id: col.id,
-                cell: info => <span>{info.getValue()}</span>,
+                cell: info => <span>
+                    {
+                        info.getValue() ? info.getValue() : 'N/A'
+                    }
+                </span>,
                 header: col.header
             })
         )
