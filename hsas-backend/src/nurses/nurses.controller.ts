@@ -33,7 +33,7 @@ export class NursesController {
 
   @Post()
   @ApiCreatedResponse({ type: NurseEntity })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminJwtAuthGuard)
   @ApiBearerAuth()
   async create(@Body() createNurseDto: CreateNurseDto) {
     const nurse = await this.nursesService.create(createNurseDto);

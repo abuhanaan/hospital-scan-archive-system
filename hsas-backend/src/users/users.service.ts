@@ -11,6 +11,7 @@ import { User } from '@prisma/client';
 import { DoctorsService } from 'src/doctors/doctors.service';
 import { UserEntity } from './entities/user.entity';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { NursesService } from 'src/nurses/nurses.service';
 
 export const roundsOfHashing = 10;
 
@@ -27,6 +28,7 @@ export class UsersService {
   constructor(
     private prisma: PrismaService,
     private doctorService: DoctorsService,
+    private nurseService: NursesService,
   ) {}
   async create(createUserDto: CreateUserDto) {
     try {
@@ -48,6 +50,9 @@ export class UsersService {
       const newUser = await this.prisma.user.create({ data: createUserDto });
       if (newUser.role === 'doctor') {
         await this.doctorService.create({ doctorId: newUser.id });
+      }
+      if (newUser.role === 'nurse') {
+        await this.nurseService.create({ nurseId: newUser.id });
       }
       return newUser;
     } catch (error) {
@@ -78,6 +83,16 @@ export class UsersService {
       orderBy: { createdAt: 'desc' },
     });
     const recentScans = await this.prisma.scan.findMany({
+      include: { patient: true, doctor: true },
+      take: 3,
+      orderBy: { createdAt: 'desc' },
+    });
+
+    const recentUsers = await this.prisma.user.findMany({
+      include: {
+        doctor: true,
+        nurse: true,
+      },
       take: 3,
       orderBy: { createdAt: 'desc' },
     });
@@ -90,6 +105,7 @@ export class UsersService {
       recentDoctors,
       recentNurses,
       recentScans,
+      recentUsers,
     };
   }
 
