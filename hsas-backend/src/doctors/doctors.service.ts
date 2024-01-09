@@ -22,6 +22,29 @@ export class DoctorsService {
       });
     }
   }
+
+  async dashboard(user: UserEntity) {
+    const doctor = await this.prisma.doctor.findUnique({
+      where: { doctorId: user.id },
+    });
+    this.checkIfDoctorExists(doctor, user.id);
+
+    // ## TODO: Work around getting the real patient count using distinct patients from the count below
+    const patientCount = await this.prisma.scan.count({
+      where: { doctorId: user.id },
+    });
+    const scanCount = await this.prisma.scan.count({
+      where: { doctorId: doctor.doctorId },
+    });
+    const recentScans = await this.prisma.scan.findMany({
+      where: { doctorId: user.id },
+      take: 3,
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return { patientCount, scanCount, recentScans };
+  }
+
   async create(createDoctorDto: CreateDoctorDto) {
     const existingProfile = await this.prisma.doctor.findUnique({
       where: { doctorId: createDoctorDto.doctorId },
