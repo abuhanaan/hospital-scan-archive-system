@@ -82,6 +82,15 @@ export class UsersService {
       orderBy: { createdAt: 'desc' },
     });
 
+    const recentUsers = await this.prisma.user.findMany({
+      include: {
+        doctor: true,
+        nurse: true,
+      },
+      take: 3,
+      orderBy: { createdAt: 'desc' },
+    });
+
     return {
       doctorsCount,
       patientsCount,
@@ -90,6 +99,7 @@ export class UsersService {
       recentDoctors,
       recentNurses,
       recentScans,
+      recentUsers,
     };
   }
 
