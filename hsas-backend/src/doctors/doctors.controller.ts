@@ -41,7 +41,7 @@ export class DoctorsController {
 
   @Get()
   @ApiOkResponse({ type: DoctorEntity, isArray: true })
-  @UseGuards(JwtAuthGuard, JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async findAll() {
     const doctors = await this.doctorsService.findAll();
@@ -83,7 +83,7 @@ export class DoctorsController {
 
   @Delete(':id')
   @ApiOkResponse({ type: DoctorEntity })
-  @UseGuards(JwtAuthGuard, AdminJwtAuthGuard)
+  @UseGuards(AdminJwtAuthGuard)
   @ApiBearerAuth()
   async remove(@Param('id', ParseIntPipe) id: number) {
     const doctor = await this.doctorsService.remove(id);

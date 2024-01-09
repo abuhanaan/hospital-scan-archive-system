@@ -7,9 +7,10 @@ import { AuthModule } from './auth/auth.module';
 import { DoctorsModule } from './doctors/doctors.module';
 import { PatientsModule } from './patients/patients.module';
 import { ScansModule } from './scans/scans.module';
+import { NursesModule } from './nurses/nurses.module';
 
 @Module({
-  imports: [PrismaModule, UsersModule, AuthModule, DoctorsModule, PatientsModule, ScansModule],
+  imports: [PrismaModule, UsersModule, AuthModule, DoctorsModule, PatientsModule, ScansModule, NursesModule],
   controllers: [AppController],
   providers: [AppService],
 })
