@@ -15,6 +15,11 @@ export class CreatePatientDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
+  gender?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
   phoneNumber: string;
 
   @IsString()

@@ -12,6 +12,9 @@ export class PatientEntity implements Patient {
   lastName: string;
 
   @ApiProperty()
+  gender: string;
+
+  @ApiProperty()
   phoneNumber: string;
 
   @ApiProperty()

@@ -13,6 +13,9 @@ export class DoctorEntity implements Doctor {
   lastName: string;
 
   @ApiProperty()
+  gender: string;
+
+  @ApiProperty()
   phoneNumber: string;
 
   @ApiProperty()

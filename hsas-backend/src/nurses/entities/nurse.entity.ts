@@ -13,6 +13,9 @@ export class NurseEntity implements Nurse {
   lastName: string;
 
   @ApiProperty()
+  gender: string;
+
+  @ApiProperty()
   phoneNumber: string;
 
   @ApiProperty()
