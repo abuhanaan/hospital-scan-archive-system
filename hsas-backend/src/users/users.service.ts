@@ -65,11 +65,17 @@ export class UsersService {
     const doctorsCount = await this.prisma.doctor.count();
     const patientsCount = await this.prisma.patient.count();
     const scansCount = await this.prisma.scan.count();
+    const nursesCount = await this.prisma.nurse.count();
     const recentDoctors = await this.prisma.doctor.findMany({
       take: 3,
       orderBy: {
         createdAt: 'desc',
       },
+    });
+
+    const recentNurses = await this.prisma.nurse.findMany({
+      take: 3,
+      orderBy: { createdAt: 'desc' },
     });
     const recentScans = await this.prisma.scan.findMany({
       take: 3,
@@ -80,7 +86,9 @@ export class UsersService {
       doctorsCount,
       patientsCount,
       scansCount,
+      nursesCount,
       recentDoctors,
+      recentNurses,
       recentScans,
     };
   }

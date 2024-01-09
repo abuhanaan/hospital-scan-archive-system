@@ -17,6 +17,7 @@ import {
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { NurseEntity } from './entities/nurse.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -26,6 +27,7 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { AdminJwtAuthGuard } from 'src/auth/guards/admin-auth.guards';
 
 @Controller('nurses')
+@ApiTags('nurses')
 export class NursesController {
   constructor(private readonly nursesService: NursesService) {}
 
