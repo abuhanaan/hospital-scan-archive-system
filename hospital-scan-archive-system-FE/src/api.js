@@ -54,8 +54,37 @@ export async function createUser(userData) {
         return {
             unAuthorize: true
         }
-        // const pathname = new URL(request.url).pathname;
-        // throw redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
+    }
+
+    if (!res.ok || data.error) {
+        return {
+            statusCode: data.statusCode,
+            message: data.message,
+            error: data.error ?? 'Something went wrong',
+            path: data.path
+        }
+    }
+
+    return data;
+}
+
+export async function updateUser(userId, userData) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users/${userId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`,
+        },
+        body: JSON.stringify(userData)
+    });
+
+    const data = await res.json();
+
+    if (res.status === 401) {
+        return {
+            unAuthorize: true
+        }
     }
 
     if (!res.ok || data.error) {
