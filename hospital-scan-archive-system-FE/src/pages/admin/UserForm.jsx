@@ -1,9 +1,11 @@
 import { useState, useRef } from 'react';
-import { Link, useLocation, Form } from 'react-router-dom';
+import { Link, useLocation, useNavigate, Form } from 'react-router-dom';
 import { MdOutlineSyncLock } from "react-icons/md";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createUser } from '../../api';
+import { loader } from '../Home';
+import { requireAuth } from '../../utils';
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -51,21 +53,27 @@ export async function action({ request }) {
 
 const UserForm = () => {
     const { state } = useLocation();
+    const location = useLocation();
+    const navigate = useNavigate();
     const user = state && state.currentUser;
     const passwordRef = useRef(null);
     const emailRef = useRef(null);
-    const [formData, setFormData] = useState(user || {
-        id: user?.id || '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        role: '',
-        specialty: '',
-        img: '',
-    });
     const [image, setImage] = useState(null);
     const fileRef = useRef(null);
+    const [formData, setFormData] = useState(user ?
+        {
+            email: user.email,
+            role: user.role,
+            password: user.password ?? '',
+            active: user.active
+        } :
+        {
+            email: '',
+            role: '',
+            password: '',
+            active: true
+        }
+    );
 
     function handleChange(e) {
         const { name, value, type, checked } = e.target;
@@ -75,6 +83,51 @@ const UserForm = () => {
             ...prev,
             [name]: elementValue
         }));
+    }
+
+    async function submitForm(e) {
+        e.preventDefault();
+
+        const btnType = e.target.elements[4].dataset.intent;
+        console.log(btnType);
+
+        if (btnType === 'create') {
+            try {
+                const user = await createUser(formData);
+
+                if (user.unAuthorize) {
+                    const pathname = location.pathname;
+                    navigate(`/?message=Please log in to continue&redirectTo=${pathname}`);
+                }
+
+                if (user.error || user.message) {
+                    toast.error(`${user.error} ${user.message}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                    });
+
+                    return {
+                        error: user.error
+                    }
+                }
+
+                toast.success(`User successfully created!`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                });
+
+                setTimeout(() => {
+                    navigate(`/admin/users`);
+                }, 3000);
+            } catch (error) {
+                return error;
+            }
+        }
+
+        if (btnType === 'update') {
+
+        }
+
     }
 
     function browseImage(e) {
@@ -105,6 +158,10 @@ const UserForm = () => {
         }
 
         passwordRef.current.value = emailRef.current.value.slice(0, 6);
+        setFormData(prev => ({
+            ...prev,
+            password: passwordRef.current.value
+        }));
     }
 
     return (
@@ -123,7 +180,7 @@ const UserForm = () => {
             </div>
 
             <div className="mx-auto w-full">
-                <Form method='post'>
+                <form onSubmit={submitForm}>
                     <div className="grid grid-cols-1 xs:grid-cols-2 gap-6">
                         <div className="">
                             <label
@@ -137,6 +194,8 @@ const UserForm = () => {
                                 name="email"
                                 id="email"
                                 ref={emailRef}
+                                value={formData.email}
+                                onChange={handleChange}
                                 placeholder="Email"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                 required
@@ -155,6 +214,8 @@ const UserForm = () => {
                                     name="password"
                                     id="password"
                                     ref={passwordRef}
+                                    value={formData.password}
+                                    onChange={handleChange}
                                     placeholder="Password"
                                     className="w-full rounded-s-md border border-[#e0e0e0] bg-gray-200 py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     required
@@ -173,16 +234,19 @@ const UserForm = () => {
                                 htmlFor="role"
                                 className="mb-1 block text-base font-medium text-[#07074D]"
                             >
-                                Role <span className="text-red-600">*</span>
+                                Role
                             </label>
-                            <input
-                                type="text"
+                            <select
                                 name="role"
                                 id="role"
-                                placeholder="Role"
-                                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                                required
-                            />
+                                value={formData.role}
+                                onChange={handleChange}
+                                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
+                                <option value="">--Select an option--</option>
+                                <option value="admin">Admin</option>
+                                <option value="doctor">Doctor</option>
+                                <option value="nurse">Nurse</option>
+                            </select>
                         </div>
                         {/* <div className="">
                             <label
@@ -261,11 +325,11 @@ const UserForm = () => {
                     <div className='flex justify-end'>
                         {
                             state ?
-                                <button type='submit' name='intent' value='update' className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update User</button> :
-                                <button type='submit' name='intent' value='create' className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Create User</button>
+                                <button type='submit' data-intent='update' className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update User</button> :
+                                <button type='submit' data-intent='create' className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Create User</button>
                         }
                     </div>
-                </Form>
+                </form>
             </div>
         </div>
     )

@@ -24,6 +24,9 @@ const DashboardTable = ({ data }) => {
                             <thead className="bg-gray-100 dark:bg-gray-700">
                                 <tr className="">
                                     <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
+                                        S/N
+                                    </th>
+                                    <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
                                         Patient
                                     </th>
                                     <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
@@ -43,12 +46,20 @@ const DashboardTable = ({ data }) => {
                                     </th>
                                 </tr>
                             </thead>
+                            
                             <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                 {
-                                    data.map(scan => (
+                                    data.map((scan, index) => (
                                         <tr key={scan.id} onClick={() => viewScan(scan.id)} className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                                            <td className="table-data">{scan.patientId}</td>
-                                            <td className="table-data">{`Dr. ${scan.doctorId}`}</td>
+                                            <td className="table-data">{`${index + 1}.`}</td>
+                                            <td className="table-data">{`${scan.patient.firstName} ${scan.patient.lastName}`}</td>
+                                            <td className="table-data">
+                                                {
+                                                    scan.doctor.firstName || scan.doctor.lastName ?
+                                                        `Dr. ${scan.doctor.firstName ?? ''} ${scan.doctor.lastName ?? ''}` :
+                                                        'N/A'
+                                                }
+                                            </td>
                                             <td className="table-data">{scan.type}</td>
                                             <td className="table-data">{scan.diagnosis}</td>
                                             <td className="table-data">{new Date(scan.createdAt).toDateString()}</td>
@@ -57,7 +68,7 @@ const DashboardTable = ({ data }) => {
                                                     <IoEyeOutline size={20} color='white' />
                                                 </button>
 
-                                                <Link to={scan.scanUrl} className='bg-blue-500 hover:bg-blue-600 p-1 rounded-md'>
+                                                <Link to={scan.url} className='bg-blue-500 hover:bg-blue-600 p-1 rounded-md'>
                                                     <MdOutlineFileDownload size={20} color='white' />
                                                 </Link>
                                             </td>

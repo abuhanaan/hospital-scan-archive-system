@@ -12,7 +12,7 @@ const router = createBrowserRouter(createRoutesFromChildren(
 
             <Route path='users' loader={usersListLoader} element={<UsersList />} />
             <Route path='users/:id' loader={userViewLoader} element={<UserView />} />
-            <Route path='users/create-user' element={<UserForm />} action={userCreateAction} />
+            <Route path='users/create-user' element={<UserForm />} />
 
             <Route path='patients' loader={patientsListLoader} element={<PatientsList />} />
             <Route path='patients/:id' loader={patientViewLoader} element={<PatientView />} />

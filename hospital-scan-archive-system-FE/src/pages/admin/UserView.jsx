@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, useLoaderData, useActionData, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLoaderData, useActionData, useNavigate, useLocation } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline, MdOutlineFileDownload } from "react-icons/md";
 import { FaArrowLeftLong, FaArrowRightLong, FaUserCheck, FaUserXmark } from "react-icons/fa6";
 import { HiUserCircle } from 'react-icons/hi';
@@ -7,49 +7,24 @@ import { IoEyeOutline } from "react-icons/io5";
 import { users, scans } from '../../constants';
 import { EmptySearch } from '../../components/EmptySearch';
 import { IoSearch } from 'react-icons/io5';
-import { getUser } from '../../api';
+import { getUser, activateUser, deactivateUser, deleteUser } from '../../api';
 import { requireAuth } from '../../utils';
 import Table from '../../components/Table';
+import ConfirmModal from '../../components/ConfirmModal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export async function loader({ params, request }) {
     await requireAuth(request);
 
-    const user = await getUser(params.id, request);
+    const data = await getUser(params.id, request);
 
-    if (user.error || data.message) {
+
+    if (data.error || data.message) {
         return {
-            error: user.message ?? user.error
+            error: data.message ?? data.error
         }
     }
-
-    const data = {
-        ...user,
-        scans: [
-            {
-                scanId: '6',
-                scanSymptoms: 'Chest pains',
-                scanDiagnosis: 'Chest pain',
-                scanType: 'Chest Scan',
-                scanDate: '8/10/2023',
-                scanUrl: 'https://chest-pain-sandra.zip',
-                userId: 3,
-                userName: 'Halimah Salis',
-                userEmail: 'doctor2@g.com',
-                userSpecialty: 'Opthalmologist',
-                userRole: 'doctor',
-                userImg: 'https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/7525866/hijab-doctor-clipart-md.png',
-                patientId: 2,
-                patientName: 'Yusuf Tajudeen',
-                patientPhoneNumber: '07054908745',
-                patientNextOfKinName: 'Zainab Tiamiyu',
-                patientNextOfKinPhone: '08054125690',
-                patientNextOfKinRelationship: 'wife',
-                patientAddress: '18, Ajanlekoko street, Lagos.',
-                patientDob: '12/11/1998',
-                patientGender: 'male'
-            },
-        ]
-    };
 
     return data;
 }
@@ -80,6 +55,9 @@ const ActionButtons = ({ scan }) => {
 const UserView = () => {
     const user = useLoaderData();
     const navigate = useNavigate();
+    const location = useLocation();
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [userId, setUserId] = useState(null);
 
     const columns = [
         { id: 'S/N', header: 'S/N' },
@@ -91,15 +69,111 @@ const UserView = () => {
         { id: 'actions', header: '' },
     ];
 
-    function deleteUser(e) {
+    function openDeleteModal(e) {
+        e.preventDefault();
+
+        const dataUserId = e.currentTarget.getAttribute('data-user-id');
+        setIsConfirmOpen(true);
+        setUserId(dataUserId);
+    }
+
+    async function userDelete(e) {
+        e.preventDefault();
+
+        // const userId = e.currentTarget.getAttribute('data-user-id');
+
+        const user = await deleteUser(userId);
+
+        if (user.unAuthorize) {
+            const pathname = location.pathname;
+            return redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
+        }
+
+        if (user.error || user.message) {
+            toast.error(`${user.error}: ${user.message}`, {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+            });
+            setIsConfirmOpen(false);
+            return user.error;
+        }
+
+        toast.success(`User activated successfully!`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+        });
+
+        setTimeout(() => {
+            return redirect('/admin/users');
+            // window.location.reload(true);
+        }, 3000);
+    }
+
+    async function userActivate(e) {
         e.preventDefault();
 
         const userId = e.currentTarget.getAttribute('data-user-id');
-        console.log('User Id:', userId);
+
+        const user = await activateUser(userId);
+
+        if (user.unAuthorize) {
+            const pathname = location.pathname;
+            console.log(pathname);
+            return redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
+        }
+
+        if (user.error || user.message) {
+            toast.error(`${user.error}: ${user.message}`, {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+            });
+            return user.error;
+        }
+
+        toast.success(`User activated successfully!`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+        });
+
+        setTimeout(() => {
+            window.location.reload(true);
+        }, 3000);
+    }
+
+    async function userDeactivate(e) {
+        e.preventDefault();
+
+        const userId = e.currentTarget.getAttribute('data-user-id');
+
+        const user = await deactivateUser(userId);
+
+        if (user.unAuthorize) {
+            const pathname = location.pathname;
+            console.log(pathname);
+            return redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
+        }
+
+        if (user.error || user.message) {
+            toast.error(`${user.error}: ${user.message}`, {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+            });
+            return user.error;
+        }
+
+        toast.success(`User deactivated successfully!`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+        });
+
+        setTimeout(() => {
+            window.location.reload(true);
+        }, 3000);
     }
 
     return (
         <div className="mt-6 min-h-screen w-full font-poppins">
+            <ToastContainer />
             <div className="mb-6">
                 <nav aria-label="breadcrumb">
                     <ol className="flex space-x-2">
@@ -116,12 +190,12 @@ const UserView = () => {
 
                         {
                             user.active ?
-                                <button onClick={deleteUser} data-user-id={user.id} className="text-grey-lighter py-2 px-2 rounded-md bg-red-700 hover:bg-red-900"><FaUserXmark size={22} color='white' /></button>
+                                <button onClick={userDeactivate} data-user-id={user.id} className="text-grey-lighter py-2 px-2 rounded-md bg-red-700 hover:bg-red-900"><FaUserXmark size={22} color='white' /></button>
                                 :
-                                <button onClick={deleteUser} data-user-id={user.id} className="text-grey-lighter py-2 px-2 rounded-md bg-green-700 hover:bg-green-900"><FaUserCheck size={22} color='white' /></button>
+                                <button onClick={userActivate} data-user-id={user.id} className="text-grey-lighter py-2 px-2 rounded-md bg-green-700 hover:bg-green-900"><FaUserCheck size={22} color='white' /></button>
                         }
 
-                        <button onClick={deleteUser} data-user-id={user.id} className="text-grey-lighter py-2 px-2 rounded-md bg-red-700 hover:bg-red-800"><MdDeleteOutline size={22} color='white' /></button>
+                        <button onClick={openDeleteModal} data-user-id={user.id} className="text-grey-lighter py-2 px-2 rounded-md bg-red-700 hover:bg-red-800"><MdDeleteOutline size={22} color='white' /></button>
                     </div>
                 </div>
             </div>
@@ -141,20 +215,77 @@ const UserView = () => {
                         </div>
 
                         <div className="flex flex-col xl:flex-row xl:gap-6">
-                            <div className="order-2">
-                                {
-                                    user.scans?.length === 0 ?
-                                        <EmptySearch headers={['Patient', 'Type', 'Diagnosis', 'Date', 'Download']} type='scans' />
-                                        :
-                                        <Table data={user.scans} columns={columns} render={scan => (
-                                            <ActionButtons scan={scan} />
-                                        )} />
-                                }
-                            </div>
+                            {
+                                user.scan &&
+                                <div className="order-2">
+                                    {
+                                        user.scans?.length === 0 ?
+                                            <EmptySearch headers={['Patient', 'Type', 'Diagnosis', 'Date', 'Download']} type='scans' />
+                                            :
+                                            <Table data={user.scans} columns={columns} render={scan => (
+                                                <ActionButtons scan={scan} />
+                                            )} />
+                                    }
+                                </div>
+                            }
+
+                            <ConfirmModal isOpen={isConfirmOpen} toggleModal={setIsConfirmOpen}>
+                                <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                                    <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                        <div className="sm:flex sm:items-start">
+                                            <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                                <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                                </svg>
+                                            </div>
+                                            <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                                <h3 className="text-lg font-semibold leading-6 text-gray-900" id="modal-title">Delete User</h3>
+                                                <div className="mt-2">
+                                                    <p className="text-base text-gray-600">Proceed to delete user</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                        <button type="button" onClick={userDelete} className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Delete</button>
+                                        <button type="button" onClick={() => setIsConfirmOpen(false)} className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-base font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+                                    </div>
+                                </div>
+                            </ConfirmModal>
 
                             <fieldset className="w-full border-2 border-gray-300 rounded-md px-6 py-4 mb-4 grid grid-cols-1 ss:grid-cols-2 sm:grid-cols-3 gap-3">
                                 <legend className='font-semibold text-primary px-1'>User Details</legend>
 
+                                <div className="">
+                                    <h4 className="block text-base font-semibold text-[#07074D]">
+                                        ID
+                                    </h4>
+                                    <p className="w-full text-base font-medium text-[#6B7280]">
+                                        {
+                                            user.id ? user.id : 'N/A'
+                                        }
+                                    </p>
+                                </div>
+                                <div className="">
+                                    <h4 className="block text-base font-semibold text-[#07074D]">
+                                        Email
+                                    </h4>
+                                    <p className="w-full text-base font-medium text-[#6B7280]">
+                                        {
+                                            user.email ? user.email : 'N/A'
+                                        }
+                                    </p>
+                                </div>
+                                <div className="">
+                                    <h4 className=" block text-base font-semibold text-[#07074D]">
+                                        Role
+                                    </h4>
+                                    <p className="w-full text-base font-medium text-[#6B7280]">
+                                        {
+                                            user.role ? user.role : 'N/A'
+                                        }
+                                    </p>
+                                </div>
                                 <div className="">
                                     <h4 className="block text-base font-semibold text-[#07074D]">
                                         First Name
@@ -176,16 +307,6 @@ const UserView = () => {
                                     </p>
                                 </div>
                                 <div className="">
-                                    <h4 className="block text-base font-semibold text-[#07074D]">
-                                        Email
-                                    </h4>
-                                    <p className="w-full text-base font-medium text-[#6B7280]">
-                                        {
-                                            user.email ? user.email : 'N/A'
-                                        }
-                                    </p>
-                                </div>
-                                <div className="">
                                     <h4 className=" block text-base font-semibold text-[#07074D]">
                                         Specialty
                                     </h4>
@@ -195,25 +316,19 @@ const UserView = () => {
                                         }
                                     </p>
                                 </div>
-                                <div className="">
-                                    <h4 className=" block text-base font-semibold text-[#07074D]">
-                                        Role
-                                    </h4>
-                                    <p className="w-full text-base font-medium text-[#6B7280]">
-                                        {
-                                            user.role ? user.role : 'N/A'
-                                        }
-                                    </p>
-                                </div>
-                                <div className="">
-                                    <h4 className=" block text-base font-semibold text-[#07074D]">
-                                        Total Scans
-                                    </h4>
-                                    <p className="w-full text-base font-medium text-[#6B7280]">
-                                        {user.scans.length}
-                                    </p>
-                                </div>
+                                {
+                                    user.scans &&
+                                    <div className="">
+                                        <h4 className=" block text-base font-semibold text-[#07074D]">
+                                            Total Scans
+                                        </h4>
+                                        <p className="w-full text-base font-medium text-[#6B7280]">
+                                            {user.scans.length}
+                                        </p>
+                                    </div>
+                                }
                             </fieldset>
+
                         </div>
                     </div>
             }
