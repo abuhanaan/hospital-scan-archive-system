@@ -22,15 +22,15 @@ export async function loader({ request }) {
     const dashboardCardsInfo = [
         { id: 'doctors', title: 'Total Doctors', count: data.doctorsCount, icon: <FaUserDoctor size={20} /> },
         { id: 'patients', title: 'Total Patients', count: data.patientsCount, icon: <FaUserInjured size={20} /> },
-        { id: 'nurses', title: 'Total Nurses', count: 0, icon: <FaUserNurse size={20} /> },
+        { id: 'nurses', title: 'Total Nurses', count: data.nursesCount, icon: <FaUserNurse size={20} /> },
         { id: 'scans', title: 'Total Scans', count: data.scansCount, icon: <FaFileMedical size={20} /> },
     ];
 
-    return [dashboardCardsInfo, data.recentScans, data.recentDoctors];
+    return [dashboardCardsInfo, data.recentScans, data.recentUsers];
 }
 
 const AdminDashboard = () => {
-    const [cardsData, scansData, usersData] = useLoaderData();
+    const [cardsData, scansData, recentUsers] = useLoaderData();
 
     return (
         <section className="overflow-x-auto font-poppins">
@@ -58,10 +58,10 @@ const AdminDashboard = () => {
 
                     <ul className="list-none">
                         {
-                            usersData.length === 0 ?
+                            recentUsers.length === 0 ?
                                 <EmptySearch headers={[]} type='users' />
                                 :
-                                usersData.map(user => {
+                                recentUsers.map(user => {
                                     const title = user.role === 'doctor' ? 'Dr. ' : '';
                                     return (
                                         <li key={user.id} className="py-3 px-6">
@@ -78,7 +78,7 @@ const AdminDashboard = () => {
                                                     <h1 className="text-base font-medium text-primary">
                                                         {
                                                             user.firstName || user.lastName ?
-                                                            `${title} ${user.firstName} ${user.lastName}` :
+                                                            `${title} ${user.firstName ?? ''} ${user.lastName ?? ''}` :
                                                             user.email
                                                         }
                                                     </h1>
