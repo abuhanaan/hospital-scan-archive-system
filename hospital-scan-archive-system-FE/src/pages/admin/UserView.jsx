@@ -86,7 +86,6 @@ const UserView = () => {
 
         if (user.unAuthorize) {
             const pathname = location.pathname;
-            console.log(pathname);
             return redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
         }
 

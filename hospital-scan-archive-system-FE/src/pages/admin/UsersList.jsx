@@ -120,13 +120,13 @@ const UsersList = () => {
     const columns = [
         { id: 'S/N', header: 'S/N' },
         { id: 'img', header: 'Profile Image' },
-        { id: 'firstName', header: 'First Name' },
-        { id: 'lastName', header: 'Last Name' },
         { id: 'email', header: 'Email' },
         { id: 'role', header: 'Role' },
-        { id: 'speciality', header: 'Specialty' },
         { id: 'active', header: 'Status' },
         { id: 'actions', header: '' }
+        // { id: 'speciality', header: 'Specialty' },
+        // { id: 'firstName', header: 'First Name' },
+        // { id: 'lastName', header: 'Last Name' },
     ];
 
     return (

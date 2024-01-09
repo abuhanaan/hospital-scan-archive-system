@@ -28,7 +28,6 @@ export async function loginUser(creds) {
 
     // Decode token and get the payload
     const decodedToken = jwtDecode(JSON.stringify(resData.accessToken));
-    console.log('Decoded Token: \n', decodedToken);
 
     const data = {
         ...resData,
@@ -38,7 +37,7 @@ export async function loginUser(creds) {
     return data;
 }
 
-export async function createUser(request) {
+export async function createUser(userData) {
     const user = JSON.parse(localStorage.getItem('user'));
     const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users`, {
         method: 'POST',
@@ -46,13 +45,17 @@ export async function createUser(request) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.accessToken}`,
         },
+        body: JSON.stringify(userData)
     });
 
     const data = await res.json();
 
     if (res.status === 401) {
-        const pathname = new URL(request.url).pathname;
-        throw redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
+        return {
+            unAuthorize: true
+        }
+        // const pathname = new URL(request.url).pathname;
+        // throw redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
     }
 
     if (!res.ok || data.error) {
