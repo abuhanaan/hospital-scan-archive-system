@@ -12,7 +12,6 @@ const DashboardTable = ({ data }) => {
         const scanId = e.currentTarget.getAttribute('data-scan-id');
         navigate(`scans/${scanId}`);
     }
-    console.log(data);
 
     return (
         <>
