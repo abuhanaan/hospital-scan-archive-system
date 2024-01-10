@@ -94,11 +94,12 @@ const UserView = () => {
                 position: toast.POSITION.TOP_CENTER,
                 autoClose: 2000,
             });
+            console.log(user);
             setIsConfirmOpen(false);
             return user.error;
         }
 
-        toast.success(`User activated successfully!`, {
+        toast.success(`User deleted successfully!`, {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 2000,
         });

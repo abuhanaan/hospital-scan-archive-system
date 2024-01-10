@@ -1,11 +1,14 @@
-import React from 'react';
-import { Link, useLoaderData, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLoaderData, useNavigate, useLocation } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline, MdOutlineFileDownload } from "react-icons/md";
 import { IoEyeOutline } from "react-icons/io5";
 import { EmptySearch } from '../../components/EmptySearch';
 import { requireAuth } from '../../utils';
-import { getPatient } from '../../api';
+import { deletePatient, getPatient } from '../../api';
 import Table from '../../components/Table';
+import ConfirmModal from '../../components/ConfirmModal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export async function loader({ params, request }) {
     await requireAuth(request);
@@ -18,27 +21,27 @@ export async function loader({ params, request }) {
         }
     }
 
-    const data = {
-        ...patient,
-        scans: [
-            {
-                scanId: '6',
-                scanSymptoms: 'Chest pains',
-                scanDiagnosis: 'Chest pain',
-                scanType: 'Chest Scan',
-                scanDate: '8/10/2023',
-                scanUrl: 'https://chest-pain-sandra.zip',
-                userId: 3,
-                userName: 'Halimah Salis',
-                userEmail: 'doctor2@g.com',
-                userSpecialty: 'Opthalmologist',
-                userRole: 'doctor',
-                userImg: 'https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/7525866/hijab-doctor-clipart-md.png',
-            },
-        ]
-    };
+    // const data = {
+    //     ...patient,
+    //     scans: [
+    //         {
+    //             scanId: '6',
+    //             scanSymptoms: 'Chest pains',
+    //             scanDiagnosis: 'Chest pain',
+    //             scanType: 'Chest Scan',
+    //             scanDate: '8/10/2023',
+    //             scanUrl: 'https://chest-pain-sandra.zip',
+    //             userId: 3,
+    //             userName: 'Halimah Salis',
+    //             userEmail: 'doctor2@g.com',
+    //             userSpecialty: 'Opthalmologist',
+    //             userRole: 'doctor',
+    //             userImg: 'https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/7525866/hijab-doctor-clipart-md.png',
+    //         },
+    //     ]
+    // };
 
-    return data;
+    return patient;
 }
 
 const ActionButtons = ({ scan }) => {
@@ -66,7 +69,10 @@ const ActionButtons = ({ scan }) => {
 
 const PatientView = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const patient = useLoaderData();
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [patientId, setPatientId] = useState(null);
 
     const columns = [
         { id: 'S/N', header: 'S/N' },
@@ -77,11 +83,45 @@ const PatientView = () => {
         { id: 'actions', header: '' },
     ];
 
-    function deletePatient(e) {
+    function openDeleteModal(e) {
         e.preventDefault();
 
-        const patientId = e.currentTarget.getAttribute('data-patient-id');
-        console.log('PatientId:', patientId);
+        const dataPatientId = e.currentTarget.getAttribute('data-patient-id');
+        setIsConfirmOpen(true);
+        setPatientId(dataPatientId);
+    }
+
+    async function patientDelete(e) {
+        e.preventDefault();
+
+        // const patientId = e.currentTarget.getAttribute('data-patient-id');
+        const patientResponse = await deletePatient(patientId);
+
+        if (patientResponse.unAuthorize) {
+            const pathname = location.pathname;
+            navigate(`/?message=Please log in to continue&redirectTo=${pathname}`)
+        }
+
+        if (patientResponse.error || patientResponse.message) {
+            toast.error(`${patientResponse.error}: ${patientResponse.message}`, {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+            });
+            console.log(patientResponse);
+            setIsConfirmOpen(false);
+            return patientResponse.error;
+        }
+
+        toast.success(`Patient deleted successfully!`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+        });
+
+        setTimeout(() => {
+            navigate('/admin/patients')
+            // return redirect('/admin/users');
+            // window.location.reload(true);
+        }, 3000);
     }
 
     return (
@@ -100,8 +140,31 @@ const PatientView = () => {
                     <div className="flex items-center gap-2">
                         <Link to={`/admin/patients/create-patient`} state={{ currentPatient: patient }} className="text-grey-lighter py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={22} color='white' /></Link>
 
-                        <button onClick={deletePatient} data-patient-id={patient.id} className="text-grey-lighter py-2 px-2 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={22} color='white' /></button>
+                        <button onClick={openDeleteModal} data-patient-id={patient.id} className="text-grey-lighter py-2 px-2 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={22} color='white' /></button>
                     </div>
+                    <ConfirmModal isOpen={isConfirmOpen} toggleModal={setIsConfirmOpen}>
+                        <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div className="sm:flex sm:items-start">
+                                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                        <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                        </svg>
+                                    </div>
+                                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                        <h3 className="text-lg font-semibold leading-6 text-gray-900" id="modal-title">Delete Patient</h3>
+                                        <div className="mt-2">
+                                            <p className="text-base text-gray-600">Proceed to delete patient</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                <button type="button" onClick={patientDelete} className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Delete</button>
+                                <button type="button" onClick={() => setIsConfirmOpen(false)} className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-base font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+                            </div>
+                        </div>
+                    </ConfirmModal>
                 </div>
             </div>
 
@@ -109,19 +172,30 @@ const PatientView = () => {
                 patient.error ?
                     <h1>{patient.error}</h1> :
                     <div className="flex flex-col xl:flex-row">
-                        <div className="order-2">
-                            {
-                                patient.scans?.length === 0 ?
-                                    <EmptySearch headers={['Doctor', 'Type', 'Diagnosis', 'Date', 'Download']} type='scans' />
-                                    :
-                                    <Table data={patient.scans} columns={columns} render={scan => (
-                                        <ActionButtons scan={scan} />
-                                    )} />
-                            }
-                        </div>
+                        {
+                            patient.scans &&
+                            <div className="order-2">
+                                {
+                                    patient.scans?.length === 0 ?
+                                        <EmptySearch headers={['Doctor', 'Type', 'Diagnosis', 'Date', 'Download']} type='scans' />
+                                        :
+                                        <Table data={patient.scans} columns={columns} render={scan => (
+                                            <ActionButtons scan={scan} />
+                                        )} />
+                                }
+                            </div>
+                        }
 
                         <fieldset className="w-full border-2 border-gray-300 rounded-md px-6 py-4 mb-4 grid grid-cols-1 ss:grid-cols-2 sm:grid-cols-3 gap-3">
                             <legend className='font-semibold text-primary px-1'>Patient Details</legend>
+                            <div className="">
+                                <h4 className="block text-base font-semibold text-[#07074D]">
+                                    ID
+                                </h4>
+                                <p className="w-full text-base font-medium text-[#6B7280]">
+                                    {patient.id}
+                                </p>
+                            </div>
                             <div className="">
                                 <h4 className="block text-base font-semibold text-[#07074D]">
                                     First Name
@@ -184,14 +258,17 @@ const PatientView = () => {
                                     {patient.address}
                                 </p>
                             </div>
-                            <div className="">
-                                <h4 className=" block text-base font-semibold text-[#07074D]">
-                                    Total Scans
-                                </h4>
-                                <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {patient.scans?.length}
-                                </p>
-                            </div>
+                            {
+                                patient.scans &&
+                                <div className="">
+                                    <h4 className=" block text-base font-semibold text-[#07074D]">
+                                        Total Scans
+                                    </h4>
+                                    <p className="w-full text-base font-medium text-[#6B7280]">
+                                        {patient.scans?.length}
+                                    </p>
+                                </div>
+                            }
                         </fieldset>
                         <fieldset className='border-2 border-gray-300 rounded-md px-6 py-4 mb-4 grid grid-cols-1 ss:grid-cols-2 sm:grid-cols-3 gap-3'>
                             <legend className='font-semibold text-primary px-1'>Next of Kin Details</legend>

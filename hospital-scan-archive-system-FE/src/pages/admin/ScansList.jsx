@@ -60,6 +60,7 @@ const ActionButtons = ({ scan }) => {
 const ScansList = () => {
     const navigate = useNavigate();
     const scans = useLoaderData();
+    console.log(scans);
 
     const columns = [
         { id: 'S/N', header: 'S/N' },

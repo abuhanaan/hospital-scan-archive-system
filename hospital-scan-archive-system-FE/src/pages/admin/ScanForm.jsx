@@ -6,25 +6,62 @@ const ScanForm = () => {
     const scan = state && state.currentScan;
     const fileRef = useRef(null);
     const [selectedScan, setSelectedScan] = useState(null);
-    const [formData, setFormData] = useState(
+    const [formData, setFormData] = useState(scan ?
         {
             patientId: scan.patientId,
-            userId: scan.userId,
-            scanType: scan.scanType,
-            scanSymptoms: scan.scanSymptoms,
-            scanDiagnosis: scan.scanDiagnosis,
-            scanFile: scan.scanUrl
+            doctorId: scan.doctorId,
+            type: scan.type,
+            symptoms: scan.symptoms,
+            diagnosis: scan.diagnosis,
+            file: scan.url
         }
-        ||
+        :
         {
             patientId: '',
-            userId: '',
-            scanType: '',
-            scanSymptoms: '',
-            scanDiagnosis: '',
-            scanFile: ''
+            doctorId: '',
+            type: '',
+            symptoms: '',
+            diagnosis: '',
+            file: ''
         }
     );
+
+    const dt = {
+        "id": 1,
+        "symptoms": "Chest pain",
+        "diagnosis": "Chest pain",
+        "type": "Chest Scan",
+        "url": "https://hsas-bucket.s3.amazonaws.com/HSAS.zip",
+        "createdAt": "2024-01-09T01:57:03.711Z",
+        "updatedAt": "2024-01-09T01:57:03.711Z",
+        "doctorId": 3,
+        "patientId": 1,
+        "doctor": {
+            "id": 1,
+            "firstName": null,
+            "lastName": null,
+            "gender": null,
+            "phoneNumber": null,
+            "speciality": null,
+            "createdAt": "2024-01-08T11:13:21.532Z",
+            "updatedAt": "2024-01-08T11:13:21.532Z",
+            "doctorId": 3
+        },
+        "patient": {
+            "id": 1,
+            "firstName": "Aliyu",
+            "lastName": "Rasheed",
+            "gender": "male",
+            "phoneNumber": "08076453712",
+            "address": "18, Ajanlekoko Street, Gbagada",
+            "dob": "1993-01-08T23:00:00.000Z",
+            "nextOfKinName": "Zainab Hashim",
+            "nextOfKinPhone": "09034678908",
+            "nextOfKinRelationship": "Wife",
+            "createdAt": "2024-01-09T00:49:38.158Z",
+            "updatedAt": "2024-01-10T07:25:52.306Z"
+        }
+    }
 
     function handleChange(e) {
         const { name, value, type, checked } = e.target;
@@ -89,16 +126,16 @@ const ScanForm = () => {
                         </div>
                         <div className="">
                             <label
-                                htmlFor="userId"
+                                htmlFor="doctorId"
                                 className="mb-1 block text-base font-medium text-[#07074D]"
                             >
                                 Doctor ID
                             </label>
                             <input
                                 type="text"
-                                name="userId"
-                                id="userId"
-                                value={formData.userId}
+                                name="doctorId"
+                                id="doctorId"
+                                value={formData.doctorId}
                                 onChange={handleChange}
                                 placeholder="Doctor ID"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -106,16 +143,16 @@ const ScanForm = () => {
                         </div>
                         <div className="">
                             <label
-                                htmlFor="scanType"
+                                htmlFor="type"
                                 className="mb-1 block text-base font-medium text-[#07074D]"
                             >
                                 Scan Type
                             </label>
                             <input
                                 type="text"
-                                name="scanType"
-                                id="scanType"
-                                value={formData.scanType}
+                                name="type"
+                                id="type"
+                                value={formData.type}
                                 onChange={handleChange}
                                 placeholder="Scan Type"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -132,7 +169,7 @@ const ScanForm = () => {
                                 type="text"
                                 name="symptoms"
                                 id="symptoms"
-                                value={formData.scanSymptoms}
+                                value={formData.symptoms}
                                 onChange={handleChange}
                                 placeholder="Symptoms"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -149,7 +186,7 @@ const ScanForm = () => {
                                 type="text"
                                 name="diagnosis"
                                 id="diagnosis"
-                                value={formData.scanDiagnosis}
+                                value={formData.diagnosis}
                                 onChange={handleChange}
                                 placeholder="Diagnosis"
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"

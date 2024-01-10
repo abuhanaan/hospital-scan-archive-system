@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, Form } from 'react-router-dom';
 import { MdOutlineSyncLock } from "react-icons/md";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { createUser } from '../../api';
+import { createUser, updateUser } from '../../api';
 import { loader } from '../Home';
 import { requireAuth } from '../../utils';
 
@@ -89,7 +89,6 @@ const UserForm = () => {
         e.preventDefault();
 
         const btnType = e.target.elements[4].dataset.intent;
-        console.log(btnType);
 
         if (btnType === 'create') {
             try {
@@ -125,7 +124,32 @@ const UserForm = () => {
         }
 
         if (btnType === 'update') {
+            const userResponse = await updateUser(user.id, formData);
 
+            if (userResponse.unAuthorize) {
+                const pathname = location.pathname;
+                navigate(`/?message=Please log in to continue&redirectTo=${pathname}`);
+            }
+
+            if (userResponse.error || userResponse.message) {
+                toast.error(`${userResponse.error} ${userResponse.message}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                });
+
+                return {
+                    error: userResponse.error
+                }
+            }
+
+            toast.success(`User successfully updated!`, {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+            });
+
+            setTimeout(() => {
+                navigate(`/admin/users`);
+            }, 3000);
         }
 
     }
@@ -219,7 +243,6 @@ const UserForm = () => {
                                     placeholder="Password"
                                     className="w-full rounded-s-md border border-[#e0e0e0] bg-gray-200 py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     required
-                                    readOnly
                                 />
                                 <button
                                     onClick={generatePassword}
