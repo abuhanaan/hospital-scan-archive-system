@@ -1,8 +1,12 @@
 import { useState, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { createScan, updateScan } from '../../api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ScanForm = () => {
-    const { state } = useLocation();
+    const { state, pathname } = useLocation();
+    const navigate = useNavigate();
     const scan = state && state.currentScan;
     const fileRef = useRef(null);
     const [selectedScan, setSelectedScan] = useState(null);
@@ -12,8 +16,7 @@ const ScanForm = () => {
             doctorId: scan.doctorId,
             type: scan.type,
             symptoms: scan.symptoms,
-            diagnosis: scan.diagnosis,
-            file: scan.url
+            diagnosis: scan.diagnosis
         }
         :
         {
@@ -22,46 +25,93 @@ const ScanForm = () => {
             type: '',
             symptoms: '',
             diagnosis: '',
-            file: ''
+            file: selectedScan
         }
     );
 
-    const dt = {
-        "id": 1,
-        "symptoms": "Chest pain",
-        "diagnosis": "Chest pain",
-        "type": "Chest Scan",
-        "url": "https://hsas-bucket.s3.amazonaws.com/HSAS.zip",
-        "createdAt": "2024-01-09T01:57:03.711Z",
-        "updatedAt": "2024-01-09T01:57:03.711Z",
-        "doctorId": 3,
-        "patientId": 1,
-        "doctor": {
-            "id": 1,
-            "firstName": null,
-            "lastName": null,
-            "gender": null,
-            "phoneNumber": null,
-            "speciality": null,
-            "createdAt": "2024-01-08T11:13:21.532Z",
-            "updatedAt": "2024-01-08T11:13:21.532Z",
-            "doctorId": 3
-        },
-        "patient": {
-            "id": 1,
-            "firstName": "Aliyu",
-            "lastName": "Rasheed",
-            "gender": "male",
-            "phoneNumber": "08076453712",
-            "address": "18, Ajanlekoko Street, Gbagada",
-            "dob": "1993-01-08T23:00:00.000Z",
-            "nextOfKinName": "Zainab Hashim",
-            "nextOfKinPhone": "09034678908",
-            "nextOfKinRelationship": "Wife",
-            "createdAt": "2024-01-09T00:49:38.158Z",
-            "updatedAt": "2024-01-10T07:25:52.306Z"
+    async function submitForm(e) {
+        e.preventDefault();
+
+        const btnType = state ? e.target.elements[5].dataset.intent : e.target.elements[7].dataset.intent;
+        const scanData = new FormData();
+
+        scanData.append('patientId', String(formData.patientId));
+        scanData.append('doctorId', String(formData.doctorId));
+        scanData.append('type', formData.type);
+        scanData.append('symptoms', formData.symptoms);
+        scanData.append('diagnosis', formData.diagnosis);
+        scanData.append('file', selectedScan ? selectedScan : '');
+
+        if (btnType === 'create') {
+            try {
+                const scanResponse = await createScan(scanData);
+
+                if (scanResponse.unAuthorize) {
+                    navigate(`/?message=Please log in to continue&redirectTo=${pathname}`);
+                }
+
+                if (scanResponse.error || scanResponse.message) {
+                    toast.error(`${scanResponse.error} ${scanResponse.message}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                    });
+
+                    return {
+                        error: scanResponse.error
+                    }
+                }
+
+                toast.success(`Scan successfully created!`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                });
+
+                setTimeout(() => {
+                    navigate(`/admin/scans`);
+                }, 3000);
+            } catch (error) {
+                return error;
+            }
+        }
+
+        if (btnType === 'update') {
+            scanData.delete('file');
+
+            try {
+                const scanResponse = await updateScan(scan.id, formData);
+    
+                if (scanResponse.unAuthorize) {
+                    navigate(`/?message=Please log in to continue&redirectTo=${pathname}`);
+                }
+    
+                if (scanResponse.error || scanResponse.message) {
+                    toast.error(`${scanResponse.error} ${scanResponse.message}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                    });
+    
+                    return {
+                        error: scanResponse.error
+                    }
+                }
+    
+                toast.success(`Scan successfully updated!`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                });
+
+                console.log(scanResponse);
+    
+                setTimeout(() => {
+                    navigate(`/admin/scans`);
+                }, 3000);
+            } catch (error) {
+                return error;
+            }
         }
     }
+
+    console.log(formData);
 
     function handleChange(e) {
         const { name, value, type, checked } = e.target;
@@ -87,11 +137,11 @@ const ScanForm = () => {
         if (file) {
             setSelectedScan(file);
         }
-
     }
 
     return (
         <div className="flex flex-col pt-6 font-poppins">
+            <ToastContainer />
             <div className="pb-6">
                 <nav aria-label="breadcrumb">
                     <ol className="flex space-x-2">
@@ -105,7 +155,7 @@ const ScanForm = () => {
             </div>
 
             <div className="mx-auto w-full">
-                <form>
+                <form onSubmit={submitForm}>
                     <div className="grid grid-cols-1 xs:grid-cols-2 gap-6">
                         <div className="">
                             <label
@@ -192,35 +242,38 @@ const ScanForm = () => {
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             />
                         </div>
-                        <div className="">
-                            <label
-                                htmlFor="file"
-                                className="mb-1 block text-base font-medium text-[#07074D]"
-                            >
-                                Scan <small>Compressed files only (.zip)</small>
-                            </label>
-                            <input
-                                type="file"
-                                name="file"
-                                id="file"
-                                ref={fileRef}
-                                onChange={handleScanSelect}
-                                placeholder="Next of Kin"
-                                className="w-full rounded-s-md h-[50px] border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md hidden"
-                            />
-                            <div className="flex items-end gap-4">
-                                <button onClick={browseScan} className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">{selectedScan ? 'Change Scan' : 'Browse Scan'}</button>
-                                <p className="font-poppins font-medium text-lg">{selectedScan ? selectedScan.name : 'No file chosen'}</p>
+                        {
+                            !state &&
+                            <div className="self-end">
+                                <label
+                                    htmlFor="file"
+                                    className="mb-1 block text-base font-medium text-[#07074D] sr-only"
+                                >
+                                    Scan <small>Compressed files only (.zip)</small>
+                                </label>
+                                <input
+                                    type="file"
+                                    name="file"
+                                    id="file"
+                                    ref={fileRef}
+                                    onChange={handleScanSelect}
+                                    placeholder="Next of Kin"
+                                    className="w-full rounded-s-md h-[50px] border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md hidden"
+                                />
+                                <div className="flex items-end gap-4">
+                                    <button onClick={browseScan} className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">{selectedScan ? 'Change Scan' : 'Browse Scan'}</button>
+                                    <p className="font-poppins font-medium text-lg">{selectedScan ? selectedScan.name : 'No file chosen'}</p>
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
 
                     <div className='flex justify-end mt-3'>
                         {
                             state ?
-                                <button className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update Scan</button>
+                                <button type='submit' data-intent='update' className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update Scan</button>
                                 :
-                                <button className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Upload Scan</button>
+                                <button type='submit' data-intent='create' className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Upload Scan</button>
                         }
                     </div>
                 </form>

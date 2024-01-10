@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PatientForm = () => {
-    const { state } = useLocation();
+    const { state, pathname } = useLocation();
     const navigate = useNavigate();
     const patient = state && state.currentPatient;
     const [formData, setFormData] = useState(patient ?
@@ -32,8 +32,6 @@ const PatientForm = () => {
             nextOfKinRelationship: ''
         }
     );
-
-    console.log(formData.dob)
 
     function formatDate(originalDate) {
         // Get the year, month, and day
@@ -72,7 +70,7 @@ const PatientForm = () => {
                 const patientResponse = await createPatient(patientData);
 
                 if (patientResponse.unAuthorize) {
-                    const pathname = location.pathname;
+                    // const pathname = location.pathname;
                     navigate(`/?message=Please log in to continue&redirectTo=${pathname}`);
                 }
 
