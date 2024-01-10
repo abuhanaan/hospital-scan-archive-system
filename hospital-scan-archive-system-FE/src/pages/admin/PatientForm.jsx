@@ -15,7 +15,7 @@ const PatientForm = () => {
             gender: patient.gender ?? '',
             phoneNumber: patient.phoneNumber,
             address: patient.address,
-            dob: patient.dob,
+            dob: formatDate(new Date(patient.dob)),
             nextOfKinName: patient.nextOfKinName,
             nextOfKinPhone: patient.nextOfKinPhone,
             nextOfKinRelationship: patient.nextOfKinRelationship
@@ -33,8 +33,19 @@ const PatientForm = () => {
         }
     );
 
-    console.log(patient.dob);
-    console.log(formData.dob);
+    console.log(formData.dob)
+
+    function formatDate(originalDate) {
+        // Get the year, month, and day
+        const year = originalDate.getFullYear();
+        const month = (originalDate.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+        const day = originalDate.getDate().toString().padStart(2, '0');
+
+        // Create the formatted date string
+        const formattedDateString = `${year}-${month}-${day}`;
+
+        return formattedDateString;
+    }
 
     function handleChange(e) {
         const { name, value, checked, type } = e.target;
@@ -51,9 +62,14 @@ const PatientForm = () => {
 
         const btnType = e.target.elements[10].dataset.intent;
 
+        const patientData = {
+            ...formData,
+            dob: new Date(`${formData.dob} 00:00:00`).toISOString()
+        }
+
         if (btnType === 'create') {
             try {
-                const patientResponse = await createPatient(formData);
+                const patientResponse = await createPatient(patientData);
 
                 if (patientResponse.unAuthorize) {
                     const pathname = location.pathname;
@@ -71,7 +87,7 @@ const PatientForm = () => {
                     }
                 }
 
-                toast.success(`User successfully created!`, {
+                toast.success(`Patient successfully created!`, {
                     position: toast.POSITION.TOP_CENTER,
                     autoClose: 2000,
                 });
@@ -85,7 +101,7 @@ const PatientForm = () => {
         }
 
         if (btnType === 'update') {
-            const patientResponse = await updatePatient(patient.id, formData);
+            const patientResponse = await updatePatient(patient.id, patientData);
 
             if (patientResponse.unAuthorize) {
                 const pathname = location.pathname;
@@ -103,7 +119,7 @@ const PatientForm = () => {
                 }
             }
 
-            toast.success(`User successfully updated!`, {
+            toast.success(`Patient successfully updated!`, {
                 position: toast.POSITION.TOP_CENTER,
                 autoClose: 2000,
             });

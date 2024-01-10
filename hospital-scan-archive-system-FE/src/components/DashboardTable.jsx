@@ -12,6 +12,7 @@ const DashboardTable = ({ data }) => {
         const scanId = e.currentTarget.getAttribute('data-scan-id');
         navigate(`scans/${scanId}`);
     }
+    console.log(data);
 
     return (
         <>
@@ -50,7 +51,7 @@ const DashboardTable = ({ data }) => {
                             <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                 {
                                     data.map((scan, index) => (
-                                        <tr key={scan.id} onClick={() => viewScan(scan.id)} className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                                        <tr key={scan.id} className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                                             <td className="table-data">{`${index + 1}.`}</td>
                                             <td className="table-data">{`${scan.patient.firstName} ${scan.patient.lastName}`}</td>
                                             <td className="table-data">
