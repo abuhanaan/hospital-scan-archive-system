@@ -124,8 +124,6 @@ const UserForm = () => {
         }
 
         if (btnType === 'update') {
-            console.log(btnType);
-
             const userResponse = await updateUser(user.id, formData);
 
             if (userResponse.unAuthorize) {

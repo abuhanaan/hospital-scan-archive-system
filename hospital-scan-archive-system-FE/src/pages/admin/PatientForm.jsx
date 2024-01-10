@@ -1,25 +1,43 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { createPatient, updatePatient } from '../../api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PatientForm = () => {
     const { state } = useLocation();
-
+    const navigate = useNavigate();
     const patient = state && state.currentPatient;
-    const [formData, setFormData] = useState(patient || {
-        id: patient?.id || '',
-        firstName: '',
-        lastName: '',
-        gender: '',
-        phoneNumber: '',
-        address: '',
-        dob: '',
-        nextOfKinName: '',
-        nextOfKinPhone: '',
-        nextOfKinRelationship: ''
-    });
+    const [formData, setFormData] = useState(patient ?
+        {
+            firstName: patient.firstName,
+            lastName: patient.lastName,
+            gender: patient.gender ?? '',
+            phoneNumber: patient.phoneNumber,
+            address: patient.address,
+            dob: patient.dob,
+            nextOfKinName: patient.nextOfKinName,
+            nextOfKinPhone: patient.nextOfKinPhone,
+            nextOfKinRelationship: patient.nextOfKinRelationship
+        } :
+        {
+            firstName: '',
+            lastName: '',
+            gender: '',
+            phoneNumber: '',
+            address: '',
+            dob: '',
+            nextOfKinName: '',
+            nextOfKinPhone: '',
+            nextOfKinRelationship: ''
+        }
+    );
+
+    console.log(patient.dob);
+    console.log(formData.dob);
 
     function handleChange(e) {
-        const {name, value, checked, type} = e.target;
+        const { name, value, checked, type } = e.target;
         const elementValue = type === 'checkbox' ? checked : value;
 
         setFormData(prev => ({
@@ -28,10 +46,77 @@ const PatientForm = () => {
         }))
     }
 
-    // console.log(formData);
+    async function submitForm(e) {
+        e.preventDefault();
+
+        const btnType = e.target.elements[10].dataset.intent;
+
+        if (btnType === 'create') {
+            try {
+                const patientResponse = await createPatient(formData);
+
+                if (patientResponse.unAuthorize) {
+                    const pathname = location.pathname;
+                    navigate(`/?message=Please log in to continue&redirectTo=${pathname}`);
+                }
+
+                if (patientResponse.error || patientResponse.message) {
+                    toast.error(`${patientResponse.error} ${patientResponse.message}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                    });
+
+                    return {
+                        error: patientResponse.error
+                    }
+                }
+
+                toast.success(`User successfully created!`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                });
+
+                setTimeout(() => {
+                    navigate(`/admin/patients`);
+                }, 3000);
+            } catch (error) {
+                return error;
+            }
+        }
+
+        if (btnType === 'update') {
+            const patientResponse = await updatePatient(patient.id, formData);
+
+            if (patientResponse.unAuthorize) {
+                const pathname = location.pathname;
+                navigate(`/?message=Please log in to continue&redirectTo=${pathname}`);
+            }
+
+            if (patientResponse.error || patientResponse.message) {
+                toast.error(`${patientResponse.error} ${patientResponse.message}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                });
+
+                return {
+                    error: patientResponse.error
+                }
+            }
+
+            toast.success(`User successfully updated!`, {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+            });
+
+            setTimeout(() => {
+                navigate(`/admin/patients`);
+            }, 3000);
+        }
+    }
 
     return (
         <div className="flex flex-col pt-6 font-poppins">
+            <ToastContainer />
             <div className="pb-6">
                 <nav aria-label="breadcrumb">
                     <ol className="flex space-x-2">
@@ -45,7 +130,7 @@ const PatientForm = () => {
             </div>
 
             <div className="mx-auto w-full">
-                <form>
+                <form onSubmit={submitForm}>
                     <div className="grid grid-cols-1 gap-6 xs:grid-cols-2">
                         <div className="">
                             <label
@@ -211,8 +296,8 @@ const PatientForm = () => {
                     <div className='flex justify-end'>
                         {
                             state ?
-                                <button className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update Patient</button> :
-                                <button className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Create Patient</button>
+                                <button type='submit' data-intent='update' className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update Patient</button> :
+                                <button type='submit' data-intent='create' className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Create Patient</button>
                         }
                     </div>
                 </form>
