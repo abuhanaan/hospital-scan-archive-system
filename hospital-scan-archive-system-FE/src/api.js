@@ -37,6 +37,37 @@ export async function loginUser(creds) {
     return data;
 }
 
+export async function getAdminDashboardData(request) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users/admin/dashboard`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`,
+        },
+    });
+
+    const data = await res.json();
+
+    if (res.status === 401) {
+        const pathname = new URL(request.url).pathname;
+        throw redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
+    }
+
+    if (!res.ok || data.error) {
+        return {
+            statusCode: data.statusCode,
+            message: data.message,
+            error: data.error ?? 'Something went wrong',
+            path: data.path
+        }
+    }
+
+    return data;
+}
+
+// Users API -------------------------
+
 export async function createUser(userData) {
     const user = JSON.parse(localStorage.getItem('user'));
     const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users`, {
@@ -54,8 +85,6 @@ export async function createUser(userData) {
         return {
             unAuthorize: true
         }
-        // const pathname = new URL(request.url).pathname;
-        // throw redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
     }
 
     if (!res.ok || data.error) {
@@ -70,21 +99,23 @@ export async function createUser(userData) {
     return data;
 }
 
-export async function getAdminDashboardData(request) {
+export async function updateUser(userId, userData) {
     const user = JSON.parse(localStorage.getItem('user'));
-    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users/admin/dashboard`, {
-        method: 'GET',
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users/${userId}`, {
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.accessToken}`,
         },
+        body: JSON.stringify(userData)
     });
 
     const data = await res.json();
 
     if (res.status === 401) {
-        const pathname = new URL(request.url).pathname;
-        throw redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
+        return {
+            unAuthorize: true
+        }
     }
 
     if (!res.ok || data.error) {
@@ -246,6 +277,70 @@ export async function deleteUser(userId) {
     return data;
 }
 
+// Patients API -----------------------
+
+export async function createPatient(patientData) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/patients`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`,
+        },
+        body: JSON.stringify(patientData)
+    });
+
+    const data = await res.json();
+
+    if (res.status === 401) {
+        return {
+            unAuthorize: true
+        }
+    }
+
+    if (!res.ok || data.error) {
+        return {
+            statusCode: data.statusCode,
+            message: data.message,
+            error: data.error ?? 'Something went wrong',
+            path: data.path
+        }
+    }
+
+    return data;
+}
+
+export async function updatePatient(patientId, patientData) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/patients/${patientId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`,
+        },
+        body: JSON.stringify(patientData)
+    });
+
+    const data = await res.json();
+
+    if (res.status === 401) {
+        return {
+            unAuthorize: true
+        }
+    }
+
+    if (!res.ok || data.error) {
+        return {
+            statusCode: data.statusCode,
+            message: data.message,
+            error: data.error ?? 'Something went wrong',
+            path: data.path
+        }
+    }
+
+    return data;
+}
+
 export async function getPatients(request) {
     const user = JSON.parse(localStorage.getItem('user'));
     const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/patients`, {
@@ -303,6 +398,37 @@ export async function getPatient(patientId, request) {
 
     return data;
 }
+
+export async function deletePatient(patientId) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/patients/delete/${patientId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`,
+        },
+    });
+
+    const data = await res.json();
+
+    if (res.status === 401) {
+        const pathname = new URL(request.url).pathname;
+        throw redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
+    }
+
+    if (!res.ok || data.error) {
+        return {
+            statusCode: data.statusCode,
+            message: data.message,
+            error: data.error ?? 'Something went wrong',
+            path: data.path
+        }
+    }
+
+    return data;
+}
+
+// Scans API -----------------------------
 
 export async function getScans(request) {
     const user = JSON.parse(localStorage.getItem('user'));

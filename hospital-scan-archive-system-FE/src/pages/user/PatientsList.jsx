@@ -48,10 +48,6 @@ const ActionButtons = ({ patient }) => {
             <button onClick={viewPatient} data-patient-id={patient.id} className='bg-purple-500 hover:bg-purple-600 p-1 rounded-md'>
                 <IoEyeOutline size={20} color='white' />
             </button>
-
-            {/* <Link to={`create-scan`} state={{ currentScan: scan }} className="py-1 px-1 rounded-md bg-blue-600 hover:bg-blue-700"><MdOutlineEdit size={20} color='white' /></Link>
-
-            <button onClick={deleteScan} data-scan-id={scan.scanId} className="py-1 px-1 rounded-md bg-red-600 hover:bg-red-700"><MdDeleteOutline size={20} color='white' /></button> */}
         </div>
     )
 }
