@@ -57,6 +57,20 @@ const Table = ({ data: tableData, columns: cols, render }) => {
             )
         }
 
+        if (col.id === 'patientId') {
+            return (
+                columnHelper.accessor('', {
+                    id: col.id,
+                    cell: props => (
+                        <span>
+                            {`${props.row.original.patient.firstName} ${props.row.original.patient.lastName}`}
+                        </span>
+                    ),
+                    header: col.header
+                })
+            )
+        }
+
         if (col.id === 'actions') {
             return (
                 columnHelper.accessor('', {
