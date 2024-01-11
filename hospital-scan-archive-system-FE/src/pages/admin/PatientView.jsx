@@ -21,26 +21,6 @@ export async function loader({ params, request }) {
         }
     }
 
-    // const data = {
-    //     ...patient,
-    //     scans: [
-    //         {
-    //             scanId: '6',
-    //             scanSymptoms: 'Chest pains',
-    //             scanDiagnosis: 'Chest pain',
-    //             scanType: 'Chest Scan',
-    //             scanDate: '8/10/2023',
-    //             scanUrl: 'https://chest-pain-sandra.zip',
-    //             userId: 3,
-    //             userName: 'Halimah Salis',
-    //             userEmail: 'doctor2@g.com',
-    //             userSpecialty: 'Opthalmologist',
-    //             userRole: 'doctor',
-    //             userImg: 'https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/7525866/hijab-doctor-clipart-md.png',
-    //         },
-    //     ]
-    // };
-
     return patient;
 }
 
@@ -126,6 +106,7 @@ const PatientView = () => {
 
     return (
         <div className="mt-6 min-h-screen w-full font-poppins">
+            <ToastContainer />
             <div className="mb-6">
                 <nav aria-label="breadcrumb">
                     <ol className="flex space-x-2">
