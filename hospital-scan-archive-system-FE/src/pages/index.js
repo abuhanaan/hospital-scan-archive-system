@@ -1,5 +1,6 @@
 // Pages
 export { default as Home } from './Home';
+export { default as Error } from './Error';
 export { default as PageNotFound } from './PageNotFound';
 export { default as AdminPasswordUpdate } from './admin/PasswordUpdate';
 export { default as AdminDashboard } from './admin/AdminDashboard';
