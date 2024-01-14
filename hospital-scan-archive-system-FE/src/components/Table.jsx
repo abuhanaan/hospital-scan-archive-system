@@ -43,6 +43,16 @@ const Table = ({ data: tableData, columns: cols, render }) => {
             )
         }
 
+        if (col.id === 'createdAt') {
+            return (
+                columnHelper.accessor(col.id, {
+                    id: col.id,
+                    cell: info => new Date(info.getValue()).toDateString(),
+                    header: col.header
+                })
+            )
+        }
+
         if (col.id === 'active') {
             return (
                 columnHelper.accessor(col.id, {

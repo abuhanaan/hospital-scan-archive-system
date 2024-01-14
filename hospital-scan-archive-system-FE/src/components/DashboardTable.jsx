@@ -46,18 +46,24 @@ const DashboardTable = ({ data }) => {
                                     </th>
                                 </tr>
                             </thead>
-                            
+
                             <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                 {
                                     data.map((scan, index) => (
                                         <tr key={scan.id} className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                                             <td className="table-data">{`${index + 1}.`}</td>
-                                            <td className="table-data">{`${scan.patient.firstName} ${scan.patient.lastName}`}</td>
                                             <td className="table-data">
                                                 {
-                                                    scan.doctor.firstName || scan.doctor.lastName ?
-                                                        `Dr. ${scan.doctor.firstName ?? ''} ${scan.doctor.lastName ?? ''}` :
-                                                        'N/A'
+                                                    scan.patient?.firstName || scan.patient?.lastName ?
+                                                        `${scan.patient?.firstName} ${scan.patient?.lastName}` :
+                                                        scan.patientId ? scan.patientId : 'N/A'
+                                                }
+                                            </td>
+                                            <td className="table-data">
+                                                {
+                                                    scan.doctor?.firstName || scan.doctor?.lastName ?
+                                                        `Dr. ${scan.doctor?.firstName ?? ''} ${scan.doctor?.lastName ?? ''}` :
+                                                        scan.doctorId ? scan.doctorId : 'N/A'
                                                 }
                                             </td>
                                             <td className="table-data">{scan.type}</td>
