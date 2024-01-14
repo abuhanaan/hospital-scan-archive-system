@@ -39,9 +39,13 @@ const AdminLayout = () => {
                                 <MdKeyboardArrowDown size={24} color='#102255' />
                             </button>
                             <ul className={`${showMenu ? 'block' : 'hidden'} absolute right-0 top-10 mt-3 z-[1] shadow w-52 rounded-sm bg-dimWhite`}>
+                                {/* <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
+                                    <BiSolidEdit size={20} />
+                                    <Link href='#'>Edit Profile</Link>
+                                </li> */}
                                 <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
                                     <BiSolidEdit size={20} />
-                                    <Link href='#'>Change Password</Link>
+                                    <Link to='/admin/change-password'>Change Password</Link>
                                 </li>
                                 <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
                                     <RiLogoutCircleRLine color='red' size={20} />
