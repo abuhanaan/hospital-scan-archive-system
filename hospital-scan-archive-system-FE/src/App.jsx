@@ -1,13 +1,12 @@
 import './App.css';
 import { AdminLayout, UserLayout, AuthLayout, Layout } from './components';
-import { Home, AdminPasswordUpdate, PasswordUpdate, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView, UserDashboard, UserPatientForm, UserPatientsList, UserPatientView, UserScansList, UserScanView, UserScanForm, UserProfileView, UserProfileForm, loginLoader, adminDashboardLoader, usersListLoader, userViewLoader, patientViewLoader, patientsListLoader, scanViewLoader, scansListLoader, userDashboardLoader, userProfileUpdateLoader, userPatientsListLoader, userPatientViewLoader, userScansListLoader, userScanViewLoader, userProfileViewLoader, loginAction, userCreateAction } from './pages';
+import { Home, AdminPasswordUpdate, PasswordUpdate, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView, UserDashboard, UserPatientForm, UserPatientsList, UserPatientView, UserScansList, UserScanView, UserScanForm, UserProfileView, UserProfileForm, loginLoader, adminDashboardLoader, usersListLoader, userViewLoader, patientViewLoader, patientsListLoader, scanViewLoader, scansListLoader, userDashboardLoader, userProfileUpdateLoader, userPatientsListLoader, userPatientViewLoader, userScansListLoader, userScanViewLoader, userProfileViewLoader, loginAction, PageNotFound } from './pages';
 import { createBrowserRouter, createRoutesFromChildren, RouterProvider, Route } from 'react-router-dom';
 import { requireAuth } from './utils';
 
 const router = createBrowserRouter(createRoutesFromChildren(
     <Route path='/' element={<Layout />}>
         <Route index element={<Home />} loader={loginLoader} action={loginAction} />
-        {/* <Route element={<AuthLayout />}> */}
         <Route path='admin' element={<AdminLayout />}>
             <Route index loader={adminDashboardLoader} element={<AdminDashboard />} />
             <Route path='change-password'  loader={async ({request}) => await requireAuth(request)} element={<AdminPasswordUpdate />} />
@@ -40,7 +39,8 @@ const router = createBrowserRouter(createRoutesFromChildren(
             <Route path='scans/:id' loader={userScanViewLoader} element={<UserScanView />} />
             <Route path='scans/create-scan'  loader={async ({request}) => await requireAuth(request)} element={<UserScanForm />} />
         </Route>
-        {/* </Route> */}
+
+        <Route path='*' element={<PageNotFound />} />
     </Route>
 ));
 
