@@ -1,8 +1,9 @@
+import { Suspense } from 'react';
 import Welcome from '../../components/Welcome';
 import OverviewCard from "../../components/OverviewCard";
 import DashboardTable from "../../components/DashboardTable";
 import { doctorCardsInfo, scans } from '../../constants';
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, defer, Await } from "react-router-dom";
 import { HiUser } from 'react-icons/hi';
 import { MdOutlineEdit } from 'react-icons/md';
 import { FaUserDoctor, FaUserInjured, FaFileMedical, FaStethoscope, FaUserNurse } from "react-icons/fa6";
@@ -23,20 +24,19 @@ export async function loader({ request }) {
     const doctorData = !data.user && data;
     const nurseData = !data.scanCount && data;
 
-    // return [dashboardCardsInfo, data.recentScans, user];
     if (doctorData) {
-        return doctorData;
+        return { doctor: doctorData };
     }
-    
-    return nurseData;
+
+    return { nurse: nurseData };
 }
 
 const UserDashboard = () => {
     const data = useLoaderData();
-    
+
     const user = JSON.parse(localStorage.getItem('user'));
-    const doctorData = !data.error && !data.user && data;
-    const nurseData = !data.error && data;
+    const doctorData = !data.error && !data.nurse && data.doctor;
+    const nurseData = !data.error && !data.doctor && data.nurse;
     const errorData = data.error && data;
 
     const dashboardCardsInfo = [
@@ -44,7 +44,7 @@ const UserDashboard = () => {
         { id: 'scans', title: 'Total Scans', count: doctorData?.scanCount, icon: <FaFileMedical size={20} /> },
     ];
 
-    const title = user.role === 'doctor' ? 'Doctor' : 'Nurse';
+    const title = user?.role === 'doctor' ? 'Doctor' : 'Nurse';
 
     return (
         <section className="overflow-x-auto font-poppins">

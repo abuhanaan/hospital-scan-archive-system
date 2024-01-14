@@ -1,15 +1,17 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { Outlet, Link, useNavigate, useNavigation } from 'react-router-dom';
 import { HiUser } from 'react-icons/hi';
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BiSolidEdit } from "react-icons/bi";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { useState, useEffect } from 'react';
 import UserSideNav from '../UserSideNav';
+import Spinner from '../Spinner';
 
 const UserLayout = () => {
     const [showMenu, setShowMenu] = useState(false);
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+    const { state } = useNavigation();
     const title = user?.role === 'doctor' ? 'Doctor' : 'Nurse';
 
     useEffect(() => {
@@ -68,7 +70,11 @@ const UserLayout = () => {
                 </div>
 
                 <div className='flex-1 overflow-y-auto p-6 md:pb-8 md:pt-4 bg-[#EDF2FF]'>
-                    {<Outlet />}
+                    {
+                        state === 'loading' ?
+                            <Spinner /> :
+                            <Outlet />
+                    }
                 </div>
             </div>
         </div>
