@@ -83,37 +83,34 @@ const UserSideNav = ({ user }) => {
                     <p className={clsx(`hidden md:block`, { 'text-white': pathname.includes('/user/patients') })}>Patients</p>
                 </Link>
 
-                {
-                    user?.role === 'doctor' &&
-                    <Link
-                        to='/user/scans'
-                        className={clsx(
-                            `flex h-[48px] grow items-center justify-center gap-2 rounded-lg p-3 bg-[#21212B] md:bg-transparent md:text-base text-[#9A99A0] hover:bg-[#21212B] md:hover:border-t-2 md:hover:border-blue-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3`,
-                            {
-                                'bg-sky-100 text-blue-600': pathname.includes('/user/scans')
-                            }
-                        )}
-                    >
-                        <FaFileMedical size={18} />
-                        <p className={clsx(`hidden md:block`, { 'text-white': pathname.includes('/user/scans') })}>Scans</p>
-                    </Link>
-                }
+                <Link
+                    to='/user/scans'
+                    className={clsx(
+                        `flex h-[48px] grow items-center justify-center gap-2 rounded-lg p-3 bg-[#21212B] md:bg-transparent md:text-base text-[#9A99A0] hover:bg-[#21212B] md:hover:border-t-2 md:hover:border-blue-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3`,
+                        {
+                            'bg-sky-100 text-blue-600': pathname.includes('/user/scans')
+                        }
+                    )}
+                >
+                    <FaFileMedical size={18} />
+                    <p className={clsx(`hidden md:block`, { 'text-white': pathname.includes('/user/scans') })}>Scans</p>
+                </Link>
 
-                {
+                {/* {
                     user?.role !== 'doctor' &&
                     <Link
                         to='/user/scans/create-scan'
                         className={clsx(
                             `flex h-[48px] grow items-center justify-center gap-2 rounded-lg p-3 bg-[#21212B] md:bg-transparent md:text-base text-[#9A99A0] hover:bg-[#21212B] md:hover:border-t-2 md:hover:border-blue-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3`,
                             {
-                                'bg-sky-100 text-blue-600': pathname.includes('/user/scans')
+                                'bg-sky-100 text-blue-600': pathname.includes('/user/scans/create-scan')
                             }
                         )}
                     >
                         <FaFileMedical size={18} />
-                        <p className={clsx(`hidden md:block`, { 'text-white': pathname.includes('/user/scans') })}>Add Scan</p>
+                        <p className={clsx(`hidden md:block`, { 'text-white': pathname.includes('/user/scans/create-scan') })}>Add Scan</p>
                     </Link>
-                }
+                } */}
 
                 <button onClick={() => signOut()} className="flex h-[48px] grow items-center justify-center gap-2 rounded-lg bg-red-600 text-white md:bg-transparent md:text-base md:text-[#9A99A0] hover:bg-[#21212B] md:hover:rounded-lg md:hover:border-t-2 md:hover:border-red-600 hover:text-white md:w-full md:flex-none md:justify-start md:p-2 md:px-3 mt-auto">
                     <RiLogoutCircleRLine size={18} />

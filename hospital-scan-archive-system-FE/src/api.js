@@ -17,7 +17,7 @@ export async function loginUser(creds) {
 
     const resData = await res.json();
 
-    if (!res.ok || resData.error) {
+    if (!res.ok) {
         return {
             statusCode: resData.statusCode,
             message: resData.message,
@@ -35,6 +35,7 @@ export async function loginUser(creds) {
     }
 
     return data;
+
 }
 
 export async function getAdminDashboardData(request) {
@@ -66,7 +67,7 @@ export async function getAdminDashboardData(request) {
     return data;
 }
 
-// Users API -------------------------
+// Admin Users API -------------------------
 
 export async function createUser(userData) {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -568,6 +569,161 @@ export async function deleteScan(scanId) {
     }
 
     if (!res.ok || data.error) {
+        return {
+            statusCode: data.statusCode,
+            message: data.message,
+            error: data.error ?? 'Something went wrong',
+            path: data.path
+        }
+    }
+
+    return data;
+}
+
+// Users Doctors
+export async function getUserHomePageData(request) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    let endpoint = '';
+
+    if (user.role === 'doctor') {
+        endpoint = '/doctors/dashboard';
+    } 
+    
+    if (user.role === 'nurse') {
+        endpoint = `/nurses/${user.userId}`;
+    }
+    
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com${endpoint}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`,
+        },
+    });
+
+    const data = await res.json();
+
+    if (data.statusCode === 401) {
+        const pathname = new URL(request.url).pathname;
+        throw redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
+    }
+
+    if (!res.ok) {
+        return {
+            statusCode: data.statusCode,
+            message: data.message,
+            error: data.error ?? 'Something went wrong',
+            path: data.path
+        }
+    }
+
+    return data;
+}
+
+export async function getUserProfile(userId, request) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    let entity = '';
+
+    if (user.role === 'doctor') {
+        entity = 'doctors';
+    } else if (user.role === 'nurse') {
+        entity = 'nurses'
+    }
+
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/${entity}/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`,
+        },
+    });
+
+    const data = await res.json();
+
+    if (res.status === 401) {
+        const pathname = new URL(request.url).pathname;
+        throw redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
+    }
+
+    if (!res.ok) {
+        return {
+            statusCode: data.statusCode,
+            message: data.message,
+            error: data.error ?? 'Something went wrong',
+            path: data.path
+        }
+    }
+
+    return data;
+}
+
+export async function updateUserProfile(userId, profileData) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    let entity = '';
+
+    if (user.role === 'nurse') {
+        entity = 'nurses';
+    } else if (user.role === doctor) {
+        entity = 'doctors'
+    }
+
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/${entity}/update-profile/${userId}`, {
+        method: 'PATCH',
+        headers: {
+            // 'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`,
+        },
+        body: profileData
+    });
+
+    const data = await res.json();
+
+    if (res.status === 401) {
+        return {
+            unAuthorize: true
+        }
+    }
+
+    if (!res.ok) {
+        return {
+            statusCode: data.statusCode,
+            message: data.message,
+            error: data.error ?? 'Something went wrong',
+            path: data.path
+        }
+    }
+
+    return data;
+}
+
+export async function updateUserPassword(userId, passwordData) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    let entity = '';
+
+    if (user.role === 'nurse') {
+        entity = 'nurses';
+    } else if (user.role === doctor) {
+        entity = 'doctors'
+    }
+
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/${entity}/update-password/${userId}`, {
+        method: 'PATCH',
+        headers: {
+            // 'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`,
+        },
+        body: passwordData
+    });
+
+    const data = await res.json();
+
+    if (res.status === 401) {
+        return {
+            unAuthorize: true
+        }
+    }
+
+    if (!res.ok) {
         return {
             statusCode: data.statusCode,
             message: data.message,

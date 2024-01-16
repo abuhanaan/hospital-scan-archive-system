@@ -4,9 +4,14 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import SearchInput from './SearchInput';
 import DownLoadBtn from './DownLoadBtn';
 import { HiUserCircle } from 'react-icons/hi';
+import UsersFilter from './UsersFilter';
+import { useLocation } from 'react-router-dom';
 
 const Table = ({ data: tableData, columns: cols, render }) => {
+    const { pathname } = useLocation();
     const columnHelper = createColumnHelper();
+
+    console.log(pathname);
 
     const columns = cols.map(col => {
         if (col.id === 'S/N') {
@@ -38,6 +43,16 @@ const Table = ({ data: tableData, columns: cols, render }) => {
                 columnHelper.accessor(col.id, {
                     id: col.id,
                     cell: info => new Date().getFullYear() - new Date(info.getValue()).getFullYear(),
+                    header: col.header
+                })
+            )
+        }
+
+        if (col.id === 'createdAt') {
+            return (
+                columnHelper.accessor(col.id, {
+                    id: col.id,
+                    cell: info => new Date(info.getValue()).toDateString(),
                     header: col.header
                 })
             )
@@ -127,6 +142,8 @@ const Table = ({ data: tableData, columns: cols, render }) => {
                     value={globalFilter ?? ''}
                     onChange={(value) => setGlobalFilter(String(value))}
                 />
+
+                {pathname === '/admin/users' && <UsersFilter />}
 
                 <DownLoadBtn data={tableData} fileName={'tableData.csv'}>Download data</DownLoadBtn>
             </div>

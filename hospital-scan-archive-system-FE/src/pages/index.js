@@ -1,5 +1,8 @@
 // Pages
 export { default as Home } from './Home';
+export { default as Error } from './Error';
+export { default as PageNotFound } from './PageNotFound';
+export { default as AdminPasswordUpdate } from './admin/PasswordUpdate';
 export { default as AdminDashboard } from './admin/AdminDashboard';
 export { default as UsersList } from './admin/UsersList';
 export { default as UserView } from './admin/UserView';
@@ -11,7 +14,9 @@ export { default as ScansList } from './admin/ScansList';
 export { default as ScanView } from './admin/ScanView';
 export { default as ScanForm } from './admin/ScanForm';
 
+export { default as PasswordUpdate } from './user/PasswordUpdate';
 export { default as UserDashboard } from './user/UserDashboard';
+export { default as UserPatientForm } from './user/PatientForm';
 export { default as UserPatientsList } from './user/PatientsList';
 export { default as UserPatientView } from './user/PatientView';
 export { default as UserScansList } from './user/ScansList';
@@ -36,7 +41,7 @@ export { loader as userPatientsListLoader } from './user/PatientsList';
 export { loader as userPatientViewLoader } from './user/PatientView';
 export { loader as userScansListLoader } from './user/ScansList';
 export { loader as userScanViewLoader } from './user/ScanView';
-export { loader as userScanFormLoader } from './user/ScanForm';
+export { loader as userProfileUpdateLoader } from './user/UserForm';
 export { loader as userProfileViewLoader } from './user/UserView';
 
 // Actions
