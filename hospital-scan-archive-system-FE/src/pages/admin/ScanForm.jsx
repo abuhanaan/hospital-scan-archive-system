@@ -100,7 +100,7 @@ const ScanForm = () => {
                     autoClose: 2000,
                 });
 
-                console.log(scanResponse);
+                // console.log(scanResponse);
     
                 setTimeout(() => {
                     navigate(`/admin/scans`);
@@ -110,8 +110,6 @@ const ScanForm = () => {
             }
         }
     }
-
-    console.log(formData);
 
     function handleChange(e) {
         const { name, value, type, checked } = e.target;

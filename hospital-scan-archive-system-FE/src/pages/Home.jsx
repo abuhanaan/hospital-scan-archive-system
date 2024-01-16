@@ -19,9 +19,9 @@ export async function action({ request }) {
     try {
         const user = await loginUser({ email, password });
 
-        if (user.error) {
+        if (!user.accessToken) {
             return {
-                message: user.message
+                error: `${user.error ?? ''} ${user.error ? ':' : ''} ${user.message ?? ''}`
             }
         }
 
@@ -39,14 +39,14 @@ export async function action({ request }) {
 const Home = () => {
     const navigate = useNavigate();
     const navigation = useNavigation();
-    const error = useActionData();
+    const errorMessage = useActionData();
     const message = useLoaderData();
 
     const [loginData, setLoginData] = useState({
         username: '',
         password: ''
     });
-    const [errorMessage, setErrorMessage] = useState(null);
+    // const [errorMessage, setErrorMessage] = useState(null);
 
     function handleDataChange(e) {
         const { name, value } = e.target;
@@ -73,12 +73,14 @@ const Home = () => {
                     }
 
                     <Form method='post' replace className={`form-control w-full mt-6 px-5 py-7 border-2 border-primary rounded-xl`}>
-                        {error?.message && (
+                    {
+                        errorMessage?.error && (
                             <div className="flex h-8 items-end space-x-1 mb-6" aria-live="polite" aria-atomic="true" >
                                 <FaExclamationCircle color='red' size={20} />
-                                <p className="text-sm text-red-600 font-medium">{error.message}</p>
+                                <p className="text-sm text-red-600 font-medium">{errorMessage.error}</p>
                             </div>
-                        )}
+                        )
+                    }
 
                         <div className="w-full mb-5">
                             <label className="font-medium" htmlFor='email'>
