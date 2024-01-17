@@ -46,18 +46,18 @@ export class ScansController {
   @UseInterceptors(FileInterceptor('file'))
   @ApiCreatedResponse({ type: ScanEntity })
   async create(
-    @Req() request: AuthenticatedRequest,
+    // @Req() request: AuthenticatedRequest,
     @Body() createScanDto: CreateScanDto,
     @UploadedFile(new ParseFilePipe({ validators: [] }))
     file: Express.Multer.File,
   ) {
-    const user = request.user as UserEntity;
-    if (user.role === 'doctor' && createScanDto.doctorId !== user.id) {
-      throw new UnauthorizedException({
-        message: `You can only upload scans that you prescribe`,
-        error: 'Unauthorised operation',
-      });
-    }
+    // const user = request.user as UserEntity;
+    // if (user.role === 'doctor' && createScanDto.doctorId !== user.id) {
+    //   throw new UnauthorizedException({
+    //     message: `You can only upload scans that you prescribe`,
+    //     error: 'Unauthorised operation',
+    //   });
+    // }
     const scan = await this.scansService.create(
       createScanDto,
       file.originalname,
