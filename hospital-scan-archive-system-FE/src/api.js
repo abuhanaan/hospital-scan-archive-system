@@ -446,7 +446,7 @@ export async function createScan(scanData) {
 
     if (res.status === 401) {
         return {
-            unAuthorize: true
+            unAuthorize: data.message
         }
     }
 
