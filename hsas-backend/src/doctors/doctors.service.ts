@@ -101,4 +101,46 @@ export class DoctorsService {
     this.checkIfDoctorExists(doctor, id);
     return this.prisma.doctor.delete({ where: { doctorId: id } });
   }
+
+  async fetchPersonalizedPatients(user: UserEntity) {
+    const doctor = await this.prisma.doctor.findUnique({
+      where: { doctorId: user.id },
+    });
+    this.checkIfDoctorExists(doctor, user.id);
+    const patients = await this.prisma.scan
+      .findMany({
+        where: { doctorId: doctor.doctorId },
+        select: {
+          patient: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              gender: true,
+              phoneNumber: true,
+              address: true,
+              dob: true,
+              nextOfKinName: true,
+              nextOfKinPhone: true,
+              nextOfKinRelationship: true,
+            },
+          },
+        },
+        distinct: ['patientId'], // Ensure distinct patients based on patientId
+      })
+      .then((scans) => scans.map((scan) => scan.patient));
+    return patients;
+  }
+
+  async fetchPersonalizedScans(user: UserEntity) {
+    const doctor = await this.prisma.doctor.findUnique({
+      where: { doctorId: user.id },
+    });
+    this.checkIfDoctorExists(doctor, user.id);
+    const scans = await this.prisma.scan.findMany({
+      where: { doctorId: doctor.doctorId },
+      include: { patient: true },
+    });
+    return scans;
+  }
 }
