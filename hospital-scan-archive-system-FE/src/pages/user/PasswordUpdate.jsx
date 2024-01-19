@@ -1,27 +1,27 @@
 import { useRef, useState, useEffect } from 'react';
 import { Link, useLocation, useLoaderData, useNavigate } from 'react-router-dom';
 import { requireAuth } from '../../utils';
-import { updateUserPassword } from '../../api';
+import { updateUserPassword, getUser } from '../../api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// export async function loader({ request }) {
-//     await requireAuth(request);
-//     const authenticatedUser = JSON.parse(localStorage.getItem('user'));
-//     const user = await getUser(authenticatedUser.userId, request);
+export async function loader({ request }) {
+    await requireAuth(request);
+    const authenticatedUser = JSON.parse(localStorage.getItem('user'));
+    const user = await getUser(authenticatedUser.userId, request);
 
-//     if (user.error || user.message) {
-//         return {
-//             error: `${user.error ?? ''} ${user.message}`
-//         }
-//     }
+    if (user.error || user.message) {
+        return {
+            error: `${user.error ?? ''} ${user.message}`
+        }
+    }
 
-//     return user;
-// }
+    return user;
+}
 
 const PasswordUpdate = () => {
     const { pathname } = useLocation();
-    const [user, setUser] = useState(null);
+    const user = useLoaderData();
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -29,10 +29,6 @@ const PasswordUpdate = () => {
         newPassword: '',
         confirmPassword: '',
     });
-
-    useEffect(() => {
-        setUser(JSON.parse(localStorage.getItem('user')));
-    }, []);
 
     function handleChange(e) {
         const { name, value, type, checked } = e.target;
@@ -59,14 +55,13 @@ const PasswordUpdate = () => {
 
         const passwordData = new FormData();
 
-        passwordData.append('currentPassword', formData.currentPassword);
-        passwordData.append('newPassword', formData.newPassword);
+        // passwordData.append('currentPassword', formData.currentPassword);
+        passwordData.append('password', String(formData.newPassword));
 
-
-        const userResponse = await updateUserPassword(user.id, passwordData);
+        const userResponse = await updateUserPassword({password: formData.newPassword});
 
         if (userResponse.unAuthorize) {
-            navigate(`/?message=Please log in to continue&redirectTo=${pathname}`);
+            navigate(`/?message=${userResponse.unAuthorize}&redirectTo=${pathname}`);
         }
 
         if (userResponse.error || userResponse.message) {
@@ -113,7 +108,7 @@ const PasswordUpdate = () => {
             <div className="mx-auto w-full">
                 <form onSubmit={changePassword} className='w-full sm:w-[50%] mx-auto'>
                     <h1 className="font-bold text-primary text-2xl leading-tight my-6">Change Password</h1>
-                    <div className="grid grid-cols-1 px-32 py-10 gap-y-6 mx-auto border-2 border-gray-300 rounded-md">
+                    <div className="grid grid-cols-1 p-10 gap-y-6 mx-auto border-2 border-gray-300 rounded-md">
                         <div className="">
                             <label
                                 htmlFor='currentPassword'

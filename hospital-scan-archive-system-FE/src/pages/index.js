@@ -43,6 +43,7 @@ export { loader as userScansListLoader } from './user/ScansList';
 export { loader as userScanViewLoader } from './user/ScanView';
 export { loader as userProfileUpdateLoader } from './user/UserForm';
 export { loader as userProfileViewLoader } from './user/UserView';
+export { loader as userPasswordUpdateLoader } from './user/PasswordUpdate';
 
 // Actions
 export { action as loginAction } from './Home';
