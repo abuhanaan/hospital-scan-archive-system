@@ -122,6 +122,8 @@ const ScansList = () => {
     const navigate = useNavigate();
     const scans = useLoaderData();
 
+    // console.log(scans);
+
     const columns = [
         { id: 'S/N', header: 'S/N' },
         { id: 'patientId', header: 'Patient' },

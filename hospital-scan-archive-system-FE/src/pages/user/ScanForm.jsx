@@ -30,6 +30,8 @@ const ScanForm = () => {
         }
     );
 
+    console.log(scan);
+
     async function submitForm(e) {
         e.preventDefault();
 

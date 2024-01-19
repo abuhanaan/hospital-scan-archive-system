@@ -84,6 +84,24 @@ const Table = ({ data: tableData, columns: cols, render }) => {
             )
         }
 
+        // if (col.id === 'doctorId') {
+        //     return (
+        //         columnHelper.accessor('', {
+        //             id: col.id,
+        //             cell: props => (
+        //                 <span>
+        //                     {
+        //                         props.row.original.doctor?.firstName ?
+        //                         `${props.row.original.doctor.firstName} ${props.row.original.doctor.lastName}` :
+        //                         props.getValue()
+        //                     }
+        //                 </span>
+        //             ),
+        //             header: col.header
+        //         })
+        //     )
+        // }
+
         if (col.id === 'actions') {
             return (
                 columnHelper.accessor('', {
