@@ -162,7 +162,8 @@ export async function getUsers(request) {
 
 export async function getUser(userId, request) {
     const user = JSON.parse(localStorage.getItem('user'));
-    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users/${userId}`, {
+    const entity = user.role === 'doctor' ? '/doctors' : '/nurses';
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com${entity}/${userId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -344,7 +345,8 @@ export async function updatePatient(patientId, patientData) {
 
 export async function getPatients(request) {
     const user = JSON.parse(localStorage.getItem('user'));
-    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/patients`, {
+    const endpoint = user.role === 'doctor' ? '/doctors/patients' : '/patients';
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com${endpoint}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -446,7 +448,7 @@ export async function createScan(scanData) {
 
     if (res.status === 401) {
         return {
-            unAuthorize: true
+            unAuthorize: data.message
         }
     }
 
@@ -467,10 +469,10 @@ export async function updateScan(scanId, scanData) {
     const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/scans/${scanId}`, {
         method: 'PATCH',
         headers: {
-            // 'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.accessToken}`,
         },
-        body: scanData
+        body: JSON.stringify(scanData)
     });
 
     const data = await res.json();
@@ -495,7 +497,8 @@ export async function updateScan(scanId, scanData) {
 
 export async function getScans(request) {
     const user = JSON.parse(localStorage.getItem('user'));
-    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/scans`, {
+    const endpoint = user.role === 'doctor' ? '/doctors/scans' : '/scans';
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com${endpoint}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -663,17 +666,17 @@ export async function updateUserProfile(userId, profileData) {
 
     if (user.role === 'nurse') {
         entity = 'nurses';
-    } else if (user.role === doctor) {
+    } else if (user.role === 'doctor') {
         entity = 'doctors'
     }
-
+    
     const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/${entity}/update-profile/${userId}`, {
         method: 'PATCH',
         headers: {
-            // 'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.accessToken}`,
         },
-        body: profileData
+        body: JSON.stringify(profileData)
     });
 
     const data = await res.json();
@@ -696,30 +699,23 @@ export async function updateUserProfile(userId, profileData) {
     return data;
 }
 
-export async function updateUserPassword(userId, passwordData) {
+export async function updateUserPassword(passwordData) {
     const user = JSON.parse(localStorage.getItem('user'));
-    let entity = '';
 
-    if (user.role === 'nurse') {
-        entity = 'nurses';
-    } else if (user.role === doctor) {
-        entity = 'doctors'
-    }
-
-    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/${entity}/update-password/${userId}`, {
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users/change-password`, {
         method: 'PATCH',
         headers: {
-            // 'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.accessToken}`,
         },
-        body: passwordData
+        body: JSON.stringify(passwordData)
     });
 
     const data = await res.json();
 
     if (res.status === 401) {
         return {
-            unAuthorize: true
+            unAuthorize: `${data.error}: ${data.message}`
         }
     }
 

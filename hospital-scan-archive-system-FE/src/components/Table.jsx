@@ -11,8 +11,6 @@ const Table = ({ data: tableData, columns: cols, render }) => {
     const { pathname } = useLocation();
     const columnHelper = createColumnHelper();
 
-    console.log(pathname);
-
     const columns = cols.map(col => {
         if (col.id === 'S/N') {
             return (
@@ -85,6 +83,24 @@ const Table = ({ data: tableData, columns: cols, render }) => {
                 })
             )
         }
+
+        // if (col.id === 'doctorId') {
+        //     return (
+        //         columnHelper.accessor('', {
+        //             id: col.id,
+        //             cell: props => (
+        //                 <span>
+        //                     {
+        //                         props.row.original.doctor?.firstName ?
+        //                         `${props.row.original.doctor.firstName} ${props.row.original.doctor.lastName}` :
+        //                         props.getValue()
+        //                     }
+        //                 </span>
+        //             ),
+        //             header: col.header
+        //         })
+        //     )
+        // }
 
         if (col.id === 'actions') {
             return (

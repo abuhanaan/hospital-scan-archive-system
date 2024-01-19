@@ -61,7 +61,6 @@ const ActionButtons = ({ scan }) => {
                 position: toast.POSITION.TOP_CENTER,
                 autoClose: 2000,
             });
-            console.log(scanResponse);
             setIsConfirmOpen(false);
             return scanResponse.error;
         }
@@ -122,6 +121,7 @@ const ActionButtons = ({ scan }) => {
 const ScansList = () => {
     const navigate = useNavigate();
     const scans = useLoaderData();
+
     // console.log(scans);
 
     const columns = [

@@ -112,7 +112,7 @@ const UserView = () => {
                                     Specialty
                                 </h4>
                                 <p className="w-full text-base font-medium text-[#6B7280]">
-                                    {userData.speciality ? v : 'N/A'}
+                                    {userData.speciality ? userData.speciality : 'N/A'}
                                 </p>
                             </div>
 

@@ -20,20 +20,26 @@ export async function loader({ request }) {
 }
 
 const UserForm = () => {
-    const { state } = useLocation();
     const user = useLoaderData();
+    const role = user.user.role;
     const navigate = useNavigate()
+    const [formData, setFormData] = useState(role === 'doctor' ?
+        {
+            firstName: user.firstName ?? '',
+            lastName: user.lastName ?? '',
+            gender: user.gender ?? '',
+            phoneNumber: user.phoneNumber ?? '',
+            speciality: user.speciality ?? '',
+        } :
+        {
+            firstName: user.firstName ?? '',
+            lastName: user.lastName ?? '',
+            gender: user.gender ?? '',
+            phoneNumber: user.phoneNumber ?? '',
+            nurseId: user.nurseId ?? 0,
+        });
     const fileRef = useRef(null);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [formData, setFormData] = useState({
-        firstName: user.firstName ?? '',
-        lastName: user.lastName ?? '',
-        gender: user.gender ?? '',
-        speciality: user.speciality ?? '',
-        phoneNumber: user.phoneNumber ?? '',
-        email: user.email ?? '',
-        file: '',
-    });
 
     function handleChange(e) {
         const { name, value, type, checked } = e.target;
@@ -65,16 +71,7 @@ const UserForm = () => {
     async function updateProfile(e) {
         e.preventDefault();
 
-        const profileData = new FormData();
-
-        for (const [prop, value] of Object.entries(formData)) {
-            profileData.append(prop, String(value));
-        }
-
-        profileData.delete('file');
-        profileData.append('file', selectedImage ? selectedImage : '');
-
-        const userResponse = await updateUserProfile(user.id, profileData);
+        const userResponse = await updateUserProfile(user.user.id, formData);
 
         if (userResponse.unAuthorize) {
             const pathname = location.pathname;
@@ -98,10 +95,11 @@ const UserForm = () => {
         });
 
         setTimeout(() => {
-            if (user.role === 'doctor') {
+            if (role === 'doctor') {
                 navigate(`/user/profile`);
+            } else {
+                navigate(`/user`);
             }
-            navigate(`/user`);
         }, 3000);
     }
 
@@ -126,7 +124,7 @@ const UserForm = () => {
             <div className="mx-auto w-full">
                 <form onSubmit={updateProfile}>
                     <div className="grid grid-cols-1 xs:grid-cols-2 gap-x-3 gap-y-6">
-                        <div className="">
+                        {/* <div className="">
                             <label
                                 htmlFor='email'
                                 className="mb-1 block text-base font-medium text-[#07074D]"
@@ -143,7 +141,7 @@ const UserForm = () => {
                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                 required
                             />
-                        </div>
+                        </div> */}
 
                         <div className="">
                             <label
@@ -181,24 +179,25 @@ const UserForm = () => {
                                 required
                             />
                         </div>
-                        <div className="">
-                            <label
-                                htmlFor='speciality'
-                                className="mb-1 block text-base font-medium text-[#07074D]"
-                            >
-                                Specialty
-                            </label>
-                            <input
-                                type="text"
-                                name="speciality"
-                                id="speciality"
-                                value={formData.speciality}
-                                onChange={handleChange}
-                                placeholder="Specialty"
-                                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                                required
-                            />
-                        </div>
+                        {user.user.role === 'doctor' &&
+                            <div className="">
+                                <label
+                                    htmlFor='speciality'
+                                    className="mb-1 block text-base font-medium text-[#07074D]"
+                                >
+                                    Specialty
+                                </label>
+                                <input
+                                    type="text"
+                                    name="speciality"
+                                    id="speciality"
+                                    value={formData.speciality}
+                                    onChange={handleChange}
+                                    placeholder="Specialty"
+                                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                    required
+                                />
+                            </div>}
                         <div className="">
                             <label
                                 htmlFor='phoneNumber'
@@ -236,7 +235,7 @@ const UserForm = () => {
                                 <option value="others">Others</option>
                             </select>
                         </div>
-                        <div className="self-end">
+                        {/* <div className="self-end">
                             <label
                                 htmlFor="file"
                                 className="mb-1 block text-base font-medium text-[#07074D] sr-only"
@@ -256,7 +255,7 @@ const UserForm = () => {
                                 <button onClick={browseImage} className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">{selectedImage ? 'Change Profile Image' : 'Browse Profile Image'}</button>
                                 <p className="font-poppins font-medium text-lg">{selectedImage ? selectedImage.name : 'No file chosen'}</p>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className='flex justify-end mt-6'>

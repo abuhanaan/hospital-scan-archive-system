@@ -64,8 +64,8 @@ export class NursesService {
       include: { user: true },
     });
     this.checkIfNurseExists(nurse, id);
-    return this.prisma.doctor.update({
-      where: { doctorId: id },
+    return this.prisma.nurse.update({
+      where: { nurseId: id },
       data: updateNurseDto,
       include: { user: true },
     });

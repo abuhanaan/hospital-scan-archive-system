@@ -17,6 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'user-auth') {
     const user = await this.usersService.findOne(payload.userId);
 
     if (!user) {
+      console.log('Nout User Exception Thrown');
       throw new UnauthorizedException();
     }
 
@@ -31,14 +32,14 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'user-auth') {
     return user;
   }
 
-  async validateAdmin(payload: { userId: number }) {
-    const user = await this.usersService.findOne(payload.userId);
+  // async validateAdmin(payload: { userId: number }) {
+  //   const user = await this.usersService.findOne(payload.userId);
 
-    if (user.role !== 'admin') {
-      throw new UnauthorizedException({
-        message: 'You are not authorised to access this resource',
-        error: 'Unauthorised',
-      });
-    }
-  }
+  //   if (user.role !== 'admin') {
+  //     throw new UnauthorizedException({
+  //       message: 'You are not authorised to access this resource',
+  //       error: 'Unauthorised',
+  //     });
+  //   }
+  // }
 }

@@ -39,6 +39,8 @@ const UserDashboard = () => {
     const nurseData = !data.error && !data.doctor && data.nurse;
     const errorData = data.error && data;
 
+    // console.log(nurseData);
+
     const dashboardCardsInfo = [
         { id: 'patients', title: 'Total Patients', count: doctorData?.patientCount, icon: <FaUserInjured size={20} /> },
         { id: 'scans', title: 'Total Scans', count: doctorData?.scanCount, icon: <FaFileMedical size={20} /> },
@@ -78,7 +80,7 @@ const UserDashboard = () => {
                                 <div className="flex justify-between items-center w-full mt-6">
                                     <h1 className="font-bold text-primary text-2xl leading-tight">Profile</h1>
                                     <div className="flex items-center gap-2">
-                                        <Link to={`/user/profile/update`} state={{ user }} className="text-grey-lighter py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700">
+                                        <Link to={`/user/profile/update`} className="text-grey-lighter py-2 px-2 rounded-md bg-blue-600 hover:bg-blue-700">
                                             <MdOutlineEdit size={22} color='white' />
                                         </Link>
                                     </div>
@@ -141,10 +143,18 @@ const UserDashboard = () => {
                                     </div>
                                     <div className="">
                                         <h4 className=" block text-base font-semibold text-[#07074D]">
-                                            Specialty
+                                            Phone Number
                                         </h4>
                                         <p className="w-full text-base font-medium text-[#6B7280]">
-                                            {nurseData.specialty}
+                                            {nurseData.phoneNumber}
+                                        </p>
+                                    </div>
+                                    <div className="">
+                                        <h4 className=" block text-base font-semibold text-[#07074D]">
+                                            Gender
+                                        </h4>
+                                        <p className="w-full text-base font-medium text-[#6B7280]">
+                                            {nurseData.gender}
                                         </p>
                                     </div>
                                 </fieldset>

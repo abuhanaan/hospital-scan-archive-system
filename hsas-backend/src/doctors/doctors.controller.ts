@@ -24,6 +24,8 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AdminJwtAuthGuard } from 'src/auth/guards/admin-auth.guards';
 import { AuthenticatedRequest } from 'src/utils/interfaces/authRequest.interface';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { PatientEntity } from 'src/patients/entities/patient.entity';
+import { ScanEntity } from 'src/scans/entities/scan.entity';
 
 @Controller('doctors')
 @ApiTags('doctor')
@@ -39,6 +41,27 @@ export class DoctorsController {
     return new DoctorEntity(doctor);
   }
 
+  @Get('patients')
+  @ApiOkResponse({ type: PatientEntity, isArray: true })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  async fetchPersonalizedPatients(@Req() request: AuthenticatedRequest) {
+    console.log('Reached the beginning of the method.');
+    const user = request.user as UserEntity;
+    const patients = await this.doctorsService.fetchPersonalizedPatients(user);
+    return patients.map((patient) => new PatientEntity(patient));
+  }
+
+  @Get('scans')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: ScanEntity, isArray: true })
+  async fetchPersonalizedScans(@Req() request: AuthenticatedRequest) {
+    const user = request.user as UserEntity;
+    console.log(user);
+    const scans = await this.doctorsService.fetchPersonalizedScans(user);
+    return scans.map((scan) => new ScanEntity(scan));
+  }
   @Get()
   @ApiOkResponse({ type: DoctorEntity, isArray: true })
   @UseGuards(JwtAuthGuard)

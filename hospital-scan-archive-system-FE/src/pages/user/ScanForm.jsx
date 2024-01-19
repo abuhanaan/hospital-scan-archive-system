@@ -30,14 +30,30 @@ const ScanForm = () => {
         }
     );
 
+    console.log(scan);
+
     async function submitForm(e) {
         e.preventDefault();
 
-        const btnType = state ? e.target.elements[5].dataset.intent : e.target.elements[7].dataset.intent;
+        let btnType = '';
+        const role = user.role;
+
+        console.log(e.target.elements);
+
+        if (!state && role === 'nurse') {
+            btnType = e.target.elements[6].dataset.intent;
+        } else if (state && role === 'doctor') {
+            btnType = e.target.elements[4].dataset.intent;
+        } else {
+            btnType = e.target.elements[5].dataset.intent;
+        }
+
+        console.log(btnType);
+
         const scanData = new FormData();
 
         scanData.append('patientId', String(formData.patientId));
-        scanData.append('doctorId', String(formData.doctorId));
+        scanData.append('doctorId', String(role === 'doctor' ? user.userId : formData.doctorId));
         scanData.append('type', formData.type);
         scanData.append('symptoms', formData.symptoms);
         scanData.append('diagnosis', formData.diagnosis);
@@ -48,7 +64,16 @@ const ScanForm = () => {
                 const scanResponse = await createScan(scanData);
 
                 if (scanResponse.unAuthorize) {
-                    navigate(`/?message=Please log in to continue&redirectTo=${pathname}`);
+                    const errorMessage = 'You can only upload scans that you prescribe';
+                    if (scanResponse.unAuthorize === errorMessage) {
+                        toast.error(`${scanResponse.unAuthorize}`, {
+                            position: toast.POSITION.TOP_CENTER,
+                            autoClose: 2000,
+                        });
+                        return;
+                    }
+
+                    navigate(`/?message=${scanResponse.unAuthorize}&redirectTo=${pathname}`);
                 }
 
                 if (scanResponse.error || scanResponse.message) {
@@ -77,9 +102,12 @@ const ScanForm = () => {
 
         if (btnType === 'update') {
             scanData.delete('file');
+            scanData.append('file', '');
+
+            console.log(scanData);
 
             try {
-                const scanResponse = await updateScan(scan.id, formData);
+                const scanResponse = await updateScan(scan.id, scanData);
 
                 if (scanResponse.unAuthorize) {
                     navigate(`/?message=Please log in to continue&redirectTo=${pathname}`);
