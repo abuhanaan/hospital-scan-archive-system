@@ -51,13 +51,13 @@ const UserLayout = () => {
                                     user?.role === 'doctor' &&
                                     <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
                                         <BiSolidEdit size={20} />
-                                        <Link href='user/profile/update'>Edit Profile</Link>
+                                        <Link to='/user/profile/update'>Edit Profile</Link>
                                     </li>
                                 }
 
                                 <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
                                     <BiSolidEdit size={20} />
-                                    <Link to='/user/change-password'>Change Password</Link>
+                                    <Link to='/user/password/update'>Change Password</Link>
                                 </li>
 
                                 <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>

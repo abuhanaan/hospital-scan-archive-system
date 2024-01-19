@@ -1,6 +1,6 @@
 import './App.css';
 import { AdminLayout, UserLayout, AuthLayout, Layout } from './components';
-import { Home, AdminPasswordUpdate, PasswordUpdate, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView, UserDashboard, UserPatientForm, UserPatientsList, UserPatientView, UserScansList, UserScanView, UserScanForm, UserProfileView, UserProfileForm, loginLoader, adminDashboardLoader, usersListLoader, userViewLoader, patientViewLoader, patientsListLoader, scanViewLoader, scansListLoader, userDashboardLoader, userProfileUpdateLoader, userPatientsListLoader, userPatientViewLoader, userScansListLoader, userScanViewLoader, userProfileViewLoader, loginAction, PageNotFound, Error } from './pages';
+import { Home, AdminPasswordUpdate, PasswordUpdate, AdminDashboard, UsersList, UserView, UserForm, PatientView, PatientsList, PatientForm, ScanForm, ScansList, ScanView, UserDashboard, UserPatientForm, UserPatientsList, UserPatientView, UserScansList, UserScanView, UserScanForm, UserProfileView, UserProfileForm, loginLoader, adminDashboardLoader, usersListLoader, userViewLoader, patientViewLoader, patientsListLoader, scanViewLoader, scansListLoader, userDashboardLoader, userProfileUpdateLoader, userPatientsListLoader, userPatientViewLoader, userScansListLoader, userScanViewLoader, userProfileViewLoader, userPasswordUpdateLoader, loginAction, PageNotFound, Error } from './pages';
 import { createBrowserRouter, createRoutesFromChildren, RouterProvider, Route } from 'react-router-dom';
 import { requireAuth } from './utils';
 
@@ -34,7 +34,7 @@ const router = createBrowserRouter(createRoutesFromChildren(
 
             <Route path='profile' loader={userProfileViewLoader} element={<UserProfileView />} />
             <Route path='profile/update' loader={userProfileUpdateLoader} element={<UserProfileForm />} />
-            <Route path='change-password' loader={loader} element={<PasswordUpdate />} />
+            <Route path='password/update' loader={userPasswordUpdateLoader} element={<PasswordUpdate />} />
 
             <Route path='patients' loader={userPatientsListLoader} element={<UserPatientsList />} />
             <Route path='patients/:id' loader={userPatientViewLoader} element={<UserPatientView />} />

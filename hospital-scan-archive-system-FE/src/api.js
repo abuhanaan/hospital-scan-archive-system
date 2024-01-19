@@ -699,30 +699,23 @@ export async function updateUserProfile(userId, profileData) {
     return data;
 }
 
-export async function updateUserPassword(userId, passwordData) {
+export async function updateUserPassword(passwordData) {
     const user = JSON.parse(localStorage.getItem('user'));
-    let entity = '';
 
-    if (user.role === 'nurse') {
-        entity = 'nurses';
-    } else if (user.role === doctor) {
-        entity = 'doctors'
-    }
-
-    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/${entity}/update-password/${userId}`, {
+    const res = await fetch(`https://hospital-scan-arhive-sys.onrender.com/users/change-password`, {
         method: 'PATCH',
         headers: {
-            // 'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.accessToken}`,
         },
-        body: passwordData
+        body: JSON.stringify(passwordData)
     });
 
     const data = await res.json();
 
     if (res.status === 401) {
         return {
-            unAuthorize: true
+            unAuthorize: `${data.error}: ${data.message}`
         }
     }
 
