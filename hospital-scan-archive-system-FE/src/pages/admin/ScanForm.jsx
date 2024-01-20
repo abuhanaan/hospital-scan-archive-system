@@ -9,6 +9,7 @@ const ScanForm = () => {
     const navigate = useNavigate();
     const scan = state && state.currentScan;
     const fileRef = useRef(null);
+    const buttonRef = useRef(null);
     const [selectedScan, setSelectedScan] = useState(null);
     const [formData, setFormData] = useState(scan ?
         {
@@ -32,7 +33,7 @@ const ScanForm = () => {
     async function submitForm(e) {
         e.preventDefault();
 
-        const btnType = state ? e.target.elements[5].dataset.intent : e.target.elements[7].dataset.intent;
+        const btnType = buttonRef.current.getAttribute('data-intent');
         const scanData = new FormData();
 
         scanData.append('patientId', String(formData.patientId));
@@ -79,29 +80,29 @@ const ScanForm = () => {
 
             try {
                 const scanResponse = await updateScan(scan.id, formData);
-    
+
                 if (scanResponse.unAuthorize) {
                     navigate(`/?message=Please log in to continue&redirectTo=${pathname}`);
                 }
-    
+
                 if (scanResponse.error || scanResponse.message) {
                     toast.error(`${scanResponse.error} ${scanResponse.message}`, {
                         position: toast.POSITION.TOP_CENTER,
                         autoClose: 2000,
                     });
-    
+
                     return {
                         error: scanResponse.error
                     }
                 }
-    
+
                 toast.success(`Scan successfully updated!`, {
                     position: toast.POSITION.TOP_CENTER,
                     autoClose: 2000,
                 });
 
                 // console.log(scanResponse);
-    
+
                 setTimeout(() => {
                     navigate(`/admin/scans`);
                 }, 3000);
@@ -267,12 +268,7 @@ const ScanForm = () => {
                     </div>
 
                     <div className='flex justify-end mt-3'>
-                        {
-                            state ?
-                                <button type='submit' data-intent='update' className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update Scan</button>
-                                :
-                                <button type='submit' data-intent='create' className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Upload Scan</button>
-                        }
+                        <button ref={buttonRef} type='submit' data-intent={state ? 'update' : 'create'} className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">{state ? 'Update Scan' : 'Create Scan'}</button>
                     </div>
                 </form>
             </div>
