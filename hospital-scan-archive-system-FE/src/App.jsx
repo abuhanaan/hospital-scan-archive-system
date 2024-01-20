@@ -14,7 +14,7 @@ const router = createBrowserRouter(createRoutesFromChildren(
         <Route index element={<Home />} loader={loginLoader} action={loginAction} />
         <Route path='admin' element={<AdminLayout />} errorElement={<Error />}>
             <Route index loader={adminDashboardLoader} element={<AdminDashboard />} />
-            <Route path='change-password'  loader={loader} element={<AdminPasswordUpdate />} />
+            <Route path='password/update'  loader={loader} element={<AdminPasswordUpdate />} />
 
             <Route path='users' loader={usersListLoader} element={<UsersList />} />
             <Route path='users/:id' loader={userViewLoader} element={<UserView />} />

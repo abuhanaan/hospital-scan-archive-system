@@ -10,6 +10,7 @@ const ScanForm = () => {
     const navigate = useNavigate();
     const scan = state && state.currentScan;
     const fileRef = useRef(null);
+    const buttonRef = useRef(null);
     const [selectedScan, setSelectedScan] = useState(null);
     const [formData, setFormData] = useState(scan ?
         {
@@ -35,20 +36,7 @@ const ScanForm = () => {
     async function submitForm(e) {
         e.preventDefault();
 
-        let btnType = '';
-        const role = user.role;
-
-        console.log(e.target.elements);
-
-        if (!state && role === 'nurse') {
-            btnType = e.target.elements[6].dataset.intent;
-        } else if (state && role === 'doctor') {
-            btnType = e.target.elements[4].dataset.intent;
-        } else {
-            btnType = e.target.elements[5].dataset.intent;
-        }
-
-        console.log(btnType);
+        let btnType = buttonRef.current.getAttribute('data-intent');
 
         const scanData = new FormData();
 
@@ -297,12 +285,7 @@ const ScanForm = () => {
                     </div>
 
                     <div className='flex justify-end mt-3'>
-                        {
-                            state ?
-                                <button type='submit' data-intent='update' className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update Scan</button>
-                                :
-                                <button type='submit' data-intent='create' className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Upload Scan</button>
-                        }
+                        <button ref={buttonRef} type='submit' data-intent={state ? 'update' : 'create'} className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">{state ? 'Update Scan' : 'Create Scan'}</button>
                     </div>
                 </form>
             </div>

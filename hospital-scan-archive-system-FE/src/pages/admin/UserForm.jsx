@@ -21,7 +21,7 @@ export async function action({ request }) {
         password
     }
 
-    console.log(data);
+    // console.log(data);
 
     if (intent === 'create') {
         try {
@@ -59,6 +59,7 @@ const UserForm = () => {
     const passwordRef = useRef(null);
     const emailRef = useRef(null);
     const [image, setImage] = useState(null);
+    const buttonRef = useRef(null);
     const fileRef = useRef(null);
     const [formData, setFormData] = useState(user ?
         {
@@ -88,7 +89,7 @@ const UserForm = () => {
     async function submitForm(e) {
         e.preventDefault();
 
-        const btnType = e.target.elements[4].dataset.intent;
+        const btnType = buttonRef.current.getAttribute('data-intent');
 
         if (btnType === 'create') {
             try {
@@ -346,11 +347,7 @@ const UserForm = () => {
                     </div>
 
                     <div className='flex justify-end'>
-                        {
-                            state ?
-                                <button type='submit' data-intent='update' className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update User</button> :
-                                <button type='submit' data-intent='create' className="hover:shadow-form rounded-md bg-[#6A64F1] hover:bg-[#5f58f1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Create User</button>
-                        }
+                        <button ref={buttonRef} type='submit' data-intent={state ? 'update' : 'create'} className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">{state ? 'Update User' : 'Create User'}</button>
                     </div>
                 </form>
             </div>
