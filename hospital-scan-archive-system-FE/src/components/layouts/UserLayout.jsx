@@ -34,8 +34,7 @@ const UserLayout = () => {
     // Event listener function to close the menu when a click occurs outside of it
     const handleOutsideClick = (event) => {
         // Check if the click did not occur within the menu or its button
-        if (menuRef.current && !menuRef.current.contains(event.target) &&
-            menuButtonRef.current && !menuButtonRef.current.contains(event.target)) {
+        if (!menuRef.current.contains(event.target) && !menuButtonRef?.current.contains(event.target)) {
             setShowMenu(false);
         }
     };
