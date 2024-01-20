@@ -3,12 +3,14 @@ import { HiUser } from 'react-icons/hi';
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BiSolidEdit } from "react-icons/bi";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import UserSideNav from '../UserSideNav';
 import Spinner from '../Spinner';
 
 const UserLayout = () => {
     const [showMenu, setShowMenu] = useState(false);
+    const menuButtonRef = useRef(null);
+    const menuRef = useRef(null);
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const { state } = useNavigation();
@@ -29,6 +31,23 @@ const UserLayout = () => {
         navigate('/');
     }
 
+    // Event listener function to close the menu when a click occurs outside of it
+    const handleOutsideClick = (event) => {
+        // Check if the click did not occur within the menu or its button
+        if (menuRef.current && !menuRef.current.contains(event.target) &&
+            menuButtonRef.current && !menuButtonRef.current.contains(event.target)) {
+            setShowMenu(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('click', handleOutsideClick);
+
+        return () => {
+            document.removeEventListener('click', handleOutsideClick);
+        };
+    }, []);
+
     return (
         <div className='flex flex-col min-h-screen md:flex-row md:overflow-hidden'>
             <div className='w-full flex-none md:w-64'>
@@ -39,14 +58,14 @@ const UserLayout = () => {
                 <div className="hidden md:flex md:justify-end items-center h-[64px] w-full bg-gray-200">
                     <div className="flex justify-end gap-6 w-full pr-5">
                         <div className='relative'>
-                            <button onClick={toggleMenu} className="flex items-center gap-1">
+                            <button onClick={toggleMenu} ref={menuButtonRef} className="flex items-center gap-1">
                                 <div className="border border-blue-300 p-[2px]  rounded-full mr-1">
                                     <HiUser color='rgb(59, 130, 246)' size={20} />
                                 </div>
                                 <span className='text-primary font-medium'>{`${title}`}</span>
                                 <MdKeyboardArrowDown size={24} color='#102255' />
                             </button>
-                            <ul className={`${showMenu ? 'block' : 'hidden'} absolute right-0 top-10 mt-3 z-[1] shadow w-52 rounded-sm bg-dimWhite`}>
+                            <ul ref={menuRef} className={`${showMenu ? 'block' : 'hidden'} absolute right-0 top-10 mt-3 z-[1] shadow w-52 rounded-sm bg-dimWhite`}>
                                 {
                                     user?.role === 'doctor' &&
                                     <li className='flex items-center gap-2 hover:bg-slate-300 text-primary px-2 py-1.5'>
