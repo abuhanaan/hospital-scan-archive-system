@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { createPatient, updatePatient } from '../../api';
 import { ToastContainer, toast } from 'react-toastify';
@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const PatientForm = () => {
     const { state, pathname } = useLocation();
+    const buttonRef = useRef(null);
     const navigate = useNavigate();
     const patient = state && state.currentPatient;
     const [formData, setFormData] = useState(patient ?
@@ -58,7 +59,7 @@ const PatientForm = () => {
     async function submitForm(e) {
         e.preventDefault();
 
-        const btnType = e.target.elements[10].dataset.intent;
+        const btnType = buttonRef.current.getAttribute('data-intent');
 
         const patientData = {
             ...formData,
@@ -308,11 +309,7 @@ const PatientForm = () => {
                     </fieldset>
 
                     <div className='flex justify-end'>
-                        {
-                            state ?
-                                <button type='submit' data-intent='update' className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Update Patient</button> :
-                                <button type='submit' data-intent='create' className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">Create Patient</button>
-                        }
+                        <button ref={buttonRef} type='submit' data-intent={state ? 'update' : 'create'} className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">{state ? 'Update Patient' : 'Create Patient'}</button>
                     </div>
                 </form>
             </div>
