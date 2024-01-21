@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { Link, useLoaderData, useNavigate, useLocation } from 'react-router-dom';
-import { MdOutlineEdit, MdDeleteOutline, MdOutlineFileDownload } from "react-icons/md";
-import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
+import { MdOutlineEdit, MdDeleteOutline, MdOutlineFileDownload, MdOutlineClose } from "react-icons/md";
 import { IoEyeOutline } from "react-icons/io5";
-import { scans, patients } from '../../constants';
-import { EmptySearch } from '../../components/EmptySearch';
-import { IoSearch } from 'react-icons/io5';
 import { requireAuth } from '../../utils';
 import { getScan, deleteScan } from '../../api';
 import ConfirmModal from '../../components/ConfirmModal';
@@ -31,6 +27,7 @@ const ScanView = () => {
     const location = useLocation();
     const scan = useLoaderData();
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [isPreviewOpen, setIsPreviewOpen] = useState(false);
     const [scanId, setScanId] = useState(null);
 
     function openDeleteModal(e) {
@@ -39,6 +36,10 @@ const ScanView = () => {
         const dataScanId = e.currentTarget.getAttribute('data-scan-id');
         setIsConfirmOpen(true);
         setScanId(dataScanId);
+    }
+
+    function openPreviewModal(e) {
+        setIsPreviewOpen(true);
     }
 
     async function scanDelete(e) {
@@ -166,6 +167,17 @@ const ScanView = () => {
                                     {scan.createdAt ? new Date(scan.createdAt).toDateString() : 'N/A'}
                                 </p>
                             </div>
+                            <div className="self-end">
+                                <button onClick={openPreviewModal} className='mt-3 inline-flex w-full justify-center gap-2 rounded-md bg-blue-600 px-3 py-2 text-base font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-blue-800 sm:mt-0 sm:w-auto'><IoEyeOutline size={22} color='white' /> Preview Scan Image</button>
+                            </div>
+                            <ConfirmModal isOpen={isPreviewOpen} toggleModal={setIsPreviewOpen}>
+                                <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-xl">
+                                    <div className='p-10'>
+                                        <MdOutlineClose onClick={() => setIsPreviewOpen(false)} size={24} color='red' className='absolute top-2 right-2 cursor-pointer' />
+                                        <img src={scan.url} alt="Scan Image" />
+                                    </div>
+                                </div>
+                            </ConfirmModal>
                         </fieldset>
 
                         <fieldset className="w-full border-2 border-gray-300 rounded-md px-6 py-4 mb-4 grid grid-cols-1 ss:grid-cols-2 sm:grid-cols-3 gap-3">
