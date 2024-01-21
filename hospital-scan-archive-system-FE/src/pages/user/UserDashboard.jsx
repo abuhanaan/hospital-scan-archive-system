@@ -34,7 +34,7 @@ export async function loader({ request }) {
 const UserDashboard = () => {
     const data = useLoaderData();
 
-    console.log(data);
+    // console.log(data);
 
     const user = JSON.parse(localStorage.getItem('user'));
     const doctorData = !data.error && !data.nurse && data.doctor;
