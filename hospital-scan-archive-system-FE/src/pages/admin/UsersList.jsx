@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link, useNavigate, useLoaderData } from 'react-router-dom';
+import { Link, useNavigate, useLoaderData, useSearchParams } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { IoEyeOutline } from "react-icons/io5";
 import { deleteUser } from '../../api';
@@ -52,7 +52,6 @@ const ActionButtons = ({ user }) => {
 
         if (user.unAuthorize) {
             const pathname = location.pathname;
-            console.log(pathname);
             return redirect(`/?message=Please log in to continue&redirectTo=${pathname}`);
         }
 
@@ -72,7 +71,6 @@ const ActionButtons = ({ user }) => {
 
         setTimeout(() => {
             return redirect('/admin/users');
-            // window.location.reload(true);
         }, 3000);
     }
 
@@ -116,6 +114,21 @@ const ActionButtons = ({ user }) => {
 
 const UsersList = () => {
     const users = useLoaderData();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const userStatusFilter = searchParams.get('status');
+    const filteredUsers = !userStatusFilter ? users : users.filter(user => {
+        const userStatus = user.active ? 'active' : 'inactive';
+        return userStatus === userStatusFilter;
+    });
+    console.log(filteredUsers);
+
+    const setFilterParams = (key, value) => {
+        setSearchParams(prevParams => {
+            value === null ? prevParams.delete(key) : prevParams.set(key, value);
+            return prevParams;
+        })
+    }
 
     const columns = [
         { id: 'S/N', header: 'S/N' },
@@ -154,7 +167,7 @@ const UsersList = () => {
                             users?.length === 0 ?
                                 <EmptySearch headers={['Profile Image', 'First Name', 'Last Name', 'Email', 'Specialty', 'Role']} />
                                 :
-                                <Table data={users} columns={columns} render={(user) => (
+                                <Table data={filteredUsers} columns={columns} setFilter={setFilterParams} statusFilter={userStatusFilter} render={(user) => (
                                     <ActionButtons user={user} />
                                 )} />
                         }
