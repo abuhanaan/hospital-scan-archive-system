@@ -29,9 +29,9 @@ const DashboardTable = ({ data }) => {
                                     <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
                                         Patient
                                     </th>
-                                    <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
+                                    {/* <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
                                         Doctor
-                                    </th>
+                                    </th> */}
                                     <th scope="col" className="py-3 px-6 text-base font-medium tracking-wider text-left text-gray-700 capitalize dark:text-gray-400">
                                         Scan Type
                                     </th>
@@ -59,13 +59,13 @@ const DashboardTable = ({ data }) => {
                                                         scan.patientId ? scan.patientId : 'N/A'
                                                 }
                                             </td>
-                                            <td className="table-data">
+                                            {/* <td className="table-data">
                                                 {
                                                     scan.doctor?.firstName || scan.doctor?.lastName ?
                                                         `Dr. ${scan.doctor?.firstName ?? ''} ${scan.doctor?.lastName ?? ''}` :
                                                         scan.doctorId ? scan.doctorId : 'N/A'
                                                 }
-                                            </td>
+                                            </td> */}
                                             <td className="table-data">{scan.type}</td>
                                             <td className="table-data">{scan.diagnosis}</td>
                                             <td className="table-data">{new Date(scan.createdAt).toDateString()}</td>
