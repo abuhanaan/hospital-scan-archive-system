@@ -34,7 +34,8 @@ export async function loader({ request }) {
 const UserDashboard = () => {
     const data = useLoaderData();
 
-    // console.log(data);
+    console.log(data);
+    // console.log(data?.doctor.bioData);
 
     const user = JSON.parse(localStorage.getItem('user'));
     const doctorData = !data.error && !data.nurse && data.doctor;
@@ -49,10 +50,19 @@ const UserDashboard = () => {
     ];
 
     const title = user?.role === 'doctor' ? 'Doctor' : 'Nurse';
+    let username = '';
+
+    if (data?.doctor?.bioData?.firsName) {
+        username = `Dr. ${data.doctor.bioData.firsName}`;
+    }
+
+    if (data?.nurse?.firstName) {
+        username = data.nurse.firstName;
+    }
 
     return (
         <section className="overflow-x-auto font-poppins">
-            <Welcome person={`${title}`} />
+            <Welcome person={username ? username : title} />
 
             {
                 errorData ?
