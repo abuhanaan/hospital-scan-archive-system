@@ -59,10 +59,10 @@ const UserLayout = () => {
                         <div className='relative'>
                             <button onClick={toggleMenu} ref={menuButtonRef} className="flex items-center gap-1">
                                 <div className="border border-blue-300 p-[2px]  rounded-full mr-1">
-                                    <HiUser color='rgb(59, 130, 246)' size={20} />
+                                    <HiUser color='rgb(59, 130, 246)' size={28} />
                                 </div>
-                                <span className='text-primary font-medium'>{`${title}`}</span>
-                                <MdKeyboardArrowDown size={24} color='#102255' />
+                                {/* <span className='text-primary font-medium'>{`${title}`}</span> */}
+                                {/* <MdKeyboardArrowDown size={24} color='#102255' /> */}
                             </button>
                             <ul ref={menuRef} className={`${showMenu ? 'block' : 'hidden'} absolute right-0 top-10 mt-3 z-[1] shadow w-52 rounded-sm bg-dimWhite`}>
                                 {
