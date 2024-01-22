@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, createContext } from 'react';
 import { Link, useNavigate, useLoaderData, useSearchParams } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { IoEyeOutline } from "react-icons/io5";
@@ -110,7 +110,9 @@ const ActionButtons = ({ user }) => {
             </ConfirmModal>
         </>
     )
-}
+};
+
+export const FilterContext = createContext({});
 
 const UsersList = () => {
     const users = useLoaderData();
@@ -121,7 +123,6 @@ const UsersList = () => {
         const userStatus = user.active ? 'active' : 'inactive';
         return userStatus === userStatusFilter;
     });
-    console.log(filteredUsers);
 
     const setFilterParams = (key, value) => {
         setSearchParams(prevParams => {
@@ -167,9 +168,11 @@ const UsersList = () => {
                             users?.length === 0 ?
                                 <EmptySearch headers={['Profile Image', 'First Name', 'Last Name', 'Email', 'Specialty', 'Role']} />
                                 :
-                                <Table data={filteredUsers} columns={columns} setFilter={setFilterParams} statusFilter={userStatusFilter} render={(user) => (
-                                    <ActionButtons user={user} />
-                                )} />
+                                <FilterContext.Provider value={{userStatusFilter, setFilterParams}}>
+                                    <Table data={filteredUsers} columns={columns} render={(user) => (
+                                        <ActionButtons user={user} />
+                                    )} />
+                                </FilterContext.Provider>
                         }
                     </div>
             }

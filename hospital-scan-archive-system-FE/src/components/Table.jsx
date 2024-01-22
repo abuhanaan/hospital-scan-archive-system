@@ -7,7 +7,7 @@ import { HiUserCircle } from 'react-icons/hi';
 import UsersFilter from './UsersFilter';
 import { useLocation } from 'react-router-dom';
 
-const Table = ({ data: tableData, columns: cols, setFilter, statusFilter, render }) => {
+const Table = ({ data: tableData, columns: cols, render }) => {
     const { pathname } = useLocation();
     const columnHelper = createColumnHelper();
 
@@ -159,7 +159,7 @@ const Table = ({ data: tableData, columns: cols, setFilter, statusFilter, render
                     onChange={(value) => setGlobalFilter(String(value))}
                 />
 
-                {pathname === '/admin/users' && <UsersFilter setFilter={setFilter} statusFilter={statusFilter} />}
+                {pathname === '/admin/users' && <UsersFilter />}
 
                 <DownLoadBtn data={tableData} fileName={'tableData.csv'}>Download data</DownLoadBtn>
             </div>
